@@ -1,0 +1,7 @@
+{
+  "name": "dexxire",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
