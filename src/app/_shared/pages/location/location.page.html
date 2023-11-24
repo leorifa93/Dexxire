@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{'SELECTCITY' | translate}}</ion-title>
+    <ion-icon slot="end" name="close-outline" (click)="closeModal()"></ion-icon>
+  </ion-toolbar>
+  <ion-searchbar [(ngModel)]="autocomplete.input" (ionChange)="updateSearchResults()" (search)="updateSearchResults()" placeholder="{{'SEARCHPLACE' | translate}}"></ion-searchbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="ion-justify-content-center">
+    <ion-item *ngFor="let item of autocompleteItems">
+      <ion-label>{{item.description}}</ion-label>
+      <ion-checkbox (ionChange)="selectSearchResult($event, item)"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+</ion-content>

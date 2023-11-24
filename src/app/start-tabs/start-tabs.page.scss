@@ -1,0 +1,24 @@
+ion-tabs {
+  background: #fff;
+
+  .tabs-container {
+    padding: 0;
+    width: 90vw;
+    margin: 15px;
+    background: #FFFFFF;
+    border-radius: 40px;
+    background: var(--main-white, #FFF);
+    box-shadow: 8px 0px 40px 0px rgba(117, 34, 119, 0.15);
+
+    .tab-selected {
+      background: var(--S1, linear-gradient(180deg, #E0030C 0%, #9B0207 100%)) !important;
+      --color-selected: #fff;
+    }
+
+    ion-tab-button {
+      background: #fff;
+      border-radius: 80px;
+    }
+  }
+
+}

@@ -1,0 +1,10 @@
+.text-banner {
+  width: 100%;
+  height: 100px;
+  display: table;
+
+  h5 {
+    display: table-cell;
+    vertical-align: middle;
+  }
+}

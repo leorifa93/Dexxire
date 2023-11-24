@@ -4,8 +4,30 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+
+  .cards-container {
+    margin-bottom: 5rem;
+
+    .swipe-card {
+      background: var(--main-white, #FFF);
+      box-shadow: 0px 8px 80px 0px rgba(75, 22, 76, 0.12);
+      border-radius: 24px;
+
+      .card-container {
+        padding: 5px;
+        border-radius: 24px;
+        background: #fff;
+      }
+
+      .vip-banner {
+        background: var(--S1, linear-gradient(180deg, #E0030C 0%, #9B0207 100%));
+      }
+
+      .gold-banner {
+        background: var(--S2, linear-gradient(94deg, #F90 0.48%, #FFDF8D 34.7%, #D19909 64.37%, #FFE767 95.43%));
+      }
+    }
+  }
 }
 
 #container strong {

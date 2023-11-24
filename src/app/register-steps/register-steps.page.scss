@@ -1,0 +1,28 @@
+ion-item, .gender-box {
+  margin-bottom: 1rem;
+}
+
+.input-item {
+  min-height: 50px;
+
+  ion-select {
+    margin-top: -20px;
+  }
+}
+
+.profile-picture-box {
+  display: table;
+  width: 100%;
+
+  div {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+}
+
+.preview-img {
+  height: 130px;
+  display: block;
+  margin: auto;
+}

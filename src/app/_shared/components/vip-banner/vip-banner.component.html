@@ -1,0 +1,4 @@
+<div class="ion-text-center banner" [ngClass]="{'vip-banner': user.membership === 3, 'gold-banner': user.membership === 2}">
+  <h3 class="h3-extended" *ngIf="user.membership === 3">VIP</h3>
+  <h3 class="h3-extended" *ngIf="user.membership === 2">Gold</h3>
+</div>

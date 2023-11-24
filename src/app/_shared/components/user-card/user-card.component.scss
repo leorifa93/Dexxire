@@ -1,0 +1,49 @@
+.user-card {
+  position: relative;
+  height: 300px;
+  width: 100%;
+  background: #fff;
+  border-radius: 22px;
+
+  .image-shadow {
+    top: 0;
+    position: absolute;
+    z-index: 99;
+    height: 100%;
+    width: 100%;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(76, 22, 22, 0.00) 49.8%, rgba(76, 22, 22, 0.80) 85.71%);
+  }
+
+  img {
+    object-position: top;
+    border-radius: 22px;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    filter: drop-shadow(0px 4px 19px rgba(0, 0, 0, 0.15));
+  }
+
+  .user-details {
+    position: absolute;
+    z-index: 100;
+    color : #FFF;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    max-width: 90%;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+
+    h3, h6 {
+      margin: 0;
+    }
+  }
+}
+
+.standard {
+  background: var(--S1, linear-gradient(180deg, #E0030C 0%, #9B0207 100%));
+}

@@ -1,0 +1,15 @@
+.flags-box {
+  display: block;
+  text-align: center;
+
+  img {
+    margin-right: 5px;
+    width: 64px;
+    height: 32px;
+  }
+
+  .active {
+    margin-bottom: 20px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+}

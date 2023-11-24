@@ -1,20 +1,57 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-item lines="none" class="nav">
+      <div class="ion-padding-top ion-padding-bottom">
+        <img style="width: 25vw" src="assets/images/logo_inline.png"/>
+      </div>
+      <ion-buttons slot="end">
+        <ion-button class="nav-button">
+          <ion-icon name="heart"></ion-icon>
+        </ion-button>
+        <ion-button class="nav-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <g clip-path="url(#clip0_2_422)">
+              <path
+                d="M15 10C16.6569 10 18 8.65685 18 7C18 5.34315 16.6569 4 15 4C13.3431 4 12 5.34315 12 7C12 8.65685 13.3431 10 15 10Z"
+                stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 7H12" stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M18 7L20 7" stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M9 20C10.6569 20 12 18.6569 12 17C12 15.3431 10.6569 14 9 14C7.34315 14 6 15.3431 6 17C6 18.6569 7.34315 20 9 20Z"
+                stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 17H6" stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 17L20 17" stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_2_422">
+                <rect width="24" height="24" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </ion-button>
+        <ion-avatar class="small-avatar" (click)="showProfile(user)">
+          <img [lazyLoad]="user?.profilePictures?.thumbnails?.small  || 'assets/images/no-image.png'"
+               errorImage="assets/images/no-image.png" [defaultImage]="user?.profilePictures?.original"/>
+        </ion-avatar>
+      </ion-buttons>
+    </ion-item>
   </ion-toolbar>
 </ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
+<ion-content [fullscreen]="true" class="ion-padding">
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-grid>
+      <ion-row class="cards-container">
+        <ion-col [sizeMd]="standardUser.membership === 3 ? 6 : 3"
+                 [sizeXs]="standardUser.membership === 3 ? 12 : 6" [sizeLg]="standardUser.membership === 3 ? 4 : 2"
+                 *ngFor="let standardUser of standardUsers">
+          <div class="swipe-card">
+            <div class="card-container" [ngClass]="{'gold-banner': standardUser.membership === 2, 'vip-banner': standardUser.membership === 3}">
+              <app-user-card [me]="user" [user]="standardUser" (click)="showProfile(standardUser)"></app-user-card>
+            </div>
+            <app-swipe-controls></app-swipe-controls>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 </ion-content>

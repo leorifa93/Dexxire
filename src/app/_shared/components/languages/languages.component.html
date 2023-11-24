@@ -1,0 +1,6 @@
+<div class="flags-box">
+  <img [defaultImage]="'assets/loading.svg'" [errorImage]="'assets/no-image.png'" lazyLoad="https://www.worldometers.info/img/flags/uk-flag.gif" (click)="changeLanguage('en')" [ngClass]="activeLanguage === 'en' ? 'active' : ''">
+  <img [defaultImage]="'assets/loading.svg'" [errorImage]="'assets/no-image.png'" lazyLoad="https://www.worldometers.info/img/flags/gm-flag.gif" (click)="changeLanguage('de')" [ngClass]="activeLanguage === 'de' ? 'active' : ''">
+  <img [defaultImage]="'assets/loading.svg'" [errorImage]="'assets/no-image.png'" lazyLoad="https://www.worldometers.info/img/flags/fr-flag.gif" (click)="changeLanguage('fr')" [ngClass]="activeLanguage === 'fr' ? 'active' : ''">
+  <img [defaultImage]="'assets/loading.svg'" [errorImage]="'assets/no-image.png'" lazyLoad="https://www.worldometers.info/img/flags/sp-flag.gif" (click)="changeLanguage('es')" [ngClass]="activeLanguage === 'es' ? 'active' : ''">
+</div>

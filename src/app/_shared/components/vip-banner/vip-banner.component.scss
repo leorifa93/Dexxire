@@ -1,0 +1,25 @@
+.banner {
+  top: 0;
+  border-radius: 0px 0px 14px 14px;
+  width: 70%;
+  height: 15%;
+  position: absolute;
+  z-index: 100;
+  margin: auto;
+  display: block;
+  right: 0;
+  left: 0;
+
+  h3 {
+    padding: 5px;
+    margin: 0;
+  }
+}
+
+.vip-banner {
+  background: var(--S1, linear-gradient(180deg, #E0030C 0%, #9B0207 100%));
+}
+
+.gold-banner {
+  background: var(--S2, linear-gradient(94deg, #F90 0.48%, #FFDF8D 34.7%, #D19909 64.37%, #FFE767 95.43%));
+}

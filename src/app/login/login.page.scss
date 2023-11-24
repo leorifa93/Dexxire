@@ -1,0 +1,26 @@
+.logo {
+  width: 50vw;
+  display: block;
+  margin: auto;
+  padding: 2rem 0;
+}
+
+ion-item {
+  --inner-padding-end: 0;
+}
+
+.login-box {
+  display: flex;
+
+  .login-btn {
+    height: 50px;
+    border-radius: 10px;
+    --background: #EDEDED;
+    flex: 1;
+    margin: 0 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

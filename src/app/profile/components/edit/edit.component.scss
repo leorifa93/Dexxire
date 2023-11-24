@@ -1,0 +1,47 @@
+.profile-picture-box {
+  padding: 5px;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+
+  .picture-box {
+    height: 50%;
+    width: 24%;
+    border-radius: 10.076px;
+    margin: 1px;
+
+    &.primary {
+      border: 1.55px solid var(--S1, #E0030C);
+    }
+
+    &.add {
+      border: 1.55px dotted var(--S1, #E0030C);
+      display: flex;
+
+      svg {
+        display: block;
+        margin: auto;
+      }
+    }
+
+    img {
+      height: 100%;
+      width: 100%;
+      border-radius: 10.076px;
+      object-fit: cover;
+    }
+  }
+}
+
+.btn-container {
+  display: flex;
+}
+
+ion-item, .gender-box {
+  margin-bottom: 2rem;
+}
+
+ion-progress-bar {
+  margin-top: 1rem;
+}

@@ -1,0 +1,14 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <h3 class="heading">{{'WELCOME' | translate}} {{user?.username}}</h3>
+    </ion-toolbar>
+  </ion-header>
+  <ion-item (click)="logout()">{{'LOGOUT' | translate}}</ion-item>
+  <app-languages></app-languages>
+</ion-content>
