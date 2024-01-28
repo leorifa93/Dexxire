@@ -1,13 +1,48 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>chats</ion-title>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <ion-header>
     <ion-toolbar>
-      <ion-title size="large">chats</ion-title>
+      <ion-title class="ion-text-center" size="medium">{{'MESSAGES' | translate}}</ion-title>
     </ion-toolbar>
+    <ion-searchbar></ion-searchbar>
   </ion-header>
+  <ion-list class="messages-list">
+    <div *ngIf="loading">
+      <ion-item class="chat" *ngFor="let i of [1,2,3,4,5]">
+        <ion-avatar slot="start">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <ion-skeleton-text [animated]="true" style="width: 30%"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width: 60%"></ion-skeleton-text>
+        </ion-label>
+      </ion-item>
+    </div>
+    <ion-item-sliding *ngFor="let chat of chats">
+      <ion-item class="chat" (click)="openChat(chat, getOtherProfile(chat).id)">
+        <ion-avatar slot="start">
+          <img [lazyLoad]="getOtherProfile(chat).profilePictures.thumbnails?.small || getOtherProfile(chat).profilePictures.original" errorImage="assets/images/no-image.png" [defaultImage]="'assets/images/loading.svg'"/>
+        </ion-avatar>
+        <div>
+          <h3>{{getOtherProfile(chat).username}}</h3>
+          <p style="white-space: nowrap;"><ion-icon name="arrow-undo-outline" *ngIf="chat.lastMessageFrom === user.id"></ion-icon> {{chat.lastMessage}}</p>
+        </div>
+        <svg class="not-seen-pointer" *ngIf="!chat.seen.includes(user.id)" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <circle cx="6" cy="6" r="6" fill="url(#paint0_linear_100_1724)"/>
+          <defs>
+            <linearGradient id="paint0_linear_100_1724" x1="6" y1="0" x2="6" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#E0030C"/>
+              <stop offset="1" stop-color="#9B0207"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <p style="font-size: 0.7rem;" slot="end">{{chat.lastMessageAt | timeAgo}}</p>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteChat(chat.id)">{{'DELETE' | translate}}</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>

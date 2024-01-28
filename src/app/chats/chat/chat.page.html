@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="/start-tabs/chats" icon="chevron-back-outline" text="" class="nav-button" (click)="goBack()">
+    </ion-back-button>
+    <ion-title>{{otherUser?.username}}</ion-title>
+    <ion-avatar *ngIf="otherUser" slot="end" (click)="showProfile(otherUser)">
+      <img [lazyLoad]="otherUser.profilePictures?.thumbnails?.small || (otherUser.profilePictures?.original || 'assets/images/no-image.png')"
+           errorImage="assets/images/no-image.png" [defaultImage]="'assets/images/loading.svg'"/>
+    </ion-avatar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding" #content>
+  <ion-infinite-scroll threshold="0px" position="top" (ionInfinite)="loadOldMessages($event, 'top')" *ngIf="messages.length >= 10 && init">
+    <ion-infinite-scroll-content loadingSpinner="dots" loadingText=""></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <div *ngIf="loading">
+    <ion-item lines="none" *ngFor="let i of [1,2,3,4]">
+      <div [slot]="i % 2 === 0 ? 'start' : 'end'" [ngClass]="i % 2 === 0 ? 'left' : 'right'" class="message-box">
+        <ion-skeleton-text [animated]="true" style="width: 30%"></ion-skeleton-text>
+      </div>
+    </ion-item>
+  </div>
+
+  <ion-item lines="none" *ngFor="let message of messages">
+    <div [slot]="message.lastMessageFromId !== user?.id ? 'start' : 'end'" class="message-box" [ngClass]="{'left': message.lastMessageFromId !== user?.id, 'right': message.lastMessageFromId === user?.id}">
+      <p *ngIf="message.type === 'text'">{{message.lastMessage}}</p>
+      <p *ngIf="message.type === 'image'">
+        <img (click)="showImg(message.picture.thumbnails.big)" [lazyLoad]="message.picture.thumbnails.big" errorImage="assets/images/no-image.png" [defaultImage]="'assets/images/loading.svg'"/>
+        {{message.lastMessage}}
+      </p>
+    </div>
+  </ion-item>
+  <div *ngIf="isUploadingImg">
+    <ion-item lines="none" *ngFor="let img of attachedImg">
+      <div class="message-box right" [slot]="'end'">
+        <p>
+          <img [src]="img" />
+        </p>
+        <ion-spinner name="circular"></ion-spinner>
+      </div>
+    </ion-item>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar class="ion-padding-bottom ion-padding-top">
+    <div *ngIf="!user?._gotBlockedFrom?.includes(otherUserId) && !user?._blockList?.includes(otherUserId)">
+      <ion-item *ngIf="attachedImg" lines="none">
+        <div slot="start" style="position: relative" *ngFor="let img of attachedImg">
+          <ion-thumbnail  (click)="showImg(img)">
+            <img [src]="img" />
+          </ion-thumbnail>
+          <ion-icon name="close-circle-outline" (click)="removeImgAttachement(img)"></ion-icon>
+        </div>
+      </ion-item>
+      <ion-item class="control-box" lines="none">
+        <svg slot="start" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" (click)="showOptions()">
+          <g opacity="0.5" clip-path="url(#clip0_100_1679)">
+            <path d="M14.9997 6.99996L8.4997 13.5C8.10188 13.8978 7.87838 14.4374 7.87838 15C7.87838 15.5626 8.10188 16.1021 8.4997 16.5C8.89753 16.8978 9.43709 17.1213 9.9997 17.1213C10.5623 17.1213 11.1019 16.8978 11.4997 16.5L17.9997 9.99996C18.7954 9.20432 19.2423 8.12518 19.2423 6.99996C19.2423 5.87475 18.7954 4.79561 17.9997 3.99996C17.2041 3.20432 16.1249 2.75732 14.9997 2.75732C13.8745 2.75732 12.7954 3.20432 11.9997 3.99996L5.4997 10.5C4.30623 11.6934 3.63574 13.3121 3.63574 15C3.63574 16.6878 4.30623 18.3065 5.4997 19.5C6.69318 20.6934 8.31188 21.3639 9.9997 21.3639C11.6875 21.3639 13.3062 20.6934 14.4997 19.5L20.9997 13" stroke="#4B164C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_100_1679">
+              <rect width="24" height="24" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+        <ion-textarea [autocapitalize]="true" [(ngModel)]="textInput" placeholder="{{'TYPEAMESSAGE' | translate}}" [autoGrow]="true"></ion-textarea>
+        <ion-button (click)="sendMessage()" [disabled]="!textInput && !attachedImg" slot="end" class="control-btn">
+          <ion-icon name="send-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </div>
+    <p class="ion-text-center" *ngIf="user?._gotBlockedFrom?.includes(otherUserId)">{{'USERBLOCKEDYOU' | translate}}</p>
+    <p class="ion-text-center"  *ngIf="user?._blockList?.includes(otherUserId)">{{'PLEASENOTBLOCKUSER' | translate}}</p>
+  </ion-toolbar>
+</ion-footer>

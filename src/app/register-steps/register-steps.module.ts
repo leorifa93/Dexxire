@@ -9,6 +9,7 @@ import { RegisterStepsPageRoutingModule } from './register-steps-routing.module'
 import { RegisterStepsPage } from './register-steps.page';
 import {TranslateModule} from "@ngx-translate/core";
 import {LocationPageModule} from "../_shared/pages/location/location.module";
+import {AvatarsModule} from "../_shared/components/avatars/avatars.module";
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import {LocationPageModule} from "../_shared/pages/location/location.module";
         IonicModule,
         RegisterStepsPageRoutingModule,
         TranslateModule,
-      LocationPageModule
+      LocationPageModule,
+       AvatarsModule
     ],
   declarations: [RegisterStepsPage]
 })

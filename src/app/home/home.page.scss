@@ -4,30 +4,6 @@
   position: absolute;
   left: 0;
   right: 0;
-
-  .cards-container {
-    margin-bottom: 5rem;
-
-    .swipe-card {
-      background: var(--main-white, #FFF);
-      box-shadow: 0px 8px 80px 0px rgba(75, 22, 76, 0.12);
-      border-radius: 24px;
-
-      .card-container {
-        padding: 5px;
-        border-radius: 24px;
-        background: #fff;
-      }
-
-      .vip-banner {
-        background: var(--S1, linear-gradient(180deg, #E0030C 0%, #9B0207 100%));
-      }
-
-      .gold-banner {
-        background: var(--S2, linear-gradient(94deg, #F90 0.48%, #FFDF8D 34.7%, #D19909 64.37%, #FFE767 95.43%));
-      }
-    }
-  }
 }
 
 #container strong {
@@ -46,4 +22,37 @@
 
 #container a {
   text-decoration: none;
+}
+
+.edit-info {
+  height: 64px;
+  border-radius: 16px;
+  background: var(--S1, linear-gradient(180deg, #E0030C 0%, #9B0207 100%));
+  width: 95%;
+  display: block;
+  margin: auto;
+
+  .info {
+    height: 64px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+
+  p {
+    color: #fff !important;
+  }
+}
+
+.edit-btn::part(native) {
+  border-radius: 32px;
+  background: #FFF;
+  color: #E0030C;
+}
+
+@media only screen and (min-width: 768px) {
+  .logo {
+    width: 10vw !important;
+  }
 }

@@ -1,4 +1,4 @@
-import {Component, NgZone, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit, ViewChild} from '@angular/core';
 import {ModalController} from "@ionic/angular";
 
 declare var google: any;
@@ -9,6 +9,7 @@ declare var google: any;
   styleUrls: ['./location.page.scss'],
 })
 export class LocationPage implements OnInit {
+  @ViewChild('searchInput') searchInput ;
 
   GoogleAutoComplete: any;
   geocoder: any;
@@ -33,6 +34,12 @@ export class LocationPage implements OnInit {
   ngOnInit() {
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.searchInput.setFocus();
+    }, 500);
+  }
+
   updateSearchResults() {
     if (this.autocomplete.input === '') {
       this.autocompleteItems = [];
@@ -41,8 +48,7 @@ export class LocationPage implements OnInit {
 
     this.GoogleAutoComplete.getPlacePredictions({
         input: this.autocomplete.input,
-        types: ['(cities)'],
-        componentRestrictions: {country: 'us'}
+        types: ['(cities)']
       },
       (predictions: any) => {
         this.autocompleteItems = [];

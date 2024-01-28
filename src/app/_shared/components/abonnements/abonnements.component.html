@@ -1,0 +1,20 @@
+<ion-grid class="subscriptions-container">
+  <ion-row>
+    <ion-col sizeXs="6" *ngFor="let subscription of subscriptions">
+      <div class="subscription {{subscription.class}}">
+        <div class="subscription-header ion-text-center">
+          <h3>{{subscription.title | translate}}</h3>
+          <h1>{{'FROM' | translate}} ${{subscription.priceTitle}}</h1>
+          <p>{{'PERMONTH' | translate}} ({{subscription.price}} Coins)</p>
+        </div>
+        <div class="ion-padding ion-text-center">
+          <div class="div-line"></div>
+          <p *ngFor="let benefit of subscription.benefits"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="9" viewBox="0 0 12 9" fill="none">
+            <path d="M11.073 0.639311C11.0022 0.567938 10.918 0.511287 10.8252 0.472626C10.7324 0.433966 10.6329 0.414062 10.5323 0.414062C10.4318 0.414062 10.3323 0.433966 10.2395 0.472626C10.1467 0.511287 10.0625 0.567938 9.99167 0.639311L4.31854 6.32006L1.93506 3.92897C1.86156 3.85797 1.77479 3.80214 1.67972 3.76467C1.58464 3.7272 1.48312 3.70883 1.38094 3.71059C1.27876 3.71236 1.17793 3.73424 1.08421 3.77497C0.990484 3.81571 0.905701 3.8745 0.834701 3.948C0.7637 4.0215 0.707872 4.10827 0.670403 4.20335C0.632935 4.29842 0.61456 4.39995 0.616327 4.50213C0.618095 4.6043 0.639971 4.70513 0.680706 4.79886C0.721441 4.89258 0.780237 4.97736 0.853738 5.04836L3.77788 7.9725C3.84867 8.04387 3.93289 8.10053 4.02568 8.13919C4.11848 8.17785 4.21801 8.19775 4.31854 8.19775C4.41906 8.19775 4.5186 8.17785 4.61139 8.13919C4.70419 8.10053 4.78841 8.04387 4.8592 7.9725L11.073 1.75871C11.1503 1.6874 11.212 1.60085 11.2542 1.50453C11.2964 1.4082 11.3181 1.30417 11.3181 1.19901C11.3181 1.09385 11.2964 0.989822 11.2542 0.893493C11.212 0.797164 11.1503 0.710619 11.073 0.639311Z" fill="#00BB98"/>
+          </svg> {{benefit | translate}}</p>
+        </div>
+        <ion-button *ngIf="(subscription.type === 'gold' && me.membership === 1) || (subscription.type === 'vip' && me.membership !== 3)" size="small" class="upgrade-btn {{subscription.class}}" (click)="buy(subscription)">{{'UPGRADE' | translate}}</ion-button>
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-grid>

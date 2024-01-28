@@ -1,8 +1,8 @@
-<div class="user-card">
+<div class="user-card" *ngIf="type === 'standard' && !loading">
   <app-vip-banner [user]="user" *ngIf="user.membership === 3 || user.membership === 2" style="margin-top: 10px"></app-vip-banner>
   <div class="image-shadow">
   </div>
-  <img [lazyLoad]="user.profilePictures?.original || 'assets/images/no-image.png'" errorImage="assets/images/no-image.png" [defaultImage]="'assets/images/loading.svg'" />
+  <img [style]="user.membership === 3 ? 'object-fit:fill' : ''" [lazyLoad]="user.profilePictures?.original || 'assets/images/no-image.png'" errorImage="assets/images/no-image.png" [defaultImage]="'assets/images/loading.svg'" />
   <div class="ion-text-center user-details">
     <h3 class="h3-extended">{{user.username}}</h3>
     <h6>{{currentCity}}</h6>
@@ -12,10 +12,40 @@
       </svg> <p>{{user.likesCount || 0}}</p></div>
       <div class="info"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
         <path d="M15 9.375V12.9375H3V9.375C3.4275 9.375 4.1475 10.29 4.5 10.95C4.605 11.145 4.815 11.265 5.04 11.25C5.2575 11.235 5.4525 11.085 5.5275 10.875C5.5275 10.86 6.09 9.375 7.005 9.375C7.92 9.375 8.46751 10.86 8.46751 10.875C8.55001 11.1 8.76 11.25 9 11.25C9.24 11.25 9.44999 11.1 9.53249 10.875C9.66749 10.485 10.23 9.375 10.995 9.375C11.91 9.375 12.465 10.86 12.4725 10.875C12.5475 11.085 12.7425 11.235 12.96 11.25C13.2 11.265 13.395 11.145 13.5 10.95C13.8525 10.29 14.5725 9.375 15 9.375ZM12.75 5.25H12.5625V3.75C12.5625 3.4425 12.3075 3.1875 12 3.1875C11.6925 3.1875 11.4375 3.4425 11.4375 3.75V5.25H9.5625V3.75C9.5625 3.4425 9.3075 3.1875 9 3.1875C8.6925 3.1875 8.4375 3.4425 8.4375 3.75V5.25H6.5625V3.75C6.5625 3.4425 6.3075 3.1875 6 3.1875C5.6925 3.1875 5.4375 3.4425 5.4375 3.75V5.25H5.25C3.75 5.25 3 6 3 7.5V8.25C3.7875 8.25 4.485 8.9475 4.9425 9.5625C5.355 8.9475 6.03 8.25 7.005 8.25C7.98 8.25 8.5875 8.8875 9 9.48C9.4125 8.8875 10.065 8.25 10.995 8.25C11.925 8.25 12.645 8.9475 13.0575 9.5625C13.515 8.9475 14.2125 8.25 15 8.25V7.5C15 6 14.25 5.25 12.75 5.25ZM2.25 14.0625V14.625C2.25 15.2475 2.7525 15.75 3.375 15.75H14.625C15.2475 15.75 15.75 15.2475 15.75 14.625V14.0625H2.25Z" fill="#F35E82"/>
-      </svg> <p>{{user.birthday | age}}</p></div>
+      </svg> <p>{{user?.fakeAge ? user.fakeAge : (user?.birthday | age)}}</p></div>
       <div class="info"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
         <path d="M9 1.875C5.48475 1.875 2.625 4.73475 2.625 8.25C2.625 11.9872 6.09675 14.2807 8.394 15.798L8.7915 16.062C8.8545 16.104 8.92724 16.125 8.99924 16.125C9.07124 16.125 9.144 16.104 9.207 16.062L9.6045 15.798C11.9017 14.2807 15.3735 11.9872 15.3735 8.25C15.375 4.73475 12.5153 1.875 9 1.875ZM9 10.125C7.96425 10.125 7.125 9.28575 7.125 8.25C7.125 7.21425 7.96425 6.375 9 6.375C10.0357 6.375 10.875 7.21425 10.875 8.25C10.875 9.28575 10.0357 10.125 9 10.125Z" fill="#F35E82"/>
       </svg> <p>{{distance}}</p></div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loading" [ngClass]="{'user-card': type === 'standard', 'discover-user': type === 'discover'}">
+  <ion-skeleton-text [animated]="true" class="skeleton-img"></ion-skeleton-text>
+  <div class="user-details"></div>
+</div>
+
+<div *ngIf="type === 'discover' && !loading && user.id !== me.id" class="discover-user">
+  <div class="banner vip" *ngIf="user.membership === 3">
+    <p>VIP</p>
+  </div>
+  <div class="banner gold" *ngIf="user.membership === 2">
+    <p>Gold</p>
+  </div>
+  <div class="shadow"></div>
+  <img [lazyLoad]="user.profilePictures?.thumbnails?.medium || user.profilePictures?.original" errorImage="assets/images/no-image.png" [defaultImage]="'assets/images/loading.svg'" />
+  <div class="details">
+    <h3 class="h3-extended">{{user.username}}</h3>
+    <div class="distance"><p>{{distance}}</p></div>
+  </div>
+  <div class="ion-text-center user-details">
+    <div class="infos">
+      <div class="info"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M15.6225 8.59881C14.7428 13.1363 9.00008 15.75 9.00008 15.75C9.00008 15.75 3.25728 13.1363 2.37678 8.59881C1.83678 5.81481 3.01657 3.01429 6.01582 3.00004C8.25007 2.98954 9.00008 5.24102 9.00008 5.24102C9.00008 5.24102 9.7501 2.98879 11.9836 3.00004C14.9896 3.01429 16.1625 5.81556 15.6225 8.59881Z" fill="#F45E82"/>
+      </svg> <p>{{user.likesCount || 0}}</p></div>
+      <div class="info"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M15 9.375V12.9375H3V9.375C3.4275 9.375 4.1475 10.29 4.5 10.95C4.605 11.145 4.815 11.265 5.04 11.25C5.2575 11.235 5.4525 11.085 5.5275 10.875C5.5275 10.86 6.09 9.375 7.005 9.375C7.92 9.375 8.46751 10.86 8.46751 10.875C8.55001 11.1 8.76 11.25 9 11.25C9.24 11.25 9.44999 11.1 9.53249 10.875C9.66749 10.485 10.23 9.375 10.995 9.375C11.91 9.375 12.465 10.86 12.4725 10.875C12.5475 11.085 12.7425 11.235 12.96 11.25C13.2 11.265 13.395 11.145 13.5 10.95C13.8525 10.29 14.5725 9.375 15 9.375ZM12.75 5.25H12.5625V3.75C12.5625 3.4425 12.3075 3.1875 12 3.1875C11.6925 3.1875 11.4375 3.4425 11.4375 3.75V5.25H9.5625V3.75C9.5625 3.4425 9.3075 3.1875 9 3.1875C8.6925 3.1875 8.4375 3.4425 8.4375 3.75V5.25H6.5625V3.75C6.5625 3.4425 6.3075 3.1875 6 3.1875C5.6925 3.1875 5.4375 3.4425 5.4375 3.75V5.25H5.25C3.75 5.25 3 6 3 7.5V8.25C3.7875 8.25 4.485 8.9475 4.9425 9.5625C5.355 8.9475 6.03 8.25 7.005 8.25C7.98 8.25 8.5875 8.8875 9 9.48C9.4125 8.8875 10.065 8.25 10.995 8.25C11.925 8.25 12.645 8.9475 13.0575 9.5625C13.515 8.9475 14.2125 8.25 15 8.25V7.5C15 6 14.25 5.25 12.75 5.25ZM2.25 14.0625V14.625C2.25 15.2475 2.7525 15.75 3.375 15.75H14.625C15.2475 15.75 15.75 15.2475 15.75 14.625V14.0625H2.25Z" fill="#F35E82"/>
+      </svg> <p>{{user?.fakeAge ? user.fakeAge : (user?.birthday | age)}}</p></div>
     </div>
   </div>
 </div>

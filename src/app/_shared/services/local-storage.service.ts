@@ -22,4 +22,36 @@ export class LocalStorageService {
   public getUser() {
     return this._storage.get('user');
   }
+
+  public setSettings(settings) {
+    return this._storage.set('settings', settings);
+  }
+
+  public getSettings() {
+    return this._storage.get('settings');
+  }
+
+  public getFilter() {
+    return this._storage.get('filter');
+  }
+
+  public setFilter(filter) {
+    return this._storage.set('filter', filter);
+  }
+
+  public setLang(lang) {
+    return this._storage.set('lang', lang);
+  }
+
+  public getLang() {
+    return this._storage.get('lang');
+  }
+
+  public setDeviceId(deviceId: string) {
+    return this._storage.set('deviceId', deviceId);
+  }
+
+  public getDeviceId() {
+    return this._storage.get('deviceId');
+  }
 }

@@ -5,10 +5,10 @@ ion-tabs {
     padding: 0;
     width: 90vw;
     margin: 15px;
-    background: #FFFFFF;
+    background: #fff;
     border-radius: 40px;
     background: var(--main-white, #FFF);
-    box-shadow: 8px 0px 40px 0px rgba(117, 34, 119, 0.15);
+    box-shadow: 8px 0px 20px 0px rgba(117, 34, 119, 0.15);
 
     .tab-selected {
       background: var(--S1, linear-gradient(180deg, #E0030C 0%, #9B0207 100%)) !important;

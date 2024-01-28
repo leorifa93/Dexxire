@@ -1,0 +1,19 @@
+ion-header, ion-toolbar, ion-content {
+  --background: #F4F4F6;
+
+  .option {
+    border-radius: 16px;
+    background: var(--main-white, #FFF);
+    margin-bottom: 1rem;
+  }
+}
+
+h5 {
+  color: var(--greyscale-grey-400, #9EA3AE);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}

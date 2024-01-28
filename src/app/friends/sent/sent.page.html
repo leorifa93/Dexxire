@@ -1,0 +1,11 @@
+# <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-back-button defaultHref="/start-tabs/friends" icon="chevron-back-outline" text="" class="nav-button" (click)="goBack()">
+    </ion-back-button>
+    <ion-title>{{'SENTREQUEST' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <app-list *ngIf="user" type="sent" [userIds]="user._sentFriendRequests"></app-list>
+</ion-content>

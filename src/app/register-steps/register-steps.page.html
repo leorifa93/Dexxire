@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-back-button slot="start" text="{{'CANCELREGISTRATION' | translate}}"></ion-back-button>
+    <ion-back-button defaultHref="login" slot="start" text="{{'CANCELREGISTRATION' | translate}}" (click)="cancelRegistration()"></ion-back-button>
   </ion-toolbar>
 </ion-header>
 
@@ -9,61 +9,6 @@
     <h3 class="ion-text-center">{{'PERSONALINFORMATION' | translate}}</h3>
     <p class="ion-text-center">{{'COMPLETEPROFILE' | translate}}</p>
   </div>
-  <ion-label>{{'PROFILEPICTURE' | translate}}</ion-label>
-  <ion-item lines="none" class="ion-item ion-no-padding">
-    <div class="profile-picture-box">
-      <div (click)="getPicture()" *ngIf="!previewImage">
-        <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42" fill="none">
-          <path d="M38.0625 19.25V29.75C38.0625 33.9815 35.7315 36.3125 31.5 36.3125H10.5C6.2685 36.3125 3.9375 33.9815 3.9375 29.75V12.25C3.9375 8.0185 6.2685 5.6875 10.5 5.6875H22.75C23.4745 5.6875 24.0625 6.2755 24.0625 7C24.0625 7.7245 23.4745 8.3125 22.75 8.3125H10.5C7.74025 8.3125 6.5625 9.49025 6.5625 12.25V28.4375L11.0076 23.9924C11.6901 23.3099 12.8099 23.3099 13.4924 23.9924L15.1375 25.6373C15.47 25.9698 16.03 25.9698 16.3625 25.6373L25.0076 16.9924C25.6901 16.3099 26.8099 16.3099 27.4924 16.9924L35.4375 24.9375V19.25C35.4375 18.5255 36.0255 17.9375 36.75 17.9375C37.4745 17.9375 38.0625 18.5255 38.0625 19.25ZM13.9878 13.5625C12.7821 13.5625 11.8125 14.5425 11.8125 15.75C11.8125 16.9575 12.7994 17.9375 14.0034 17.9375C15.2092 17.9375 16.1875 16.9575 16.1875 15.75C16.1875 14.5425 15.2109 13.5625 14.0034 13.5625H13.9878ZM29.75 10.0625H31.9375V12.25C31.9375 12.9745 32.5255 13.5625 33.25 13.5625C33.9745 13.5625 34.5625 12.9745 34.5625 12.25V10.0625H36.75C37.4745 10.0625 38.0625 9.4745 38.0625 8.75C38.0625 8.0255 37.4745 7.4375 36.75 7.4375H34.5625V5.25C34.5625 4.5255 33.9745 3.9375 33.25 3.9375C32.5255 3.9375 31.9375 4.5255 31.9375 5.25V7.4375H29.75C29.0255 7.4375 28.4375 8.0255 28.4375 8.75C28.4375 9.4745 29.0255 10.0625 29.75 10.0625Z" fill="url(#paint0_linear_100_2531)"/>
-          <defs>
-            <linearGradient id="paint0_linear_100_2531" x1="21" y1="3.9375" x2="21" y2="36.3125" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#E0030C"/>
-              <stop offset="1" stop-color="#9B0207"/>
-            </linearGradient>
-          </defs>
-        </svg>
-        <h6>{{'CHOOSEPROFILEPICTURE' | translate}}</h6>
-      </div>
-      <img class="preview-img" src="{{previewImage}}" *ngIf="previewImage" />
-    </div>
-  </ion-item>
-  <ion-button expand="block" size="small">{{'CHOOSEAVATAR' | translate}}</ion-button>
-  <ion-label>{{'USERNAME' | translate}}</ion-label>
-  <ion-item lines="none" class="ion-item ion-no-padding">
-    <fieldset class="input-item">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M8.00903 6.5C8.00903 4.294 9.80303 2.5 12.009 2.5C14.215 2.5 16.009 4.294 16.009 6.5C16.009 8.706 14.215 10.5 12.009 10.5C9.80303 10.5 8.00903 8.706 8.00903 6.5ZM14 12.5H10C5.94 12.5 4.5 15.473 4.5 18.019C4.5 20.296 5.71105 21.5 8.00305 21.5H15.9969C18.2889 21.5 19.5 20.296 19.5 18.019C19.5 15.473 18.06 12.5 14 12.5Z" fill="url(#paint0_linear_100_2412)"/>
-        <defs>
-          <linearGradient id="paint0_linear_100_2412" x1="12" y1="2.5" x2="12" y2="21.5" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#E0030C"/>
-            <stop offset="1" stop-color="#9B0207"/>
-          </linearGradient>
-        </defs>
-      </svg>
-      <ion-input [(ngModel)]="user.username" type="text" placeholder="{{'USERNAME' | translate}}"></ion-input>
-    </fieldset>
-  </ion-item>
-  <ion-label>{{'BIRTHDAY' | translate}}</ion-label>
-  <ion-item lines="none" class="ion-item ion-no-padding">
-    <fieldset class="input-item">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M20.7 9.75H3.30005C3.13405 9.75 3 9.88405 3 10.05V18C3 20 4 21 6 21H18C20 21 21 20 21 18V10.05C21 9.88405 20.866 9.75 20.7 9.75ZM8.02002 18C7.46802 18 7.01489 17.552 7.01489 17C7.01489 16.448 7.45801 16 8.01001 16H8.02002C8.57302 16 9.02002 16.448 9.02002 17C9.02002 17.552 8.57202 18 8.02002 18ZM8.02002 14C7.46802 14 7.01489 13.552 7.01489 13C7.01489 12.448 7.45801 12 8.01001 12H8.02002C8.57302 12 9.02002 12.448 9.02002 13C9.02002 13.552 8.57202 14 8.02002 14ZM12.02 18C11.468 18 11.0149 17.552 11.0149 17C11.0149 16.448 11.458 16 12.01 16H12.02C12.573 16 13.02 16.448 13.02 17C13.02 17.552 12.572 18 12.02 18ZM12.02 14C11.468 14 11.0149 13.552 11.0149 13C11.0149 12.448 11.458 12 12.01 12H12.02C12.573 12 13.02 12.448 13.02 13C13.02 13.552 12.572 14 12.02 14ZM16.02 18C15.468 18 15.0149 17.552 15.0149 17C15.0149 16.448 15.458 16 16.01 16H16.02C16.573 16 17.02 16.448 17.02 17C17.02 17.552 16.572 18 16.02 18ZM16.02 14C15.468 14 15.0149 13.552 15.0149 13C15.0149 12.448 15.458 12 16.01 12H16.02C16.573 12 17.02 12.448 17.02 13C17.02 13.552 16.572 14 16.02 14ZM21 7.5V7.94995C21 8.11595 20.866 8.25 20.7 8.25H3.30005C3.13405 8.25 3 8.11595 3 7.94995V7.5C3 5.5 4 4.5 6 4.5H7.25V3C7.25 2.59 7.59 2.25 8 2.25C8.41 2.25 8.75 2.59 8.75 3V4.5H15.25V3C15.25 2.59 15.59 2.25 16 2.25C16.41 2.25 16.75 2.59 16.75 3V4.5H18C20 4.5 21 5.5 21 7.5Z" fill="url(#paint0_linear_100_2419)"/>
-        <defs>
-          <linearGradient id="paint0_linear_100_2419" x1="12" y1="2.25" x2="12" y2="21" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#E0030C"/>
-            <stop offset="1" stop-color="#9B0207"/>
-          </linearGradient>
-        </defs>
-      </svg>
-      <ion-datetime-button datetime="datetime"></ion-datetime-button>
-
-      <ion-modal [keepContentsMounted]="true">
-        <ng-template>
-          <ion-datetime [(ngModel)]="user.birthday" max="{{maxDate}}" value="{{maxDate}}" presentation="date" id="datetime"></ion-datetime>
-        </ng-template>
-      </ion-modal>
-    </fieldset>
-  </ion-item>
   <ion-label>{{'GENDER' | translate}}</ion-label>
   <div class="gender-box">
     <div class="gender" *ngFor="let gender of genders" [ngClass]="{'active-gender': user.gender === gender.key}" (click)="selectGender(gender.key)">
@@ -124,6 +69,61 @@
       </div>
     </div>
   </div>
+  <ion-label>{{'PROFILEPICTURE' | translate}}</ion-label>
+  <ion-item lines="none" class="ion-item ion-no-padding">
+    <div class="profile-picture-box"  *ngIf="!previewImage">
+      <div (click)="getPicture()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42" fill="none">
+          <path d="M38.0625 19.25V29.75C38.0625 33.9815 35.7315 36.3125 31.5 36.3125H10.5C6.2685 36.3125 3.9375 33.9815 3.9375 29.75V12.25C3.9375 8.0185 6.2685 5.6875 10.5 5.6875H22.75C23.4745 5.6875 24.0625 6.2755 24.0625 7C24.0625 7.7245 23.4745 8.3125 22.75 8.3125H10.5C7.74025 8.3125 6.5625 9.49025 6.5625 12.25V28.4375L11.0076 23.9924C11.6901 23.3099 12.8099 23.3099 13.4924 23.9924L15.1375 25.6373C15.47 25.9698 16.03 25.9698 16.3625 25.6373L25.0076 16.9924C25.6901 16.3099 26.8099 16.3099 27.4924 16.9924L35.4375 24.9375V19.25C35.4375 18.5255 36.0255 17.9375 36.75 17.9375C37.4745 17.9375 38.0625 18.5255 38.0625 19.25ZM13.9878 13.5625C12.7821 13.5625 11.8125 14.5425 11.8125 15.75C11.8125 16.9575 12.7994 17.9375 14.0034 17.9375C15.2092 17.9375 16.1875 16.9575 16.1875 15.75C16.1875 14.5425 15.2109 13.5625 14.0034 13.5625H13.9878ZM29.75 10.0625H31.9375V12.25C31.9375 12.9745 32.5255 13.5625 33.25 13.5625C33.9745 13.5625 34.5625 12.9745 34.5625 12.25V10.0625H36.75C37.4745 10.0625 38.0625 9.4745 38.0625 8.75C38.0625 8.0255 37.4745 7.4375 36.75 7.4375H34.5625V5.25C34.5625 4.5255 33.9745 3.9375 33.25 3.9375C32.5255 3.9375 31.9375 4.5255 31.9375 5.25V7.4375H29.75C29.0255 7.4375 28.4375 8.0255 28.4375 8.75C28.4375 9.4745 29.0255 10.0625 29.75 10.0625Z" fill="url(#paint0_linear_100_2531)"/>
+          <defs>
+            <linearGradient id="paint0_linear_100_2531" x1="21" y1="3.9375" x2="21" y2="36.3125" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#E0030C"/>
+              <stop offset="1" stop-color="#9B0207"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <h6>{{'CHOOSEPROFILEPICTURE' | translate}}</h6>
+      </div>
+    </div>
+    <img (click)="getPicture()" class="preview-img" src="{{previewImage}}" *ngIf="previewImage" />
+  </ion-item>
+  <ion-button [disabled]="!user.gender" expand="block" size="small" (click)="showAvatars()">{{'CHOOSEAVATAR' | translate}}</ion-button>
+  <ion-label>{{'USERNAME' | translate}}</ion-label>
+  <ion-item lines="none" class="ion-item ion-no-padding">
+    <fieldset class="input-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M8.00903 6.5C8.00903 4.294 9.80303 2.5 12.009 2.5C14.215 2.5 16.009 4.294 16.009 6.5C16.009 8.706 14.215 10.5 12.009 10.5C9.80303 10.5 8.00903 8.706 8.00903 6.5ZM14 12.5H10C5.94 12.5 4.5 15.473 4.5 18.019C4.5 20.296 5.71105 21.5 8.00305 21.5H15.9969C18.2889 21.5 19.5 20.296 19.5 18.019C19.5 15.473 18.06 12.5 14 12.5Z" fill="url(#paint0_linear_100_2412)"/>
+        <defs>
+          <linearGradient id="paint0_linear_100_2412" x1="12" y1="2.5" x2="12" y2="21.5" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#E0030C"/>
+            <stop offset="1" stop-color="#9B0207"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <ion-input [(ngModel)]="user.username" type="text" placeholder="{{'USERNAME' | translate}}"></ion-input>
+    </fieldset>
+  </ion-item>
+  <ion-label>{{'BIRTHDAY' | translate}}</ion-label>
+  <ion-item lines="none" class="ion-item ion-no-padding">
+    <fieldset class="input-item">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M20.7 9.75H3.30005C3.13405 9.75 3 9.88405 3 10.05V18C3 20 4 21 6 21H18C20 21 21 20 21 18V10.05C21 9.88405 20.866 9.75 20.7 9.75ZM8.02002 18C7.46802 18 7.01489 17.552 7.01489 17C7.01489 16.448 7.45801 16 8.01001 16H8.02002C8.57302 16 9.02002 16.448 9.02002 17C9.02002 17.552 8.57202 18 8.02002 18ZM8.02002 14C7.46802 14 7.01489 13.552 7.01489 13C7.01489 12.448 7.45801 12 8.01001 12H8.02002C8.57302 12 9.02002 12.448 9.02002 13C9.02002 13.552 8.57202 14 8.02002 14ZM12.02 18C11.468 18 11.0149 17.552 11.0149 17C11.0149 16.448 11.458 16 12.01 16H12.02C12.573 16 13.02 16.448 13.02 17C13.02 17.552 12.572 18 12.02 18ZM12.02 14C11.468 14 11.0149 13.552 11.0149 13C11.0149 12.448 11.458 12 12.01 12H12.02C12.573 12 13.02 12.448 13.02 13C13.02 13.552 12.572 14 12.02 14ZM16.02 18C15.468 18 15.0149 17.552 15.0149 17C15.0149 16.448 15.458 16 16.01 16H16.02C16.573 16 17.02 16.448 17.02 17C17.02 17.552 16.572 18 16.02 18ZM16.02 14C15.468 14 15.0149 13.552 15.0149 13C15.0149 12.448 15.458 12 16.01 12H16.02C16.573 12 17.02 12.448 17.02 13C17.02 13.552 16.572 14 16.02 14ZM21 7.5V7.94995C21 8.11595 20.866 8.25 20.7 8.25H3.30005C3.13405 8.25 3 8.11595 3 7.94995V7.5C3 5.5 4 4.5 6 4.5H7.25V3C7.25 2.59 7.59 2.25 8 2.25C8.41 2.25 8.75 2.59 8.75 3V4.5H15.25V3C15.25 2.59 15.59 2.25 16 2.25C16.41 2.25 16.75 2.59 16.75 3V4.5H18C20 4.5 21 5.5 21 7.5Z" fill="url(#paint0_linear_100_2419)"/>
+        <defs>
+          <linearGradient id="paint0_linear_100_2419" x1="12" y1="2.25" x2="12" y2="21" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#E0030C"/>
+            <stop offset="1" stop-color="#9B0207"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime [preferWheel]="true" [(ngModel)]="user.birthday" max="{{maxDate}}" value="{{maxDate}}" presentation="date" id="datetime"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </fieldset>
+  </ion-item>
   <ion-label>{{'GENDERSEARCHFOR' | translate}}</ion-label>
   <div class="gender-box">
     <div class="gender" *ngFor="let gender of genders" [ngClass]="{'active-gender': user.genderLookingFor?.includes(gender.key)}" (click)="selectGenderFor(gender.key)">

@@ -1,16 +1,18 @@
 <ion-tabs #startTabs>
-  <ion-tab-bar slot="bottom" class="tabs-container">
+  <ion-tab-bar slot="bottom" class="tabs-container" [translucent]="true">
     <ion-tab-button tab="home">
       <ion-icon name="home-outline"></ion-icon>
     </ion-tab-button>
     <ion-tab-button tab="discover">
       <ion-icon name="compass-outline"></ion-icon>
     </ion-tab-button>
-    <ion-tab-button tab="friendslist">
+    <ion-tab-button tab="friends">
       <ion-icon name="people-outline"></ion-icon>
+      <ion-badge *ngIf="user?._friendRequests?.length > 0">{{user._friendRequests.length}}</ion-badge>
     </ion-tab-button>
     <ion-tab-button tab="chats">
       <ion-icon name="chatbubbles-outline"></ion-icon>
+      <ion-badge *ngIf="user?._badges?.chats > 0">{{user._badges.chats}}</ion-badge>
     </ion-tab-button>
     <ion-tab-button tab="menu">
       <ion-icon name="settings-outline"></ion-icon>

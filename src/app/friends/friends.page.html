@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{'FRIENDS' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item (click)="showSentRequests()">
+    <p>{{'FRIENDREQUEST' | translate}}</p>
+    <ion-badge slot="end">{{user?._friendRequests?.length || 0}}</ion-badge>
+  </ion-item>
+  <ion-item (click)="showFriendRequests()">
+    <p>{{'SENTREQUEST' | translate}}</p>
+    <ion-badge slot="end">{{user?._sentFriendRequests?.length || 0}}</ion-badge>
+  </ion-item>
+  <ion-item (click)="showBlockedUser()">
+    <p>{{'BLOCKEDUSER' | translate}}</p>
+    <ion-badge slot="end">{{user?._blockList?.length || 0}}</ion-badge>
+  </ion-item>
+  <h4 class="ion-padding-start">{{'ALLFRIENDS' | translate}} ({{user?._friendsList?.length || 0}})</h4>
+  <app-list *ngIf="user" type="friends" [userIds]="user._friendsList"></app-list>
+</ion-content>

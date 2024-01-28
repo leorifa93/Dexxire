@@ -3,7 +3,7 @@
     <ion-title>{{'SELECTCITY' | translate}}</ion-title>
     <ion-icon slot="end" name="close-outline" (click)="closeModal()"></ion-icon>
   </ion-toolbar>
-  <ion-searchbar [(ngModel)]="autocomplete.input" (ionChange)="updateSearchResults()" (search)="updateSearchResults()" placeholder="{{'SEARCHPLACE' | translate}}"></ion-searchbar>
+  <ion-searchbar #searchInput [(ngModel)]="autocomplete.input" (ionInput)="updateSearchResults()" (search)="updateSearchResults()" placeholder="{{'SEARCHPLACE' | translate}}"></ion-searchbar>
 </ion-header>
 
 <ion-content>

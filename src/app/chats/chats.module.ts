@@ -7,13 +7,19 @@ import { IonicModule } from '@ionic/angular';
 import { ChatsPageRoutingModule } from './chats-routing.module';
 
 import { ChatsPage } from './chats.page';
+import {TranslateModule} from "@ngx-translate/core";
+import {LazyLoadImageModule} from "ng-lazyload-image";
+import {TimeAgoModule} from "../_shared/pipes/time-ago.module";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ChatsPageRoutingModule
+    ChatsPageRoutingModule,
+    TranslateModule,
+    LazyLoadImageModule,
+    TimeAgoModule
   ],
   declarations: [ChatsPage]
 })

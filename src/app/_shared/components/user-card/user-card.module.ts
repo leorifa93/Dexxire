@@ -6,16 +6,18 @@ import {VipBannerModule} from "../vip-banner/vip-banner.module";
 import {AppModule} from "../../../app.module";
 import {AgePipeModule} from "../../pipes/age.pipe.module";
 import {TranslateModule} from "@ngx-translate/core";
+import {IonicModule} from "@ionic/angular";
 
 
 @NgModule({
-  imports: [
-    CommonModule,
-    LazyLoadImageModule,
-    VipBannerModule,
-    AgePipeModule,
-    TranslateModule
-  ],
+    imports: [
+        CommonModule,
+        LazyLoadImageModule,
+        VipBannerModule,
+        AgePipeModule,
+        TranslateModule,
+        IonicModule
+    ],
   declarations: [
     UserCardComponent,
   ],

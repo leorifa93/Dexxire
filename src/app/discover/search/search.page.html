@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="/start-tabs/home" icon="chevron-back-outline" text="" class="nav-button" (click)="goBack()">
+    </ion-back-button>
+    <ion-button class="nav-button" slot="end" (click)="showLocations()">
+      <ion-icon name="location-outline"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar (ionChange)="onSearch()" [(ngModel)]="searchString" class="ion-no-padding ion-no-margin"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <h1 class="ion-margin" *ngIf="state === 'location'">{{cityTitle}}</h1>
+  <div class="category-container" *ngIf="state === 'location'">
+    <ion-item lines="none" (click)="toggleCategories()">
+      <ion-icon name="chevron-down-outline" slot="start" *ngIf="showCategories"></ion-icon>
+      <ion-icon name="chevron-up-outline" slot="start" *ngIf="!showCategories"></ion-icon>
+      <h4>{{'CATEGORIES' | translate}}</h4>
+    </ion-item>
+    <div *ngIf="showCategories">
+      <ion-chip *ngFor="let category of categories" [ngClass]="{'active': filter.categoryFilter?.includes(category.key)}" (click)="toggleCategory(category.key)">{{category.value | translate}}</ion-chip>
+    </div>
+  </div>
+  <div id="container">
+    <ion-grid>
+      <ion-row class="cards-container" *ngIf="!loading">
+        <ion-col [sizeMd]="standardUser.membership === 3 ? 6 : 3"
+                 [sizeXs]="standardUser.membership === 3 ? 12 : 6" [sizeLg]="standardUser.membership === 3 ? 4 : 2"
+                 *ngFor="let standardUser of (state === 'search' ? searchedFriends : users)">
+          <div class="swipe-card">
+            <div class="card-container" [ngClass]="{'gold-banner': standardUser.membership === 2, 'vip-banner': standardUser.membership === 3}">
+              <app-user-card [loading]="loading" [me]="user" [user]="standardUser" (click)="showProfile(standardUser)"></app-user-card>
+            </div>
+            <app-swipe-controls [user]="standardUser"></app-swipe-controls>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row class="cards-container" *ngIf="loading">
+        <ion-col [sizeMd]="3"
+                 [sizeXs]="6" [sizeLg]="2" *ngFor="let i of [1,2,3,4,5,6]">
+          <div class="swipe-card">
+            <div class="card-container">
+              <app-user-card *ngIf="user" [loading]="loading" [me]="user" [user]="user"></app-user-card>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <ion-infinite-scroll (ionInfinite)="getNextPage($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more Feeds...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

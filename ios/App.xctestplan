@@ -1,0 +1,26 @@
+{
+  "configurations" : [
+    {
+      "id" : "41413F1F-FC7E-42CA-BAF4-0CC65BE291E5",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "locationScenario" : {
+      "identifier" : "..\/..\/..\/..\/..\/..\/Downloads\/gpxgenerator_path (1).gpx"
+    },
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:App.xcodeproj",
+      "identifier" : "504EC3031FED79650016851F",
+      "name" : "App"
+    }
+  },
+  "testTargets" : [
+
+  ],
+  "version" : 1
+}

@@ -39,5 +39,11 @@ export enum Languages {
   Japanese = 7,
   Portuguese = 8,
   Russian = 9,
-  Spanish = 10
+  Spanish = 10,
+  Italy = 11
+}
+
+export enum MembershipPrice {
+  Gold = 120,
+  VIP = 320
 }

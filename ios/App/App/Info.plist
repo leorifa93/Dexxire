@@ -2,10 +2,31 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleAlternateIcons</key>
+	<dict>
+		<key>standard</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>standard-icon</string>
+			</array>
+			<key>UIPrerenderedIcon</key>
+			<true/>
+		</dict>
+		<key>vip</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>vip-icon</string>
+			</array>
+			<key>UIPrerenderedIcon</key>
+			<true/>
+		</dict>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>dexxire</string>
+	<string>Dexxire</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -18,14 +39,39 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.750696506520-e4vn1idu81b2cl2fsfj47ulhlcnn6ft0</string>
+			</array>
+		</dict>
+		        <dict>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <string>fb907565230964807</string>
+                </array>
+            </dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>to add a profile picture</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need this information so that you appear in the search radius</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Our application needs permission to write photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>its neccessary to have a profile picture</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -49,5 +95,29 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+    <key>FacebookAppID</key>
+    <string>907565230964807</string>
+    <key>FacebookClientToken</key>
+    <string>2960203709a6eb7dd5624d646d4a5564</string>
+    <key>FacebookDisplayName</key>
+    <string>Dexxire</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fbapi20130214</string>
+        <string>fbapi20130410</string>
+        <string>fbapi20130702</string>
+        <string>fbapi20131010</string>
+        <string>fbapi20131219</string>
+        <string>fbapi20140410</string>
+        <string>fbapi20140116</string>
+        <string>fbapi20150313</string>
+        <string>fbapi20150629</string>
+        <string>fbapi20160328</string>
+        <string>fbauth</string>
+        <string>fb-messenger-share-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+    </array>
 </dict>
 </plist>

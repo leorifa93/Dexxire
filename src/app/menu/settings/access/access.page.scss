@@ -1,0 +1,15 @@
+ion-header, ion-toolbar, ion-content {
+  --background: #F4F4F6;
+
+  .option {
+    border-radius: 16px;
+    background: var(--main-white, #FFF);
+    margin-bottom: 1rem;
+  }
+
+  .input-item {
+    --padding-start: 10px !important;
+    --background: #fff;
+    min-height: unset;
+  }
+}

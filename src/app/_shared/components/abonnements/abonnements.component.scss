@@ -1,0 +1,51 @@
+.subscriptions-container {
+  margin-top: 1rem;
+
+  .subscription {
+    height: 400px;
+    width: 100%;
+    border-radius: 30.46px;
+    border: 2.284px solid #000;
+
+    &.gold {
+      border: 2.284px solid var(--S2, #F90);
+    }
+
+    &.vip {
+      border: 2.284px solid #E0030C;
+    }
+
+    .upgrade-btn {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      margin: auto;
+      right: 0;
+      width: 60%;
+
+      &.gold {
+        --background: var(--S2, linear-gradient(94deg, #F90 0.48%, #FFDF8D 34.7%, #D19909 64.37%, #FFE767 95.43%));
+      }
+    }
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 22.845px;
+  }
+
+  h1 {
+    color: #000B33;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 60.31px;
+    letter-spacing: -0.381px;
+  }
+
+  p {
+    font-size: 0.7em;
+  }
+}

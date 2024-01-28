@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button class="nav-button" (click)="goBack()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <g clip-path="url(#clip0_100_2654)">
+          <path d="M15 6L9 12L15 18" stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_100_2654">
+            <rect width="24" height="24" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </ion-button>
+    <ion-title>{{'SUBSCRIPTIONS' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <h3 class="ion-text-center">{{'CHOOSESUBSCRIPTION' | translate}}</h3>
+  <h6 class="ion-text-center">{{'SELECTMEMBERTYPE' | translate}}</h6>
+  <app-abonnements *ngIf="user" [me]="user" (onBuy)="subscribe($event)"></app-abonnements>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" (click)="showShop()">{{'BUYCOINS' | translate}}</ion-button>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,43 @@
+ion-header {
+  ion-toolbar {
+    --background: transparent;
+  }
+
+  ion-title {
+    --color: #fff;
+  }
+
+}
+
+ion-content {
+  --background: var(--S1, linear-gradient(180deg, #E0030C 0%, #9B0207 100%));
+
+  .messages-list {
+    margin-top: 1rem;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background: #fff;
+    min-height: 85%;
+
+    .chat {
+      ion-avatar {
+        width: 60px;
+        height: 60px;
+      }
+
+      .not-seen-pointer {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+      }
+    }
+  }
+}
+
+ion-searchbar {
+  --background: #fff;
+}
+
+p {
+  //margin: 0;
+}

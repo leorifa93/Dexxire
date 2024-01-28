@@ -1,0 +1,24 @@
+.discover {
+  border: 1.5px solid var(--S1, rgba(224, 3, 12, 0.2)) !important;
+}
+
+.user-container {
+  margin-top: 1rem;
+  width: 100vw;
+  height: 210px;
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+
+  .slider {
+    white-space: nowrap;
+    //margin-top: -30px;
+  }
+}
+
+.map-container {
+  ion-buttons {
+    margin-right: 20px;
+    margin-bottom: 10px;
+  }
+}

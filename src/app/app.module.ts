@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {RouteReuseStrategy} from '@angular/router';
 
 import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
-import {initializeAuth, indexedDBLocalPersistence} from "firebase/auth";
+import {initializeAuth, indexedDBLocalPersistence, getAuth, connectAuthEmulator} from "firebase/auth";
 import {initializeApp} from "firebase/app";
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -15,6 +15,8 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {IonicStorageModule} from "@ionic/storage-angular";
 import {CustomSplashComponent} from "./_shared/components/custom-splash/custom-splash.component";
+import {getFirestore, connectFirestoreEmulator} from "firebase/firestore";
+import {connectStorageEmulator, getStorage} from "firebase/storage";
 
 const app = initializeApp(environment.firebaseConfig);
 
@@ -24,6 +26,12 @@ if (Capacitor.isNativePlatform()) {
   });
 }
 
+if (!environment.production) {
+  const db = getFirestore();
+  connectFirestoreEmulator(db, '127.0.0.1', 8080)
+  connectAuthEmulator(getAuth(), 'http://127.0.0.1:9099');
+  connectStorageEmulator(getStorage(), '127.0.0.1', 9199);
+}
 
 @NgModule({
   declarations: [AppComponent, CustomSplashComponent],

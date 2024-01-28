@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button class="nav-button" (click)="closeModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <g clip-path="url(#clip0_100_2654)">
+          <path d="M15 6L9 12L15 18" stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_100_2654">
+            <rect width="24" height="24" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </ion-button>
+    <ion-title>{{'FILTER' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div>
+    <ion-label>{{'CATEGORIES' | translate}}</ion-label>
+    <div>
+      <ion-chip *ngFor="let category of categories" [ngClass]="{'active': categoryFilter?.includes(category.key)}" (click)="toggleCategory(category.key)">{{category.value | translate}}</ion-chip>
+    </div>
+    <ion-label>{{'AGE' | translate}}</ion-label>
+    <ion-item class="ion-item" lines="none">
+      <p slot="start">{{ageRange.lower}}</p>
+      <ion-range [min]="18" [max]="80" [dualKnobs]="true" [value]="ageRange" (ionChange)="setAgeRange($event)"></ion-range>
+      <p slot="end">{{ageRange.upper}}</p>
+    </ion-item>
+    <ion-label>{{'DISTANCE' | translate}}</ion-label>
+    <ion-item class="ion-item" lines="none">
+      <p slot="start">{{type === 'world' ? perimeterValue : perimeterDiscoverValue}} {{me._settings.units.distanceType === 'Mi' ? 'Mi' : 'Km'}}</p>
+      <ion-range *ngIf="type === 'world'" labelPlacement="end" [min]="1" [max]="perimeterMax" [value]="perimeterValue" (ionChange)="setDistance($event)"></ion-range>
+      <ion-range *ngIf="type === 'discover'" labelPlacement="end" [min]="1" [max]="perimeterDiscoverMax" [value]="perimeterDiscoverValue" (ionChange)="setDistance($event)"></ion-range>
+    </ion-item>
+    <ion-label>{{'CURRENTLOCATION' | translate}}</ion-label>
+    <div class="map-container">
+      <div #mapElement class="map"></div>
+      <ion-buttons>
+        <ion-button class="nav-button" (click)="zoomIn()"><ion-icon name="remove-outline"></ion-icon></ion-button>
+        <ion-button class="nav-button" (click)="zoomOut()"><ion-icon name="add-outline"></ion-icon></ion-button>
+        <ion-button class="nav-button" (click)="showLocations()"><ion-icon name="search-outline"></ion-icon></ion-button>
+        <ion-button class="nav-button" (click)="setCurrentLocation()"><ion-icon name="locate-outline"></ion-icon></ion-button>
+      </ion-buttons>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" (click)="apply()">{{'APPLY' | translate}}</ion-button>
+  </ion-toolbar>
+</ion-footer>

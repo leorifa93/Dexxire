@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button class="nav-button" (click)="goBack()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <g clip-path="url(#clip0_100_2654)">
+          <path d="M15 6L9 12L15 18" stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_100_2654">
+            <rect width="24" height="24" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </ion-button>
+    <ion-title>{{'CHOOSELANGUAGE' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-item class="options" lines="none" *ngFor="let language of languages">
+    <ion-thumbnail slot="start">
+      <img [src]="language.flag" />
+    </ion-thumbnail>
+    <p>{{language.key | translate}}</p>
+    <ion-checkbox slot="end" [checked]="language.isChecked" (ionChange)="changeLanguage(language.key)"></ion-checkbox>
+  </ion-item>
+</ion-content>

@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button class="nav-button" (click)="goBack()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <g clip-path="url(#clip0_100_2654)">
+          <path d="M15 6L9 12L15 18" stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_100_2654">
+            <rect width="24" height="24" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </ion-button>
+    <ion-title>{{'ACCESS' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="no-results-box" *ngIf="!showAccess">
+    <h4 class="ion-text-center">{{'NOACCESSCHANGEAVAILABLE' | translate}}</h4>
+  </div>
+  <div *ngIf="showAccess && email">
+    <form [formGroup]="accessData">
+      <ion-input class="input-item" type="text" formControlName="email"></ion-input>
+      <ion-button expand="block" [disabled]="accessData.invalid" (click)="updateUserEmail(accessData)">{{'CHANGEEMAIL' | translate}}</ion-button>
+    </form>
+    <ion-button expand="block" (click)="resetPassword()">{{'CHANGEPASSWORD' | translate}}</ion-button>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <a class="ion-text-center" style="display: block; font-size: 1rem" (click)="removeAcc()">{{'REMOVEACCOUNT' | translate}}</a>
+  </ion-toolbar>
+</ion-footer>

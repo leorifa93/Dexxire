@@ -43,6 +43,24 @@ const routes: Routes = [
             loadChildren: () => import('./../profile/profile.module').then(m => m.ProfilePageModule)
           }
         ]
+      },
+      {
+        path: 'discover',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./../discover/discover.module').then(m => m.DiscoverPageModule)
+          }
+        ]
+      },
+      {
+        path: 'friends',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./../friends/friends.module').then(m => m.FriendsPageModule)
+          }
+        ]
       }
     ]
   }

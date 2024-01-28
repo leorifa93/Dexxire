@@ -4,6 +4,7 @@ import {environment} from "../../../environments/environment";
 import {LocalStorageService} from "./local-storage.service";
 import {Geolocation} from '@capacitor/geolocation';
 import {Geohash, geohashForLocation} from "geofire-common";
+import {Capacitor} from "@capacitor/core";
 
 declare var google;
 
@@ -25,20 +26,38 @@ export class LocationService {
     const user = await this.localStorage.getUser();
 
     return new Promise<{lat: number, lng: number, hash: Geohash}>((resolve) => {
-      Geolocation.getCurrentPosition().then((res) => {
-        resolve({
-          lat: res.coords.latitude,
-          lng: res.coords.longitude,
-          hash: geohashForLocation([res.coords.latitude, res.coords.longitude])
+
+      if (Capacitor.isNativePlatform()) {
+        Geolocation.getCurrentPosition().then((res) => {
+          resolve({
+            lat: res.coords.latitude,
+            lng: res.coords.longitude,
+            hash: geohashForLocation([res.coords.latitude, res.coords.longitude])
+          });
+        }).catch(async (err) => {
+          const latLang = await this.getGeoLatLng(user.location.placeId);
+          resolve({
+            lat: latLang.lat,
+            lng: latLang.lng,
+            hash: geohashForLocation([latLang.lat, latLang.lng])
+          });
         });
-      }).catch(async (err) => {
-        const latLang = await this.getGeoLatLng(user.location.placeId);
-        resolve({
-          lat: latLang.lat,
-          lng: latLang.lng,
-          hash: geohashForLocation([latLang.lat, latLang.lng])
+      } else {
+        navigator.geolocation.getCurrentPosition((res) => {
+          resolve({
+            lat: res.coords.latitude,
+            lng: res.coords.longitude,
+            hash: geohashForLocation([res.coords.latitude, res.coords.longitude])
+          });
+        }, async (err) => {
+          const latLang = await this.getGeoLatLng(user.location.placeId);
+          resolve({
+            lat: latLang.lat,
+            lng: latLang.lng,
+            hash: geohashForLocation([latLang.lat, latLang.lng])
+          });
         });
-      });
+      }
     });
   }
   private formatAddress(googleAddr: any): any {

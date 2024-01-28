@@ -33,7 +33,45 @@ const routes: Routes = [
   },
   {
     path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+    children: [
+      {
+        path: ':userId',
+        loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+      },
+      {
+
+        path: ':lang/:country/:federaleState/:city/:category/:userId',
+        loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+      }
+    ]
+  },
+  {
+    path: 'search',
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./discover/search/search.module').then( m => m.SearchPageModule)
+
+      },
+      {
+        path: ':lang/:country/:federaleState/:city/:category',
+        loadChildren: () => import('./discover/search/search.module').then( m => m.SearchPageModule)
+
+      }
+    ]
+  },
+  {
+    path: 'notifications',
+    loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule)
+  },
+  {
+    path: 'chat',
+    children: [
+      {
+        path: ':userId',
+        loadChildren: () => import('./chats/chat/chat.module').then( m => m.ChatPageModule)
+      }
+    ]
   },
 ];
 

@@ -7,6 +7,7 @@ export interface IUser {
   genderLookingFor: number[];
 
   birthday: number;
+  age: number;
   categories: string[];
   languages: string[];
   origin: {
@@ -16,16 +17,37 @@ export interface IUser {
   };
   location: any;
   membership: Membership;
+  fakeAge?: number;
+  isVerified?: boolean;
+
+  membershipExpiredAt?: string;
+  _settings: {
+    units: {
+      lengthType: string,
+      distanceType: string,
+      weightType: string
+    },
+    notifications: {
+      messages: boolean,
+      friendRequests: boolean,
+      likes: boolean
+    },
+    currentLang: string
+  }
+
+  _badges?: {
+    likes?: number,
+    chats?: number
+  };
   currentLocation?: any;
 
   status?: number;
   lastLogin?: number;
 
-  profilePictures?: { uploadAt: number, original: string, thumbnails?: { small: string, medium: string, big: string } };
-  publicAlbum?: { uploadAt: number, original: string, thumbnails?: { small: string, medium: string, big: string } }[];
+  profilePictures?: { uploadAt: number, original: string, thumbnails?: { small: string, medium: string, big: string }, approved?: boolean };
+  publicAlbum?: { uploadAt: number, original: string, thumbnails?: { small: string, medium: string, big: string }, approved?: boolean }[];
   privateAlbum?: { uploadAt: number, original: string, thumbnails?: { small: string, medium: string, big: string } }[];
   likesCount?: number;
-
   details?: {
     description?: string,
     languages?: number[],
@@ -33,20 +55,31 @@ export interface IUser {
     nationality?: {code: string, country: string},
     height?: {cm: number, inch: number},
     weight?: {kg: number, lbs: number},
-    chestCup?: {cm: number, inch: number},
+    chestCup?: string,
     chest?: {cm: number, inch: number},
     waist?: {cm: number, inch: number},
     hips?: {cm: number, inch: number},
     eyeColor?: string,
     hairColor?: string,
-    hairLength?: string
+    hairLength?: string,
+    customAge?: number
   };
   contacts?: {
-    phoneNumber?: {countryCode: string, number: number},
-    whatsApp: {countryCode: string, number: number},
+    phoneNumber?: {countryCode?: string, number?: string},
+    whatsApp?: {countryCode?: string, number?: string},
   }
   socialMedia?: {
-    instagram: string;
-    tikTok: string;
+    instagram?: string;
+    tikTok?: string;
   }
+
+  lastBoostAt?: number;
+  availableCoins?: number;
+  _sentFriendRequests?: string[];
+  _friendRequests?: string[];
+  _friendsList?: string[];
+  _deviceIds?: string[];
+  _blockList?: string[];
+  _gotBlockedFrom?: string[];
+  _privateGalleryAccessUsers?: string[];
 }

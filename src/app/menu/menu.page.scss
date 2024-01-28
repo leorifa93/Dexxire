@@ -1,0 +1,95 @@
+ion-content {
+  --padding-top: 2rem;
+  --background: #F4F4F6;
+
+  .container {
+    background: #fff;
+    margin-bottom: 1rem;
+  }
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+
+h6 {
+  color: var(--main-black, #22172A);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.edit-info {
+  margin-top: 1rem;
+  height: 64px;
+  border-radius: 16px;
+  background: var(--S1, linear-gradient(180deg, #E0030C 0%, #9B0207 100%));
+
+  .info {
+    height: 64px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+}
+
+.edit-info::part(native) {
+  background: none;
+}
+
+.percentage {
+  fill: #666;
+  font-family: sans-serif;
+  font-size: 0.5em;
+  text-anchor: middle;
+}
+
+.circle.white {
+  stroke: #FFF;
+  stroke-width: 2px;
+}
+
+.circle-bg-small {
+  fill: #fff;
+  stroke: #E0030C;
+  stroke-width: 6px;
+}
+
+.edit-btn::part(native) {
+  border-radius: 32px;
+  background: #FFF;
+  color: #E0030C;
+}
+
+p {
+  color: #fff;
+  margin: 0;
+}
+
+.setting-item {
+  align-items: end;
+  height: 64px;
+  border-radius: 32px;
+  background: #FFF;
+  margin-bottom: 1rem;
+  box-shadow: 0px 4px 54px 0px rgba(0, 0, 0, 0.15);
+
+  p {
+    color: var(--main-black, #22172A);
+  }
+}
+
+.setting-item::part(native) {
+  height: 64px;
+  align-items: center;
+}
+
+ion-content::part(scroll) {
+  background: #fff;
+}

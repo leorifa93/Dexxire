@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { getStorage, ref, uploadString, getDownloadURL, listAll } from "firebase/storage";
 import {ToastController} from "@ionic/angular";
 import {TranslateService} from "@ngx-translate/core";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +11,13 @@ export class UploadService {
 
   constructor(private toastCtrl: ToastController, private translateService: TranslateService) { }
 
-  async uploadFile(base64: string, name: string) {
+  async uploadFile(base64: string, name: string): Promise<{ uploadAt: number, original: string, thumbnails?: { small: string, medium: string, big: string }, approved?: boolean }> {
     const toast = await this.toastCtrl.create({message: this.translateService.instant('UPLOADING') + '...'});
     const storageRef = ref(getStorage(), 'Dexxire/' + name);
 
     toast.present();
 
-    return new Promise((resolve) => {
+    return new Promise<{ uploadAt: number, original: string, thumbnails?: { small: string, medium: string, big: string }, approved?: boolean }>((resolve) => {
       uploadString(storageRef, base64, 'data_url').then(async () => {
         let thumbnailsPath: any = 'Dexxire/' + name;
         thumbnailsPath = thumbnailsPath.split("/");
@@ -30,14 +31,13 @@ export class UploadService {
         const interval = setInterval(() => {
           listAll(listRef).then(async (res) => {
             if (res.items.length > 0) {
+              pictures.thumbnails.small = await getDownloadURL(res.items[0]);
+              pictures.thumbnails.medium = await getDownloadURL(res.items[1]);
+              pictures.thumbnails.big = await getDownloadURL(res.items[2]);
+
               clearInterval(interval);
+              toast.dismiss().then(() => resolve(pictures));
             }
-
-            pictures.thumbnails.small = await getDownloadURL(res.items[0]);
-            pictures.thumbnails.medium = await getDownloadURL(res.items[1]);
-            pictures.thumbnails.big = await getDownloadURL(res.items[2]);
-
-            toast.dismiss().then(() => resolve(pictures));
           })
         }, 500);
       })
@@ -45,4 +45,16 @@ export class UploadService {
   }
 
 
+  listFolder(refPath: string) {
+    const listRef = ref(getStorage(), refPath);
+    const subscriber = new BehaviorSubject<string>(null);
+
+    listAll(listRef).then(async (res) => {
+      for (let item of res.items) {
+        subscriber.next(await getDownloadURL(item))
+      }
+    });
+
+    return subscriber;
+  }
 }

@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-back-button defaultHref="/start-tabs/home" icon="chevron-back-outline" text="" class="nav-button" (click)="goBack()">
+    </ion-back-button>
+    <ion-title>{{'LIKES' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item *ngFor="let like of likes" (click)="showProfile(like)" [ngClass]="{'not-seen' : !like.seen}">
+    <ion-avatar slot="start">
+      <img [lazyLoad]="like.sentFrom.profilePictures.thumbnails.small" errorImage="assets/images/no-image.png" [defaultImage]="'assets/images/loading.svg'" />
+    </ion-avatar>
+    <ion-label>
+      <h3>{{like.sentFrom.username}}</h3>
+      <p>{{'SENTYOUALIKE' | translate}}</p>
+    </ion-label>
+    <p style="font-size: 0.7rem">{{like.createdAt | timeAgo}}</p>
+  </ion-item>
+</ion-content>

@@ -1,0 +1,21 @@
+<ion-grid>
+  <ion-row class="cards-container" *ngIf="!loading">
+    <ion-col size-lg="3" size-md="4" size-xs="6" *ngFor="let friend of users" [hidden]="user.id === friend.id">
+      <div class="swipe-card">
+        <div class="card-container" [ngClass]="{'gold-banner': friend.membership === 2, 'vip-banner': friend.membership === 3}">
+          <app-user-card (click)="showProfile(friend)" [user]="friend" [me]="user"></app-user-card>
+        </div>
+        <app-swipe-controls [user]="friend"></app-swipe-controls>
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="loading">
+    <ion-col size-lg="3" size-md="4" size-xs="6" *ngFor="let i of [1,2,3,4]">
+      <div class="user-card">
+        <ion-skeleton-text [animated]="true" class="skeleton-img"></ion-skeleton-text>
+        <div class="user-details"></div>
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-grid>

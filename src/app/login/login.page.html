@@ -35,12 +35,13 @@
               </linearGradient>
             </defs>
           </svg>
-          <ion-input formControlName="password" type="password" placeholder="{{'PASSWORD' | translate}}"></ion-input>
+          <ion-input id="password" formControlName="password" type="password" placeholder="{{'PASSWORD' | translate}}"></ion-input>
+          <ion-icon (click)="togglePassword()" slot="end" name="eye-outline"></ion-icon>
         </fieldset>
       </ion-item>
       <ion-text [color]="'danger'" *ngIf="isPasswordWrong" style="padding-left: 20px; padding-top: 5px">E-Mail oder Passwort ist falsch!</ion-text>
       <p class="forget-text ion-text-right"><a (click)="changeState('forgotPassword')">{{'FORGOTPASSWORD' | translate}}?</a></p>
-      <ion-button [disabled]="formData.invalid" size="small"  expand="block" (click)="login(formData)">
+      <ion-button [disabled]="formData.invalid" size="medium"  expand="block" (click)="login(formData)">
         <p *ngIf="!isLoggingIn">{{'LOGIN' | translate}}</p>
         <ion-spinner *ngIf="isLoggingIn"></ion-spinner>
       </ion-button>
@@ -50,7 +51,7 @@
         <div class="div-line"></div>
       </div>
       <div class="login-box">
-        <ion-button color="secondary" class="login-btn">
+        <ion-button class="login-btn" (click)="createOrSignInViaFacebook()">
           <svg preserveAspectRatio="xMidYMin" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M22 12.0002C22 16.9902 18.34 21.1302 13.56 21.8802V15.0002H16L16.45 12.0002H13.56V10.1202C13.56 9.33022 13.95 8.56023 15.19 8.56023H16.45V6.19023C16.45 6.19023 15.31 5.99023 14.21 5.99023C11.93 5.99023 10.43 7.28022 10.43 9.79022V11.9902H8.00999V14.9902H10.43V21.8702C5.64998 21.1202 1.98999 16.9802 1.98999 11.9902C1.98999 6.47023 6.47 1.99023 11.99 1.99023C17.51 1.99023 21.99 6.47023 21.99 11.9902" fill="url(#paint0_linear_100_3034)"/>
             <defs>
@@ -61,7 +62,7 @@
             </defs>
           </svg>
         </ion-button>
-        <ion-button color="secondary" class="login-btn" (click)="createOrSignInUserViaGoogle(formRegistrationData)">
+        <ion-button class="login-btn" (click)="createOrSignInUserViaGoogle()">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M21.5 12.23C21.5 15.27 20.42 17.84 18.54 19.58C16.9 21.1 14.65 22 11.96 22C8.07002 22 4.70001 19.75 3.07001 16.48C2.39001 15.13 2 13.61 2 12C2 10.39 2.39001 8.86999 3.07001 7.51999C4.71001 4.24999 8.07002 2 11.96 2C14.65 2 16.9 2.98999 18.62 4.60999L15.78 7.45999C14.74 6.46999 13.43 5.95999 11.96 5.95999C9.36002 5.95999 7.16 7.72 6.37 10.09C6.17 10.69 6.04999 11.33 6.04999 12C6.04999 12.67 6.16 13.31 6.37 13.91C7.16 16.29 9.36002 18.04 11.96 18.04C13.3 18.04 14.44 17.67 15.34 17.07C16.39 16.36 17.09 15.32 17.33 14.09H11.96V10.33H21.34C21.44 10.94 21.5 11.56 21.5 12.22V12.23Z" fill="url(#paint0_linear_100_3037)"/>
             <defs>
@@ -72,7 +73,7 @@
             </defs>
           </svg>
         </ion-button>
-        <ion-button color="secondary" class="login-btn">
+        <ion-button *ngIf="showAppleLogin" class="login-btn" (click)="createOrSignInViaApple()">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M16.54 12.01C16.54 12.09 16.4 14.47 19 15.7C18.51 17.18 16.85 20.47 14.91 20.49C13.79 20.49 13.13 19.77 11.87 19.77C10.61 19.77 9.85001 20.47 8.85001 20.49C6.93001 20.55 5.08999 16.93 4.57999 15.46C4.19999 14.34 4.01001 13.25 4.01001 12.2C4.01001 8.64001 6.37001 6.88001 8.60001 6.85001C9.68001 6.85001 11.05 7.64001 11.64 7.64001C12.21 7.64001 13.75 6.7 15.17 6.81C16.66 6.93 17.8 7.52001 18.55 8.60001C17.21 9.42001 16.55 10.53 16.56 12.01H16.54ZM14.31 5.41C15.41 4.11 15.31 2.92 15.27 2.5C14.3 2.56 13.18 3.15999 12.54 3.89999C11.84 4.69999 11.42 5.68001 11.51 6.79001C12.56 6.87001 13.52 6.33 14.3 5.41H14.31Z" fill="url(#paint0_linear_100_3040)"/>
             <defs>
@@ -141,7 +142,7 @@
           <ion-input formControlName="passwordconfirm" type="password" placeholder="{{'PASSWORDCONFIRM' | translate}}"></ion-input>
         </fieldset>
       </ion-item>
-      <ion-button [disabled]="formRegistrationData.invalid" size="small"  expand="block" (click)="createUser(formRegistrationData)">
+      <ion-button [disabled]="formRegistrationData.invalid" size="medium"  expand="block" (click)="createUser(formRegistrationData)">
         <p *ngIf="!isLoggingIn">{{'REGISTER' | translate}}</p>
         <ion-spinner *ngIf="isLoggingIn"></ion-spinner>
       </ion-button>
@@ -151,7 +152,7 @@
         <div class="div-line"></div>
       </div>
       <div class="login-box">
-        <ion-button color="secondary" class="login-btn">
+        <ion-button class="login-btn" (click)="createOrSignInViaFacebook()">
           <svg preserveAspectRatio="xMidYMin" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M22 12.0002C22 16.9902 18.34 21.1302 13.56 21.8802V15.0002H16L16.45 12.0002H13.56V10.1202C13.56 9.33022 13.95 8.56023 15.19 8.56023H16.45V6.19023C16.45 6.19023 15.31 5.99023 14.21 5.99023C11.93 5.99023 10.43 7.28022 10.43 9.79022V11.9902H8.00999V14.9902H10.43V21.8702C5.64998 21.1202 1.98999 16.9802 1.98999 11.9902C1.98999 6.47023 6.47 1.99023 11.99 1.99023C17.51 1.99023 21.99 6.47023 21.99 11.9902" fill="url(#paint0_linear_100_3034)"/>
             <defs>
@@ -162,7 +163,7 @@
             </defs>
           </svg>
         </ion-button>
-        <ion-button color="secondary" class="login-btn">
+        <ion-button class="login-btn" (click)="createOrSignInUserViaGoogle()">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M21.5 12.23C21.5 15.27 20.42 17.84 18.54 19.58C16.9 21.1 14.65 22 11.96 22C8.07002 22 4.70001 19.75 3.07001 16.48C2.39001 15.13 2 13.61 2 12C2 10.39 2.39001 8.86999 3.07001 7.51999C4.71001 4.24999 8.07002 2 11.96 2C14.65 2 16.9 2.98999 18.62 4.60999L15.78 7.45999C14.74 6.46999 13.43 5.95999 11.96 5.95999C9.36002 5.95999 7.16 7.72 6.37 10.09C6.17 10.69 6.04999 11.33 6.04999 12C6.04999 12.67 6.16 13.31 6.37 13.91C7.16 16.29 9.36002 18.04 11.96 18.04C13.3 18.04 14.44 17.67 15.34 17.07C16.39 16.36 17.09 15.32 17.33 14.09H11.96V10.33H21.34C21.44 10.94 21.5 11.56 21.5 12.22V12.23Z" fill="url(#paint0_linear_100_3037)"/>
             <defs>
@@ -173,7 +174,7 @@
             </defs>
           </svg>
         </ion-button>
-        <ion-button color="secondary" class="login-btn">
+        <ion-button *ngIf="showAppleLogin" class="login-btn" (click)="createOrSignInViaApple()">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M16.54 12.01C16.54 12.09 16.4 14.47 19 15.7C18.51 17.18 16.85 20.47 14.91 20.49C13.79 20.49 13.13 19.77 11.87 19.77C10.61 19.77 9.85001 20.47 8.85001 20.49C6.93001 20.55 5.08999 16.93 4.57999 15.46C4.19999 14.34 4.01001 13.25 4.01001 12.2C4.01001 8.64001 6.37001 6.88001 8.60001 6.85001C9.68001 6.85001 11.05 7.64001 11.64 7.64001C12.21 7.64001 13.75 6.7 15.17 6.81C16.66 6.93 17.8 7.52001 18.55 8.60001C17.21 9.42001 16.55 10.53 16.56 12.01H16.54ZM14.31 5.41C15.41 4.11 15.31 2.92 15.27 2.5C14.3 2.56 13.18 3.15999 12.54 3.89999C11.84 4.69999 11.42 5.68001 11.51 6.79001C12.56 6.87001 13.52 6.33 14.3 5.41H14.31Z" fill="url(#paint0_linear_100_3040)"/>
             <defs>
@@ -191,17 +192,23 @@
     </form>
   </div>
 
-  <div class="container" *ngIf="screen === 'forgotPassword'">
-    <h1 class="heading">{{'FORGOTPASSWORD' | translate}}?<br><br></h1>
-    <p class="para">Enter email to reset</p>
-    <ion-item lines="none" class="ion-item">
-      <fieldset  class="input-item">
-        <legend>Email Id</legend>
-        <ion-input type="email" placeholder="name@domain.com"></ion-input>
-      </fieldset>
-    </ion-item>
-    <p ngClass class="signup-text">Rememberd Password&nbsp;<a>Sign In?</a></p>
-    <ion-button class="login-button" expand="block">Reset Password</ion-button>
+  <div class="container ion-padding" *ngIf="screen === 'forgotPassword'">
+    <form [formGroup]="resetData">
+      <img class="logo" src="assets/images/logo.png" />
+      <h1 class="heading">{{'FORGOTPASSWORD' | translate}}?<br><br></h1>
+      <p class="para">{{'ENTEREMAILTORESET' | translate}}</p>
+      <ion-item lines="none" class="ion-item ion-no-padding">
+        <fieldset  class="input-item">
+          <legend>Email</legend>
+          <ion-input formControlName="email" type="email" placeholder="name@domain.com"></ion-input>
+        </fieldset>
+      </ion-item>
+      <p ngClass class="signup-text">{{'REMEMBEREDPASSWORD' | translate}}&nbsp;<a (click)="changeState('login')">{{'SIGNIN' | translate}}?</a></p>
+      <ion-button [disabled]="resetData.invalid" class="login-button" expand="block" (click)="resetPassword(resetData)">
+        <p *ngIf="!isLoggingIn">{{'RESETPASSWORD' | translate}}</p>
+        <ion-spinner *ngIf="isLoggingIn"></ion-spinner>
+      </ion-button>
+    </form>
   </div>
 
 

@@ -2,13 +2,20 @@
   <ion-toolbar>
     <ion-item lines="none" class="nav">
       <div class="ion-padding-top ion-padding-bottom">
-        <img style="width: 25vw" src="assets/images/logo_inline.png"/>
+        <img class="logo" style="width: 25vw" src="assets/images/logo_inline.png"/>
       </div>
       <ion-buttons slot="end">
-        <ion-button class="nav-button">
-          <ion-icon name="heart"></ion-icon>
-        </ion-button>
-        <ion-button class="nav-button">
+        <ion-chip (click)="setBoost()">
+          <ion-icon name="rocket-outline"></ion-icon>
+          <ion-label>{{rang}}</ion-label>
+        </ion-chip>
+        <div style="position: relative">
+          <ion-button class="nav-button" (click)="showNotifications()">
+            <ion-icon name="heart"></ion-icon>
+          </ion-button>
+          <ion-badge style="position: absolute; right: -4px" *ngIf="user?._badges?.likes">{{user._badges.likes > 99 ? '99+' : user._badges.likes}}</ion-badge>
+        </div>
+        <ion-button class="nav-button" (click)="showFilter()">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <g clip-path="url(#clip0_2_422)">
               <path
@@ -38,20 +45,62 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div id="container">
+    <ion-item lines="none" class="edit-info" *ngIf="user && getPercentOfUserDetails() !== 100">
+      <div slot="start" class="info">
+        <div class="single-chart small">
+          <svg viewBox="0 0 36 36" class="circular-chart orange">
+            <path class="circle-bg circle-bg-small"
+                  d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <path class="circle white"
+                  attr.stroke-dasharray="{{getPercentOfUserDetails()}}, 100"
+                  d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+            />
+            <text x="18" y="20.35" class="percentage">{{getPercentOfUserDetails()}}%</text>
+          </svg>
+        </div>
+      </div>
+      <p class="ion-text-left">{{'COMPLETEPROFILEINFO' | translate}}</p>
+      <ion-button size="small" slot="end" class="edit-btn" (click)="editProfile()">{{'EDIT' | translate}}</ion-button>
+    </ion-item>
     <ion-grid>
-      <ion-row class="cards-container">
+      <ion-row class="cards-container" *ngIf="!loading">
         <ion-col [sizeMd]="standardUser.membership === 3 ? 6 : 3"
                  [sizeXs]="standardUser.membership === 3 ? 12 : 6" [sizeLg]="standardUser.membership === 3 ? 4 : 2"
                  *ngFor="let standardUser of standardUsers">
           <div class="swipe-card">
             <div class="card-container" [ngClass]="{'gold-banner': standardUser.membership === 2, 'vip-banner': standardUser.membership === 3}">
-              <app-user-card [me]="user" [user]="standardUser" (click)="showProfile(standardUser)"></app-user-card>
+              <app-user-card [loading]="loading" [me]="user" [user]="standardUser" (click)="showProfile(standardUser)"></app-user-card>
             </div>
-            <app-swipe-controls></app-swipe-controls>
+            <app-swipe-controls [user]="standardUser"></app-swipe-controls>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row class="cards-container" *ngIf="loading">
+        <ion-col [sizeMd]="3"
+                 [sizeXs]="6" [sizeLg]="2" *ngFor="let i of [1,2,3,4,5,6]">
+          <div class="swipe-card">
+            <div class="card-container">
+              <app-user-card *ngIf="user" [loading]="loading" [me]="user" [user]="user"></app-user-card>
+            </div>
           </div>
         </ion-col>
       </ion-row>
     </ion-grid>
+    <div class="no-results-box" *ngIf="!loading && standardUsers.length === 0">
+      <h4 class="ion-text-center">{{'NOPERSONSINRADIUS' | translate}}</h4>
+      <ion-button expand="block" (click)="showFilter()">{{'CHANGESEARCHFILTER' | translate}}</ion-button>
+    </div>
   </div>
+  <ion-infinite-scroll threshold="0px" position="bottom" (ionInfinite)="loadMore($event)" *ngIf="standardUsers.length >= 10">
+    <ion-infinite-scroll-content loadingSpinner="dots" loadingText=""></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
