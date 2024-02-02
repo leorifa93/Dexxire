@@ -18,4 +18,7 @@
       </div>
     </ion-col>
   </ion-row>
+  <div class="no-results-box" *ngIf="!loading && showBannerByEmpty && users.length === 0">
+    <h4 class="ion-text-center">{{bannerText | translate}}</h4>
+  </div>
 </ion-grid>

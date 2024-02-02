@@ -10,6 +10,7 @@ import {SwipeControlsModule} from "../_shared/components/swipe-controls/swipe-co
 import {LazyLoadImageModule} from "ng-lazyload-image";
 import {FilterModule} from "../_shared/components/filter/filter.module";
 import {TranslateModule} from "@ngx-translate/core";
+import {BoostBtnModule} from "../_shared/components/boost-btn/boost-btn.module";
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {TranslateModule} from "@ngx-translate/core";
         SwipeControlsModule,
         LazyLoadImageModule,
         FilterModule,
-        TranslateModule
+        TranslateModule,
+        BoostBtnModule
     ],
   declarations: [HomePage],
   schemas: [NO_ERRORS_SCHEMA]

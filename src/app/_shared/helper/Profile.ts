@@ -6,11 +6,12 @@ export class ProfileHelper {
   static getPercentOfUserDetails(user: IUser) {
     let finished = 0;
     let profileDetails = ['genderLookingFor', 'languages', 'ethnicity', 'nationality', 'weight', 'height', 'chest', 'waist', 'hips', 'eyeColor', 'hairColor', 'hairLength'];
-    let oneItemPercent = 100 / profileDetails.length;
 
     if (user.gender !== Gender.Male) {
       profileDetails.push('chestCup');
     }
+
+    let oneItemPercent = 100 / profileDetails.length;
 
     for (let detail of profileDetails) {
       if (user.details) {
@@ -50,6 +51,10 @@ export class ProfileHelper {
 
       if (user._badges.chats) {
         badge += user._badges.chats;
+      }
+
+      if (user._privateGalleryRequests) {
+        badge += user._privateGalleryRequests.length;
       }
     }
 

@@ -68,6 +68,9 @@
 <ion-content [fullscreen]="true">
   <div *ngIf="me?.membership !== 1">
     <div class="user-container ion-padding">
+      <div class="no-results-box" *ngIf="!loading && usersByDistance.length === 0">
+        <h4 class="ion-text-center">{{'NOUSERSINAREA' | translate}}</h4>
+      </div>
       <div class="slider" *ngIf="!loading">
         <app-user-card [loading]="loading" *ngFor="let user of usersByDistance" [me]="me" [user]="user" type="discover" (click)="showProfile(user)"></app-user-card>
       </div>
@@ -78,8 +81,8 @@
     <div class="map-container ion-padding">
       <div #mapElement class="map"></div>
       <ion-buttons>
-        <ion-button class="nav-button" (click)="zoomIn()"><ion-icon name="remove-outline"></ion-icon></ion-button>
-        <ion-button class="nav-button" (click)="zoomOut()"><ion-icon name="add-outline"></ion-icon></ion-button>
+        <ion-button class="nav-button" (click)="zoomOut()"><ion-icon name="remove-outline"></ion-icon></ion-button>
+        <ion-button class="nav-button" (click)="zoomIn()"><ion-icon name="add-outline"></ion-icon></ion-button>
       </ion-buttons>
     </div>
   </div>

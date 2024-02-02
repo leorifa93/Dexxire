@@ -5,6 +5,7 @@ import {LocalStorageService} from "../../_shared/services/local-storage.service"
 import {TranslateService} from "@ngx-translate/core";
 import {BuyService} from "../shop/services/buy.service";
 import {AbstractBase} from "../../_shared/classes/AbstractBase";
+import {UserCollectionService} from "../../services/user/user-collection.service";
 
 @Component({
   selector: 'app-subscriptions',
@@ -14,8 +15,7 @@ import {AbstractBase} from "../../_shared/classes/AbstractBase";
 export class SubscriptionsPage extends AbstractBase implements OnInit {
 
   constructor(protected navCtrl: NavController, private modalCtrl: ModalController, public localStorage: LocalStorageService,
-              private alertCtrl: AlertController, private translateService: TranslateService, private buyService: BuyService,
-              protected changeDetector: ChangeDetectorRef) {
+               private buyService: BuyService, protected changeDetector: ChangeDetectorRef, private userCollectionService: UserCollectionService) {
     super(localStorage, navCtrl, changeDetector);
   }
 
@@ -45,5 +45,9 @@ export class SubscriptionsPage extends AbstractBase implements OnInit {
 
   async subscribe(subscription: any) {
     return this.buyService.subscribe(subscription, this.user);
+  }
+
+  updateUser() {
+    return this.userCollectionService.set(this.user.id, this.user);
   }
 }

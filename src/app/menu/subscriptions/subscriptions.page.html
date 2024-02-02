@@ -20,6 +20,10 @@
   <h3 class="ion-text-center">{{'CHOOSESUBSCRIPTION' | translate}}</h3>
   <h6 class="ion-text-center">{{'SELECTMEMBERTYPE' | translate}}</h6>
   <app-abonnements *ngIf="user" [me]="user" (onBuy)="subscribe($event)"></app-abonnements>
+  <ion-item *ngIf="user && user.membership !== 1" lines="none">
+    <ion-toggle slot="start" [(ngModel)]="user.renewMemberShip" (ionChange)="updateUser()"></ion-toggle>
+    <p>{{'RENEWAUTOMATICALLY' | translate}}</p>
+  </ion-item>
 </ion-content>
 
 <ion-footer>

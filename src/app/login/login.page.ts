@@ -29,6 +29,7 @@ export class LoginPage implements OnInit {
   isPasswordWrong: boolean = false;
   isLoggingIn: boolean = false;
   showAppleLogin: boolean = false;
+  passwordFieldType: string = 'password';
 
   constructor(private fb: FormBuilder,
               private router: Router, private translateService: TranslateService, private alertCtrl: AlertController,
@@ -62,16 +63,17 @@ export class LoginPage implements OnInit {
   }
 
   changeState(state: string) {
+    this.passwordFieldType = 'password';
     this.screen = state;
   }
 
-  togglePassword() {
-    const passwordEL: any = document.getElementById('password');
+  togglePassword(id: string) {
+    const passwordEL: any = document.getElementById(id);
 
     if (passwordEL.type === "password") {
-      passwordEL.type = "text";
+      this.passwordFieldType = "text";
     } else {
-      passwordEL.type = "password";
+      this.passwordFieldType = "password";
     }
   }
   async createOrSignInUserViaGoogle() {

@@ -7,6 +7,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <app-list *ngIf="user" type="requests" [userIds]="user._friendRequests"></app-list>
+  <app-list *ngIf="user" type="requests" [userIds]="user._friendRequests" [showBannerByEmpty]="true" [bannerText]="'NOFRIENDREQUESTS'"></app-list>
 </ion-content>
 

@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {IUser} from "../../../interfaces/i-user";
-import {ActionSheetController, ModalController, PickerController} from "@ionic/angular";
+import {ActionSheetController, IonContent, ModalController, PickerController} from "@ionic/angular";
 import {TranslateService} from "@ngx-translate/core";
 import {UploadService} from "../../../_shared/services/upload.service";
 import {CameraService} from "../../../_shared/services/camera.service";
@@ -19,6 +19,7 @@ import countryPhoneCodes from "../../../_shared/classes/defaults/countryPhoneCod
   styleUrls: ['./edit.component.scss'],
 })
 export class EditComponent extends AbstractModalController implements OnInit {
+  @ViewChild(IonContent) content: IonContent;
   @ViewChild('editSlides') swiperRef: ElementRef;
   @Input() user: IUser;
 
@@ -81,10 +82,12 @@ export class EditComponent extends AbstractModalController implements OnInit {
     this.hairColors = this.hairColors.sort((a, b) => {
       return a > b ? 1 : -1;
     });
+    this.ethnicities = this.ethnicities.sort((a, b) => {
+      return a.value > b.value ? 1 : -1;
+    });
   }
 
   ngOnInit() {
-    console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
     this.localStorage.getSettings().then(settings => this.settings = settings);
 
     this.colors = Object.keys(CSS_COLOR_NAMES);
@@ -121,6 +124,12 @@ export class EditComponent extends AbstractModalController implements OnInit {
     this.countriesService.getAll().then(countries => this.countries = countries);
   }
 
+  nonZeroValidation(type: string) {
+    setTimeout(() => {
+      this.user.contacts[type].number = this.user.contacts[type].number.replace(/[^\d]+|^0+(?!$)/g, '');
+    });
+  }
+
   ngAfterViewInit() {
     this.swiperRef.nativeElement.swiper.allowTouchMove = false;
   }
@@ -128,6 +137,7 @@ export class EditComponent extends AbstractModalController implements OnInit {
   setStep(step: number) {
     this.currentStep = step;
     this.swiperRef.nativeElement.swiper.slideTo(step);
+    this.content.scrollToTop(0);
   }
 
   selectGenderFor(gender: Gender) {

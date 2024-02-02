@@ -14,6 +14,7 @@
           </svg> {{benefit | translate}}</p>
         </div>
         <ion-button *ngIf="(subscription.type === 'gold' && me.membership === 1) || (subscription.type === 'vip' && me.membership !== 3)" size="small" class="upgrade-btn {{subscription.class}}" (click)="buy(subscription)">{{'UPGRADE' | translate}}</ion-button>
+        <ion-label style="display: block" class="ion-text-center" *ngIf="(subscription.type === 'gold' && me.membership === 2) || (subscription.type === 'vip' && me.membership === 3)">{{'ABOEXPIRESAT' | translate}} {{me.membershipExpiredAt}}</ion-label>
       </div>
     </ion-col>
   </ion-row>

@@ -83,7 +83,7 @@ export class DiscoverPage implements OnInit {
     }, this.filter.perimeterDiscoverValue ? this.filter.perimeterDiscoverValue : 10, this.queryFilter).then((users: IUser[]) => {
       users = users.filter((user) => {
         let age = ProfileHelper.getAge(user.birthday);
-        return user.genderLookingFor.includes(this.me.gender) && ((this.filter.ageRange && !user.fakeAge
+        return user.genderLookingFor.includes(this.me.gender) && user.id !== this.me.id && ((this.filter.ageRange && !user.fakeAge
           ? this.filter.ageRange.lower <= age && this.filter.ageRange.upper >= age
           : this.filter.ageRange.lower <= user.fakeAge && this.filter.ageRange.upper >= user.fakeAge) || !this.filter.ageRange);
       });
@@ -123,7 +123,7 @@ export class DiscoverPage implements OnInit {
       streetViewControl: false,
       disableDefaultUI: true,
       center: {lat: this.me.currentLocation.lat, lng: this.me.currentLocation.lng},
-      zoom: 16,
+      zoom: 12,
       styles: [
         {
           featureType: "poi.business",
@@ -219,6 +219,7 @@ export class DiscoverPage implements OnInit {
 
     const modal = await this.modalCtrl.create({
       component: FilterComponent,
+      cssClass: 'filter-modal',
       componentProps: {
         me: this.me,
         location: this.filter.location,

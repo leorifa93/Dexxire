@@ -86,6 +86,10 @@ export class MenuPage implements OnInit {
     this.navCtrl.navigateForward('menu/settings');
   }
 
+  showMySearch() {
+    this.navCtrl.navigateForward('menu/my-search');
+  }
+
   showSubscriptions() {
     this.navCtrl.navigateForward('menu/subscriptions');
   }

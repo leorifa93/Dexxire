@@ -18,5 +18,5 @@
     <ion-badge slot="end">{{user?._blockList?.length || 0}}</ion-badge>
   </ion-item>
   <h4 class="ion-padding-start">{{'ALLFRIENDS' | translate}} ({{user?._friendsList?.length || 0}})</h4>
-  <app-list *ngIf="user" type="friends" [userIds]="user._friendsList"></app-list>
+  <app-list *ngIf="user" type="friends" [userIds]="user._friendsList" [showBannerByEmpty]="true" bannerText="NOFRIENDS"></app-list>
 </ion-content>

@@ -5,10 +5,7 @@
         <img class="logo" style="width: 25vw" src="assets/images/logo_inline.png"/>
       </div>
       <ion-buttons slot="end">
-        <ion-chip (click)="setBoost()">
-          <ion-icon name="rocket-outline"></ion-icon>
-          <ion-label>{{rang}}</ion-label>
-        </ion-chip>
+        <app-boost-btn *ngIf="user" [user]="user"></app-boost-btn>
         <div style="position: relative">
           <ion-button class="nav-button" (click)="showNotifications()">
             <ion-icon name="heart"></ion-icon>
@@ -39,6 +36,9 @@
         <ion-avatar class="small-avatar" (click)="showProfile(user)">
           <img [lazyLoad]="user?.profilePictures?.thumbnails?.small  || 'assets/images/no-image.png'"
                errorImage="assets/images/no-image.png" [defaultImage]="user?.profilePictures?.original"/>
+          <ion-badge *ngIf="user?._privateGalleryRequests?.length > 0" style="position: absolute; top:-5px; right: -5px">
+            {{user._privateGalleryRequests.length}}
+          </ion-badge>
         </ion-avatar>
       </ion-buttons>
     </ion-item>

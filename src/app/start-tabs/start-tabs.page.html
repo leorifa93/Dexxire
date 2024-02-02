@@ -2,6 +2,9 @@
   <ion-tab-bar slot="bottom" class="tabs-container" [translucent]="true">
     <ion-tab-button tab="home">
       <ion-icon name="home-outline"></ion-icon>
+      <ion-badge *ngIf="user?._privateGalleryRequests?.length > 0">
+        {{user._privateGalleryRequests.length}}
+      </ion-badge>
     </ion-tab-button>
     <ion-tab-button tab="discover">
       <ion-icon name="compass-outline"></ion-icon>

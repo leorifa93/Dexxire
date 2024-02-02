@@ -17,6 +17,7 @@ export interface IUser {
   };
   location: any;
   membership: Membership;
+  renewMemberShip: boolean;
   fakeAge?: number;
   isVerified?: boolean;
 
@@ -82,4 +83,5 @@ export interface IUser {
   _blockList?: string[];
   _gotBlockedFrom?: string[];
   _privateGalleryAccessUsers?: string[];
+  _privateGalleryRequests?: string[];
 }

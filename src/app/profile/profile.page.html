@@ -8,6 +8,7 @@
         <img class="logo" style="width: 25vw" src="assets/images/logo_inline.png"/>
       </div>
       <ion-buttons slot="end">
+        <app-boost-btn *ngIf="me" [user]="me"></app-boost-btn>
         <ion-button class="nav-button" (click)="showOptions()">
           <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
         </ion-button>
@@ -100,7 +101,11 @@
                    (click)="changeContentState('PROFILE')"><p class="p-extended">{{'PROFILE' | translate}}</p></div>
               <div class="control-btn" [ngClass]="{'active': contentState === 'PRIVATEGALLERY'}"
                    (click)="changeContentState('PRIVATEGALLERY')"><p
-                class="p-extended">{{'PRIVATEGALLERY' | translate}}</p></div>
+                class="p-extended">{{'PRIVATEGALLERY' | translate}}</p>
+                <ion-badge *ngIf="user?._privateGalleryRequests?.length > 0" style="position: absolute;top: 0;right: 0;">
+                  {{user?._privateGalleryRequests.length}}
+                </ion-badge>
+              </div>
               <div class="control-btn" [ngClass]="{'active': contentState === 'CONTACT'}"
                    (click)="changeContentState('CONTACT')"><p class="p-extended">{{'CONTACT' | translate}}</p></div>
             </div>
@@ -131,8 +136,16 @@
             </table>
           </div>
           <div *ngIf="contentState === 'PRIVATEGALLERY'">
+            <div style="margin-bottom: 1rem;" *ngIf="me?.id === user?.id">
+              <ion-chip (click)="showGalleryRequests()"><ion-badge class="ion-margin-end">{{me?._privateGalleryRequests?.length || 0}}</ion-badge> {{'REQUESTS' | translate}}</ion-chip>
+              <ion-chip (click)="showReleases()">{{'RELEASES' | translate}}</ion-chip>
+              <div style="margin-top: 2rem" class="no-results-box" *ngIf="!user?.privateAlbum || user?.privateAlbum?.length === 0">
+                <h4 class="ion-text-center">{{'NOPICTURES' | translate}}</h4>
+                <ion-button expand="block" (click)="editProfile()">{{'UPLOADPICTURES' | translate}}</ion-button>
+              </div>
+            </div>
             <ion-grid
-              *ngIf="me?.id === user?.id || (me?.membership === 2 || me?.membership === 3) || user?._friendsList?.includes(user?.id) || user?._privateGalleryAccessUsers?.includes(me?.id)">
+              *ngIf="me?.id === user?.id || (me?.membership === 2 || me?.membership === 3) || user?._privateGalleryAccessUsers?.includes(me?.id)">
               <ion-row>
                 <ion-col size-xs="6" size-md="3" size-lg="3" *ngFor="let picture of user?.privateAlbum; let i = index">
                   <img  (click)="showImg(false, i + 1)" class="private-img" [src]="picture.thumbnails.medium"/>
@@ -140,8 +153,9 @@
               </ion-row>
             </ion-grid>
             <div
-              *ngIf="me?.id !== user?.id && me?.membership === 1 && !user?._friendsList?.includes(me?.id) && !user?._privateGalleryAccessUsers?.includes(me?.id)">
+              *ngIf="me?.id !== user?.id && me?.membership === 1 && !user?._privateGalleryAccessUsers?.includes(me?.id)">
               <app-text-banner [textKey]="'PRIVATEIMAGESNOPERMISSION'"></app-text-banner>
+              <ion-button expand="block" (click)="sendRequestForPrivateGallery()" [disabled]="user?._privateGalleryRequests?.includes(me?.id)">{{(user?._privateGalleryRequests?.includes(me?.id) ? 'REQUESTALREADYSENT' : 'SENDREQUEST') | translate}}</ion-button>
             </div>
           </div>
           <div *ngIf="contentState === 'CONTACT'">
@@ -162,7 +176,9 @@
                     </defs>
                   </svg>
                 </div>
-                <p>{{user?.contacts.phoneNumber.countryCode ? '+' + user?.contacts.phoneNumber.countryCode : ''}} {{user?.contacts.phoneNumber.number}}</p>
+                <a (click)="openTel((user?.contacts.phoneNumber.countryCode ? '+' + user?.contacts.phoneNumber.countryCode : '') + (user?.contacts.phoneNumber.number));">
+                  {{user?.contacts.phoneNumber.countryCode ? '+' + user?.contacts.phoneNumber.countryCode : ''}} {{user?.contacts.phoneNumber.number}}
+                </a>
               </ion-item>
               <ion-item lines="none" class="ion-no-padding" *ngIf="user?.contacts?.whatsApp">
                 <div class="contacts" slot="start">
@@ -179,7 +195,9 @@
                     </defs>
                   </svg>
                 </div>
-                <p>{{user?.contacts.whatsApp.countryCode ? '+' + user?.contacts.whatsApp.countryCode : ''}} {{user?.contacts.whatsApp.number}}</p>
+                <a target="_blank" href="https://wa.me/{{user?.contacts.whatsApp.countryCode ? '+' + user?.contacts.whatsApp.countryCode : ''}}{{user?.contacts.whatsApp.number}}">
+                  {{user?.contacts.whatsApp.countryCode ? '+' + user?.contacts.whatsApp.countryCode : ''}} {{user?.contacts.whatsApp.number}}
+                </a>
               </ion-item>
               <app-text-banner *ngIf="!user?.contacts?.whatsApp && !user?.contacts?.phoneNumber"
                                [textKey]="'NOTSPECIFIED'"></app-text-banner>

@@ -15,7 +15,6 @@ import {Router} from "@angular/router";
   providedIn: 'root'
 })
 export class SwipeControlsService {
-
   constructor(private likeCollectionService: LikeCollectionService,  private toastCtrl: ToastController,
               private translateService: TranslateService, private friendsCollectionService: FriendsCollectionService,
               private notificationService: NotificationService, private chatsCollectionService: ChatsCollectionService,
@@ -45,12 +44,18 @@ export class SwipeControlsService {
     if (!sentFrom._sentFriendRequests) {
       sentFrom._sentFriendRequests = [];
     }
-    sentFrom._sentFriendRequests.push(sentTo.id);
+
+    if (!sentFrom._sentFriendRequests.includes(sentTo.id)) {
+      sentFrom._sentFriendRequests.push(sentTo.id);
+    }
 
     if (!sentTo._friendRequests) {
       sentTo._friendRequests = [];
     }
-    sentTo._friendRequests.push(sentFrom.id);
+
+    if (!sentTo._friendRequests.includes(sentFrom.id)) {
+      sentTo._friendRequests.push(sentFrom.id);
+    }
 
     const promises = [
       this.friendsCollectionService.set(sentFrom.id, sentFrom, 'Users'),

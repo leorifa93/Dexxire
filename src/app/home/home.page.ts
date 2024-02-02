@@ -40,7 +40,6 @@ export class HomePage {
   limit: number = 0;
   loading: boolean = true;
   rang: number = 1;
-  positionInterval: any;
   snapshots: any[] = [];
   lastDoc: any;
   filteredUserIds: string[] = [];
@@ -58,10 +57,6 @@ export class HomePage {
       }
 
       this.getUsers();
-
-      this.positionInterval = setInterval(() => {
-        return this.getRangPosition();
-      }, 5000);
     });
   }
 
@@ -86,13 +81,6 @@ export class HomePage {
     this.loading = true;
     this.standardUsers = [];
     this.queryFilter = [];
-    if (this.user.genderLookingFor.length < 3) {
-      this.queryFilter.push({
-        key: 'gender',
-        opr: 'in',
-        value: this.user.genderLookingFor
-      });
-    }
 
     if (this.filter.categoryFilter && this.filter.categoryFilter.length > 0) {
       this.queryFilter.push({
@@ -114,7 +102,7 @@ export class HomePage {
           ? this.filter.ageRange.lower <= age && this.filter.ageRange.upper >= age
           : this.filter.ageRange.lower <= user.fakeAge && this.filter.ageRange.upper >= user.fakeAge) || !this.filter.ageRange)
         && user.genderLookingFor.includes(this.user.gender) && !this.user._gotBlockedFrom?.includes(user.id) && !this.user._blockList?.includes(user.id)
-        && user.id !== this.user.id) {
+        && user.id !== this.user.id && this.user.genderLookingFor.includes(user.gender)) {
         userIds.push(user.id);
       }
     }
@@ -203,6 +191,7 @@ export class HomePage {
 
     const modal = await this.modalCtrl.create({
       component: FilterComponent,
+      cssClass: 'filter-modal',
       componentProps: {
         me: this.user,
         location: this.filter.location,
@@ -229,31 +218,13 @@ export class HomePage {
         }
 
         this.localStorage.setFilter(this.filter).then(() => {
-          this.getRangPosition();
+          document.dispatchEvent(new CustomEvent('update-rang'));
           this.userCollectionService.set(this.user.id, this.user);
         });
 
         this.getUsers();
       }
     })
-  }
-
-  async setBoost() {
-    const alert = await this.alertCtrl.create({
-      header: this.translateService.instant('POSITION') + this.rang,
-      message: this.translateService.instant('YOUAREONPOSITION') + this.rang + this.translateService.instant('USEABOOST'),
-      buttons: [{
-        text: this.translateService.instant('USEBOOST'),
-        handler: () => {
-          return this.buyService.setBoost(this.user);
-        }
-      }, {
-        text: this.translateService.instant('CANCEL'),
-        role: 'cancel'
-      }]
-    });
-
-    return alert.present();
   }
 
   handleRefresh(ev) {
@@ -263,46 +234,6 @@ export class HomePage {
     this.getUsers().then(() => {
       ev.target.complete();
     });
-  }
-
-  async getRangPosition() {
-    const queryFilter: { key: string, opr: WhereFilterOp, value: any }[] = [];
-    queryFilter.push({
-      key: 'gender',
-      opr: '==',
-      value: this.user.gender
-    }, {
-      key: 'membership',
-      opr: '==',
-      value: this.user.membership
-    });
-
-    if (!this.user.currentLocation) {
-      return;
-    }
-
-    let usersByDistance = await this.userCollectionService.getUsersByDistance(this.user.currentLocation,
-      this.filter.perimeterValue ? this.filter.perimeterValue : 100, queryFilter);
-
-    usersByDistance = usersByDistance.sort((a, b) => {
-      return a.lastBoostAt < b.lastBoostAt ? 1 : -1;
-    });
-
-    if (usersByDistance.length > 0) {
-      let rang = 1;
-
-      for (let user of usersByDistance) {
-        if (user.id === this.user.id) {
-          break;
-        }
-
-        rang++;
-      }
-
-      this.rang = rang;
-    } else {
-      this.rang = 1;
-    }
   }
 
   showNotifications() {
@@ -339,7 +270,5 @@ export class HomePage {
 
   ngOnDestroy() {
     this.destroyAllSnapshots();
-
-    clearInterval(this.positionInterval);
   }
 }

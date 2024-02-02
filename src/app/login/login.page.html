@@ -35,8 +35,9 @@
               </linearGradient>
             </defs>
           </svg>
-          <ion-input id="password" formControlName="password" type="password" placeholder="{{'PASSWORD' | translate}}"></ion-input>
-          <ion-icon (click)="togglePassword()" slot="end" name="eye-outline"></ion-icon>
+          <ion-input id="password" formControlName="password" type="{{passwordFieldType}}" placeholder="{{'PASSWORD' | translate}}"></ion-input>
+          <ion-icon *ngIf="passwordFieldType === 'password'" (click)="togglePassword('password')" slot="end" name="eye-outline"></ion-icon>
+          <ion-icon *ngIf="passwordFieldType === 'text'" (click)="togglePassword('password')" slot="end" name="eye-off-outline"></ion-icon>
         </fieldset>
       </ion-item>
       <ion-text [color]="'danger'" *ngIf="isPasswordWrong" style="padding-left: 20px; padding-top: 5px">E-Mail oder Passwort ist falsch!</ion-text>
@@ -124,7 +125,9 @@
               </linearGradient>
             </defs>
           </svg>
-          <ion-input formControlName="password" type="password" placeholder="{{'PASSWORD' | translate}}"></ion-input>
+          <ion-input id="password-registration" formControlName="password" type="{{passwordFieldType}}" placeholder="{{'PASSWORD' | translate}}"></ion-input>
+          <ion-icon *ngIf="passwordFieldType === 'password'" (click)="togglePassword('password-registration')" slot="end" name="eye-outline"></ion-icon>
+          <ion-icon *ngIf="passwordFieldType === 'text'" (click)="togglePassword('password-registration')" slot="end" name="eye-off-outline"></ion-icon>
         </fieldset>
       </ion-item>
       <ion-item lines="none" class="ion-item ion-no-padding" style="margin-top: 1rem">
@@ -139,7 +142,9 @@
               </linearGradient>
             </defs>
           </svg>
-          <ion-input formControlName="passwordconfirm" type="password" placeholder="{{'PASSWORDCONFIRM' | translate}}"></ion-input>
+          <ion-input id="password-confirm" formControlName="passwordconfirm" type="{{passwordFieldType}}" placeholder="{{'PASSWORDCONFIRM' | translate}}"></ion-input>
+          <ion-icon *ngIf="passwordFieldType === 'password'" (click)="togglePassword('password-confirm')" slot="end" name="eye-outline"></ion-icon>
+          <ion-icon *ngIf="passwordFieldType === 'text'" (click)="togglePassword('password-confirm')" slot="end" name="eye-off-outline"></ion-icon>
         </fieldset>
       </ion-item>
       <ion-button [disabled]="formRegistrationData.invalid" size="medium"  expand="block" (click)="createUser(formRegistrationData)">

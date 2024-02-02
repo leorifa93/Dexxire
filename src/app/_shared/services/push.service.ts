@@ -52,6 +52,14 @@ export class PushService {
         return this.router.navigate(['/chat/' + data.userId]);
       } else if (data.type === DataType.PrivateGallery) {
         return this.router.navigate(['/profile/' + data.userId])
+      } else if (data.type === DataType.PrivateGalleryRequest) {
+        return this.router.navigate(['/profile/' + data.userId + '/list'], {
+          queryParams: {
+            type: data.queryType
+          }
+        });
+      } else if (data.type === DataType.PrivateGalleryAnswer) {
+        return this.router.navigate(['/profile/' + data.userId])
       }
     }
 

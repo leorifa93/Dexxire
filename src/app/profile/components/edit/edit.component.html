@@ -1,29 +1,20 @@
 <ion-header>
   <ion-toolbar>
     <ion-button class="nav-button" (click)="closeModal()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <g clip-path="url(#clip0_100_2654)">
-          <path d="M15 6L9 12L15 18" stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-        <defs>
-          <clipPath id="clip0_100_2654">
-            <rect width="24" height="24" fill="white"/>
-          </clipPath>
-        </defs>
-      </svg>
+      <ion-icon name="close-outline"></ion-icon>
     </ion-button>
   </ion-toolbar>
   <div class="progress-bar ion-padding">
-    <div class="pointer-wrapper" [ngClass]="{'active': currentStep >= 0}" (click)="setStep(0)">
+    <div class="pointer-wrapper" [ngClass]="{'active': currentStep === 0}" (click)="setStep(0)">
       <div style="align-self: baseline">
-        <svg class="pointer" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+        <svg class="pointer" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
           <circle cx="16" cy="16" r="15" stroke="#E0030C" stroke-width="2"/>
           <text x="11.5" y="21" class="value" font-size="15">1</text>
         </svg>
         <p>{{'PICTURES' | translate}}</p>
       </div>
     </div>
-    <div class="pointer-wrapper" [ngClass]="{'active': currentStep >= 1}" (click)="setStep(1)">
+    <div class="pointer-wrapper" [ngClass]="{'active': currentStep === 1}" (click)="setStep(1)">
       <svg class="distance" xmlns="http://www.w3.org/2000/svg" width="152" height="4" viewBox="0 0 152 4">
         <path d="M2 2H150" stroke-width="3" stroke-linecap="round" stroke-dasharray="8 8"/>
       </svg>
@@ -32,10 +23,10 @@
           <circle cx="16" cy="16" r="15" stroke="#E0030C" stroke-width="2"/>
           <text x="11.5" y="21" class="value" font-size="15">2</text>
         </svg>
-        <p>{{'MYINFOS' | translate}}</p>
+        <p>{{'MYDETAILS' | translate}}</p>
       </div>
     </div>
-    <div class="pointer-wrapper" [ngClass]="{'active': currentStep >= 2}" (click)="setStep(2)">
+    <div class="pointer-wrapper" [ngClass]="{'active': currentStep === 2}" (click)="setStep(2)">
       <svg class="distance" xmlns="http://www.w3.org/2000/svg" width="152" height="4" viewBox="0 0 152 4" fill="none">
         <path d="M2 2H150" stroke-width="3" stroke-linecap="round" stroke-dasharray="8 8"/>
       </svg>
@@ -44,14 +35,14 @@
           <circle cx="16" cy="16" r="15" stroke="#E0030C" stroke-width="2"/>
           <text x="11.5" y="21" class="value" font-size="15">3</text>
         </svg>
-        <p>{{'MYDETAILS' | translate}}</p>
+        <p>{{'MYINFOS' | translate}}</p>
       </div>
     </div>
   </div>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <swiper-container #editSlides>
+  <swiper-container #editSlides auto-height="true">
     <swiper-slide>
       <h3 class="ion-text-center">{{'UPLOADPICTURES' | translate}}</h3>
       <p class="ion-text-center">{{'UPLOADPUBLICANDPRIVATE' | translate}}</p>
@@ -266,19 +257,19 @@
       <ion-label>{{'PHONENUMBER' | translate}}</ion-label>
       <ion-item lines="none" class="input-item select-item ion-no-padding">
         <ion-icon name="caret-down-outline" slot="start" (click)="openPicker('phoneNumber')"></ion-icon>
-        <p class="ion-margin-end" *ngIf="!user.contacts.phoneNumber?.countryCode">{{'COUNTRYCODE' | translate}} </p>
-        <p class="ion-margin-end" *ngIf="user.contacts.phoneNumber?.countryCode">
+        <p class="ion-margin-end" style="margin-right: 5px" *ngIf="!user.contacts.phoneNumber?.countryCode">{{'COUNTRYCODE' | translate}} </p>
+        <p class="ion-margin-end" style="margin-right: 5px" *ngIf="user.contacts.phoneNumber?.countryCode">
           +{{user.contacts.phoneNumber.countryCode}} </p>
-        <ion-input placeholder="{{'PHONENUMBER' | translate}}"
+        <ion-input (ionInput)="nonZeroValidation('phoneNumber')" placeholder="{{'PHONENUMBER' | translate}}"
                    [(ngModel)]="user.contacts.phoneNumber.number"></ion-input>
       </ion-item>
       <ion-label>WhatsApp</ion-label>
       <ion-item lines="none" class="input-item select-item ion-no-padding">
         <ion-icon name="caret-down-outline" slot="start" (click)="openPicker('whatsApp')"></ion-icon>
-        <p class="ion-margin-end" *ngIf="!user.contacts.whatsApp?.countryCode">{{'COUNTRYCODE' | translate}} </p>
-        <p class="ion-margin-end" *ngIf="user.contacts.whatsApp?.countryCode">
+        <p class="ion-margin-end" style="margin-right: 5px" *ngIf="!user.contacts.whatsApp?.countryCode">{{'COUNTRYCODE' | translate}} </p>
+        <p class="ion-margin-end" style="margin-right: 5px" *ngIf="user.contacts.whatsApp?.countryCode">
           +{{user.contacts.whatsApp.countryCode}} </p>
-        <ion-input placeholder="{{'PHONENUMBER' | translate}}" [(ngModel)]="user.contacts.whatsApp.number"></ion-input>
+        <ion-input (ionInput)="nonZeroValidation('whatsApp')" [(ngModel)]="user.contacts.whatsApp.number" pattern="tel" placeholder="{{'PHONENUMBER' | translate}}" ></ion-input>
       </ion-item>
       <ion-label>Instagram</ion-label>
       <ion-item lines="none" class="input-item select-item ion-no-padding">
@@ -319,8 +310,7 @@
 <ion-footer>
   <ion-toolbar>
     <div class="btn-container">
-      <ion-button expand="block" (click)="save()" style="width:100%"
-                  *ngIf="currentStep === 2">{{'SAVE' | translate}}</ion-button>
+      <ion-button expand="block" (click)="save()" style="width:100%">{{'SAVE' | translate}}</ion-button>
     </div>
   </ion-toolbar>
 </ion-footer>

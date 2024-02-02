@@ -67,7 +67,7 @@ p {
     text-align: center;
     align-items: center;
     margin: auto;
-    flex: 1 1 45%;
+    flex: 1 1 55%;
 
     p {
       color: #000;
@@ -103,10 +103,6 @@ p {
           stroke: #fff;
         }
       }
-
-      .distance {
-        stroke: #E0030C;
-      }
     }
   }
 
@@ -116,6 +112,6 @@ p {
   }
 
   .pointer-wrapper:nth-child(2) {
-    flex: 1 1 55%;
+    flex: 1 1 50%;
   }
 }

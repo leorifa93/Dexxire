@@ -14,6 +14,7 @@ import {TranslateModule} from "@ngx-translate/core";
 import {SwipeControlsModule} from "../_shared/components/swipe-controls/swipe-controls.module";
 import {TextBannerModule} from "../_shared/components/text-banner/text-banner.module";
 import {EditComponent} from "./components/edit/edit.component";
+import {BoostBtnModule} from "../_shared/components/boost-btn/boost-btn.module";
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import {EditComponent} from "./components/edit/edit.component";
         AgePipeModule,
         TranslateModule,
         SwipeControlsModule,
-        TextBannerModule
+        TextBannerModule,
+        BoostBtnModule
     ],
   declarations: [ProfilePage, EditComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

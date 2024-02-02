@@ -16,6 +16,7 @@ export class SwipeControlsComponent implements OnInit {
   @Input() user: IUser;
   me: IUser;
   likesData: ILike;
+  isSending: boolean = false;
 
   constructor(private swipeControlsService: SwipeControlsService, protected localStorage: LocalStorageService,
               private actionSheetCtrl: ActionSheetController, private translateService: TranslateService,
@@ -58,27 +59,28 @@ export class SwipeControlsComponent implements OnInit {
   }
 
   async toggleFriendRequest(status: 'new' | 'requested' | 'got-request' | 'friends') {
+    this.isSending = true;
     let sheet;
 
     switch (status) {
       case "new":
-        return this.swipeControlsService.sendRequest(this.me, this.user);
+        return this.swipeControlsService.sendRequest(this.me, this.user).then(() => this.isSending = false);
       case "requested":
-        return this.swipeControlsService.removeRequest(this.me, this.user);
+        return this.swipeControlsService.removeRequest(this.me, this.user).then(() => this.isSending = false);
       case "got-request":
         sheet = await this.actionSheetCtrl.create({
           buttons: [
             {
               text: this.translateService.instant('ACCEPT'),
               handler: () => {
-                return this.swipeControlsService.acceptRequest(this.user, this.me);
+                return this.swipeControlsService.acceptRequest(this.user, this.me).then(() => this.isSending = false);
               }
             },
             {
               text: this.translateService.instant('REFUSE'),
               role: "destructive",
               handler: () => {
-                return this.swipeControlsService.removeRequest(this.user, this.me);
+                return this.swipeControlsService.removeRequest(this.user, this.me).then(() => this.isSending = false);
               }
             }
           ]
@@ -92,7 +94,7 @@ export class SwipeControlsComponent implements OnInit {
               text: this.translateService.instant('ENDFRIENDSHIP'),
               role: "destructive",
               handler: () => {
-                return this.swipeControlsService.endFriendship(this.user, this.me);
+                return this.swipeControlsService.endFriendship(this.user, this.me).then(() => this.isSending = false);
               }
             }
           ]

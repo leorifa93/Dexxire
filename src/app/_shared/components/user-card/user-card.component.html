@@ -2,7 +2,7 @@
   <app-vip-banner [user]="user" *ngIf="user.membership === 3 || user.membership === 2" style="margin-top: 10px"></app-vip-banner>
   <div class="image-shadow">
   </div>
-  <img [style]="user.membership === 3 ? 'object-fit:fill' : ''" [lazyLoad]="user.profilePictures?.original || 'assets/images/no-image.png'" errorImage="assets/images/no-image.png" [defaultImage]="'assets/images/loading.svg'" />
+  <img [lazyLoad]="user.profilePictures?.original || 'assets/images/no-image.png'" errorImage="assets/images/no-image.png" [defaultImage]="'assets/images/loading.svg'" />
   <div class="ion-text-center user-details">
     <h3 class="h3-extended">{{user.username}}</h3>
     <h6>{{currentCity}}</h6>

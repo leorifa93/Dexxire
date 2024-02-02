@@ -129,6 +129,10 @@ export class ProfilePage implements OnInit {
     })
   }
 
+  openTel(phoneNumber: string) {
+    window.open('tel:' + phoneNumber);
+  }
+
   init() {
     this.addEvents();
 
@@ -276,7 +280,7 @@ export class ProfilePage implements OnInit {
 
                   return this.notificationService.sendMessage(this.user, {
                     title: translations['ITSGETTINGSEXY'],
-                    body: this.user.username + translations['HASALLOWYOUPRIVATEGALLERY'],
+                    body: this.me.username + translations['HASALLOWYOUPRIVATEGALLERY'],
                     badge: ProfileHelper.calculateBadge(this.user).toString()
                   }, 'privateGallery', {
                     userId: this.me.id,
@@ -340,6 +344,43 @@ export class ProfilePage implements OnInit {
     });
 
     return sheet.present();
+  }
+
+  async sendRequestForPrivateGallery() {
+    const translations = await this.translateService.getTranslation((this.user._settings.currentLang || 'en')).toPromise();
+
+    if (!this.user._privateGalleryRequests) {
+      this.user._privateGalleryRequests = [];
+    }
+    this.user._privateGalleryRequests.push(this.me.id);
+
+    return this.userCollectionService.set(this.user.id, this.user).then(() => {
+      return this.notificationService.sendMessage(this.user, {
+        //title: translations['ITSGETTINGSEXY'],
+        body: this.me.username + translations['REQUESTPRIVATEGALLERY'],
+        badge: ProfileHelper.calculateBadge(this.user).toString()
+      }, 'privateGalleryRequest', {
+        userId: this.me.id,
+        type: 'PRIVATEGALLERYREQUEST',
+        queryType: 'REQUESTS'
+      });
+    })
+  }
+
+  showGalleryRequests() {
+    return this.router.navigate(['/profile/' + this.me.id + '/list'], {
+      queryParams: {
+        type: 'REQUESTS'
+      }
+    });
+  }
+
+  showReleases() {
+    return this.router.navigate(['/profile/' + this.me.id + '/list'], {
+      queryParams: {
+        type: 'RELEASES'
+      }
+    });
   }
 
   goBack() {

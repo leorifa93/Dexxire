@@ -17,6 +17,8 @@ export class ListComponent extends AbstractBase implements OnInit {
   @Input() orderBy: string = 'username';
   @Input() direction: 'asc' | 'desc' = 'asc';
   @Input() type: string;
+  @Input() showBannerByEmpty: boolean = false;
+  @Input() bannerText: string;
   loading: boolean = true;
   users: IUser[] = [];
   user: IUser;

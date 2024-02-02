@@ -14,7 +14,7 @@ export class NotificationService {
     title?: string,
     body: string,
     badge?: string
-  }, type: 'friend' | 'messages' | 'likes' | 'privateGallery', data?: any) {
+  }, type: 'friend' | 'messages' | 'likes' | 'privateGallery' | 'privateGalleryRequest' | 'privateGalleryAnswer', data?: any) {
     if (!sentTo._deviceIds || sentTo._deviceIds.length === 0
       || (type === 'friend' && !sentTo._settings.notifications.friendRequests)
       || (type === 'messages' && !sentTo._settings.notifications.messages)

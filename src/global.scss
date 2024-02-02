@@ -456,6 +456,10 @@ ion-modal.edit-modal {
   --min-height: 90vh;
 }
 
+ion-modal.filter-modal {
+  --height: 100%;
+}
+
 .cards-container {
   margin-bottom: 5rem;
 

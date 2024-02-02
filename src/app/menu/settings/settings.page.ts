@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {isPlatform, ModalController, NavController, ToastController} from "@ionic/angular";
 import {LocalStorageService} from "../../_shared/services/local-storage.service";
 import {IUser} from "../../interfaces/i-user";
-import {LocationPage} from "../../_shared/pages/location/location.page";
 import {UserCollectionService} from "../../services/user/user-collection.service";
 import {UserService} from "../../services/user/user.service";
 import {TranslateService} from "@ngx-translate/core";
@@ -19,13 +18,7 @@ export class SettingsPage implements OnInit {
   user: IUser;
   versionNumber: string = '0.0.0';
   currentLang: string;
-  genders: { key: Gender, value: string }[] = [
-    {key: Gender.Male, value: 'MALE'},
-    {key: Gender.Female, value: 'FEMALE'},
-    {key: Gender.Transsexual, value: 'TRANSSEXUAL'}
-  ]
-  constructor(private navCtrl: NavController, private localStorage: LocalStorageService,
-              private modalCtrl: ModalController, private userCollectionService: UserCollectionService,
+  constructor(private navCtrl: NavController, private localStorage: LocalStorageService, private userCollectionService: UserCollectionService,
               private userService: UserService, private toastCtrl: ToastController, private translateService: TranslateService,
               private router: Router) {
     this.currentLang = this.translateService.currentLang;
@@ -63,24 +56,6 @@ export class SettingsPage implements OnInit {
 
   logout() {
     return this.userService.signOut();
-  }
-
-  selectGenderFor(gender: Gender) {
-    if (!this.user.genderLookingFor) {
-      this.user.genderLookingFor = [];
-    }
-
-    if (this.user.genderLookingFor.includes(gender)) {
-      this.user.genderLookingFor.splice(this.user.genderLookingFor.indexOf(gender), 1);
-    } else {
-      this.user.genderLookingFor.push(gender);
-    }
-
-    document.dispatchEvent(new CustomEvent('user', {
-      detail: {
-        user: this.user
-      }
-    }));
   }
 
 

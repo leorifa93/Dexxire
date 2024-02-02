@@ -9,6 +9,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {ShopPage} from "../shop.page";
 import {ProfileHelper} from "../../../_shared/helper/Profile";
 import {CongratulationsComponent} from "../../../_shared/components/congratulations/congratulations.component";
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,8 @@ export class BuyService {
     return this.buyCollectionService.add({
       userId: user.id,
       type: 'UPGRADE',
-      createdAt: Date.now(),
+      createdAt: now.getTime(),
+      expiredAt: current.getTime(),
       payload: {
         price: subscription.price,
         upgradeType: subscription.type
@@ -112,7 +114,7 @@ export class BuyService {
   async subscribe(subscription: any, user: IUser) {
     user.availableCoins = 1000;
 
-    if ((user.availableCoins || 0) < subscription.price) {
+    if ((user.availableCoins || 0) < subscription.price && environment.production === true) {
       const alert = await this.alertCtrl.create({
         message: this.translateService.instant('NOTENOUGHCOINS'),
         buttons: [{

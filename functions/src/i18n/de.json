@@ -2,5 +2,11 @@
   "NEWLIKE": "Neuen Like erhalten",
   "HASGOTLIKE": " hat dir einen Like gesendet!",
   "HASSENTMESSAGE": "Eine Nachricht von ",
-  "HASSENTYOUAPICTURE": "Dir wurde ein Bild gesendet!"
+  "HASSENTYOUAPICTURE": "Dir wurde ein Bild gesendet!",
+  "MEMBERSHIPEXPIRED": "Dein Abo ist abgelaufen",
+  "MEMBERSHIPEXPIREDINFO": "Jetzt Abo erneuern und weiter Vorteile genießen",
+  "NOTENOUGHRENEWCOINS": "Nicht ausreichend Coins",
+  "NOTENOUGHRENEWCOINSINFO": "Dein Abo wurde leider nicht verlängert, kaufe jetzt Coins.",
+  "MEMBERSHIPRENEWED": "Abo wurde verlängert",
+  "MEMBERSHIPRENEWEDINFO": "Genieße weiterhin die Vorteile deines Abos"
 }

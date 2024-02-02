@@ -1,0 +1,26 @@
+<ion-header [collapse]="true">
+  <ion-toolbar>
+    <ion-back-button defaultHref="/profile/{{userId}}" icon="chevron-back-outline" text="" class="nav-button"
+                     (click)="goBack()">
+    </ion-back-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <h3 class="ion-padding">{{type | translate}}</h3>
+  <ion-item *ngFor="let u of users">
+    <ion-avatar slot="start" >
+      <img [lazyLoad]="u.profilePictures.thumbnails.small"
+           errorImage="assets/images/no-image.png" [defaultImage]="'assets/images/loading.svg'"/>
+    </ion-avatar>
+    <h5 >{{u.username}}</h5>
+    <ion-buttons slot="end" *ngIf="type === 'REQUESTS'">
+      <ion-button class="nav-button accept" (click)="accept(u.id)"><ion-icon name="checkmark-outline"></ion-icon></ion-button>
+      <ion-button class="nav-button decline" (click)="decline(u.id)"><ion-icon name="close-outline"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-button class="take-back" slot="end" *ngIf="type === 'RELEASES'" (click)="takeBack(u.id)">{{'TAKEBACK' | translate}}</ion-button>
+  </ion-item>
+  <div style="margin-top: 2rem" class="no-results-box" *ngIf="users.length === 0">
+    <h4 class="ion-text-center">{{'NOR' | translate}} {{type | translate}}</h4>
+  </div>
+</ion-content>
