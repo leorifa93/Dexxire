@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Dexxire</string>
+    <string name="title_activity_main">Dexxire</string>
+    <string name="package_name">com.digiminds.dexxire</string>
+    <string name="custom_url_scheme">com.digiminds.dexxire</string>
+    <string name="facebook_app_id">907565230964807</string>
+  <string name="facebook_client_token">7500c567400eb8a7205f9122694d63fe</string>
+  <string name="server_client_id">750696506520-uoj9srloh4um5s47tk7s5qa4hfgkn5b6.apps.googleusercontent.com</string>
+</resources>

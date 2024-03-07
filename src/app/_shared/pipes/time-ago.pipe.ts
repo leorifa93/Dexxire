@@ -27,6 +27,7 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
     let days = Math.round(Math.abs(hours / 24));
     let months = Math.round(Math.abs(days/30.416));
     let years = Math.round(Math.abs(days/365));
+
     if (Number.isNaN(seconds)){
       return '';
     } else if (seconds <= 45) {

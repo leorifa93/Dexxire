@@ -4,7 +4,7 @@
       <div class="ion-padding-top ion-padding-bottom">
         <img class="logo" style="width: 25vw" src="assets/images/logo_inline.png"/>
       </div>
-      <ion-buttons slot="end">
+      <ion-buttons slot="end" *ngIf="user">
         <app-boost-btn *ngIf="user" [user]="user"></app-boost-btn>
         <div style="position: relative">
           <ion-button class="nav-button" (click)="showNotifications()">
@@ -49,6 +49,16 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div id="container">
+    <ion-accordion-group>
+      <div *ngFor="let seo of seoTxts">
+        <ion-accordion *ngIf="placeId == seo.placeId || city === seo.city" value="first">
+          <ion-item slot="header" color="light">
+            <h1>{{seo.title | translate}}</h1>
+          </ion-item>
+          <div class="ion-padding" slot="content"><p>{{seo.description | translate}}</p></div>
+        </ion-accordion>
+      </div>
+    </ion-accordion-group>
     <ion-item lines="none" class="edit-info" *ngIf="user && getPercentOfUserDetails() !== 100">
       <div slot="start" class="info">
         <div class="single-chart small">

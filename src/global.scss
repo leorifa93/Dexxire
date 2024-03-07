@@ -434,6 +434,12 @@ capacitor-google-map, .map {
   height: 400px;
 }
 
+@media (min-width: 1000px) {
+  capacitor-google-map, .map {
+    height: 1000px;
+  }
+}
+
 ion-range {
   --bar-background-active: var(--S1, linear-gradient(180deg, #E0030C 0%, #9B0207 100%));
 }
@@ -456,8 +462,37 @@ ion-modal.edit-modal {
   --min-height: 90vh;
 }
 
+ion-modal.maintenance-modal {
+  --height: 100vh;
+  --width: 100vw;
+}
+
 ion-modal.filter-modal {
-  --height: 100%;
+//--height: 100%;
+}
+
+ion-modal.auto-height {
+  &.bottom {
+    align-items: flex-end;
+  }
+
+  --height: auto;
+
+  .ion-page {
+    position: relative;
+    display: block;
+    contain: content;
+
+    .inner-content {
+      max-height: 80vh;
+      overflow: auto;
+      padding: 10px;
+    }
+  }
+}
+
+@media screen and (min-width:1000px) {
+
 }
 
 .cards-container {
@@ -587,7 +622,34 @@ ion-datetime {
   }
 }
 
+.my-search-modal {
+  .gender-box {
+    display: grid;
+
+    .gender {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+#photoviewer-container::part(native) {
+  .share-button, .close-button {
+    color: red !important;;
+  }
+}
+
 @media only screen and (min-width: 768px) {
+  ion-modal.login-modal {
+    --width: 50vw;
+    --height:100vh;
+
+    :host ::ng-deep {
+      ion-content {
+         width: 50vw !important;
+      }
+    }
+  }
+
   .no-results-box {
     width: 60%;
   }

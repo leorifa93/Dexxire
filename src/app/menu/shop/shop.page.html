@@ -28,6 +28,6 @@
 
 <ion-footer *ngIf="selectedPackage">
   <ion-toolbar>
-    <ion-button expand="block" (click)="buy()">{{selectedPackage.price}}$ {{'PAY' | translate}}</ion-button>
+    <ion-button expand="block" (click)="buy()">{{selectedPackage.price}}$ {{'PAY' | translate}} <ion-spinner *ngIf="loading"></ion-spinner></ion-button>
   </ion-toolbar>
 </ion-footer>

@@ -13,8 +13,7 @@ import {ProfileHelper} from "../_shared/helper/Profile";
 import {Router} from "@angular/router";
 import {BuyService} from "../menu/shop/services/buy.service";
 import {DistanceHelper} from "../_shared/helper/Distance";
-
-declare var google: any;
+import { google } from 'google-maps';
 
 @Component({
   selector: 'app-discover',
@@ -59,7 +58,11 @@ export class DiscoverPage implements OnInit {
 
   loadUsers() {
     this.loading = true;
-    this.queryFilter = [];
+    this.queryFilter = [{
+      key: '_settings.showInDiscover',
+      opr: '==',
+      value: true
+    }];
 
     if (this.me.genderLookingFor.length < 3) {
       this.queryFilter.push({
@@ -77,7 +80,7 @@ export class DiscoverPage implements OnInit {
       });
     }
 
-    this.userCollectionService.getUsersByDistance({
+    return this.userCollectionService.getUsersByDistance({
       lat: this.me.currentLocation.lat,
       lng: this.me.currentLocation.lng,
     }, this.filter.perimeterDiscoverValue ? this.filter.perimeterDiscoverValue : 10, this.queryFilter).then((users: IUser[]) => {
@@ -110,6 +113,14 @@ export class DiscoverPage implements OnInit {
       this.renderUserMap();
 
       this.loading = false;
+    });
+  }
+
+  handleRefresh(ev) {
+    this.usersByDistance = [];
+
+    this.loadUsers().then(() => {
+      ev.target.complete();
     });
   }
 

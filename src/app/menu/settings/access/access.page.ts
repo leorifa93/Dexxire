@@ -48,7 +48,9 @@ export class AccessPage extends AbstractBase implements OnInit {
             const auth = getAuth();
             const user = auth.currentUser;
 
-            return deleteUser(user);
+            alert.dismiss().then(() => {
+              return deleteUser(user);
+            })
           }
         },
         {

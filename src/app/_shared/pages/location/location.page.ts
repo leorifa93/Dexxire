@@ -1,7 +1,6 @@
 import {Component, NgZone, OnInit, ViewChild} from '@angular/core';
 import {ModalController} from "@ionic/angular";
-
-declare var google: any;
+import { google } from 'google-maps';
 
 @Component({
   selector: 'app-location',

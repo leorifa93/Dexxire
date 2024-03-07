@@ -1,17 +1,20 @@
-import {ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {IUser} from "../../../interfaces/i-user";
-import {ActionSheetController, IonContent, ModalController, PickerController} from "@ionic/angular";
-import {TranslateService} from "@ngx-translate/core";
-import {UploadService} from "../../../_shared/services/upload.service";
-import {CameraService} from "../../../_shared/services/camera.service";
-import {UserCollectionService} from "../../../services/user/user-collection.service";
-import {AbstractModalController} from "../../../_shared/controller/ModalController";
-import {Ethnicity, Gender, Languages} from "../../../constants/User";
-import {CountriesService} from "../../../_shared/services/countries.service";
-import {CSS_COLOR_NAMES} from "../../../constants/Colors";
-import {LocalStorageService} from "../../../_shared/services/local-storage.service";
-import {Subscription} from "rxjs";
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { IUser } from "../../../interfaces/i-user";
+import { ActionSheetController, IonContent, ModalController, PickerController } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
+import { UploadService } from "../../../_shared/services/upload.service";
+import { CameraService } from "../../../_shared/services/camera.service";
+import { UserCollectionService } from "../../../services/user/user-collection.service";
+import { AbstractModalController } from "../../../_shared/controller/ModalController";
+import { Ethnicity, Gender, Languages } from "../../../constants/User";
+import { CountriesService } from "../../../_shared/services/countries.service";
+import { CSS_COLOR_NAMES } from "../../../constants/Colors";
+import { LocalStorageService } from "../../../_shared/services/local-storage.service";
+import { Subscription } from "rxjs";
 import countryPhoneCodes from "../../../_shared/classes/defaults/countryPhoneCodes";
+import { CountriesComponent } from 'src/app/_shared/components/countries/countries.component';
+import { ImageProofService } from 'src/app/backend/services/image-proof.service';
+import { NotificationService } from 'src/app/_shared/services/notification.service';
 
 @Component({
   selector: 'app-edit',
@@ -26,32 +29,32 @@ export class EditComponent extends AbstractModalController implements OnInit {
   maxSlides: number = 4;
   categories: any[] = [];
   genders: { key: Gender, value: string }[] = [
-    {key: Gender.Male, value: 'MALE'},
-    {key: Gender.Female, value: 'FEMALE'},
-    {key: Gender.Transsexual, value: 'TRANSSEXUAL'}
+    { key: Gender.Male, value: 'MALE' },
+    { key: Gender.Female, value: 'FEMALE' },
+    { key: Gender.Transsexual, value: 'TRANSSEXUAL' }
   ]
   ethnicities: { key: Ethnicity, value: string }[] = [
-    {key: Ethnicity.Asian, value: this.translateService.instant('ASIAN')},
-    {key: Ethnicity.Exotic, value: this.translateService.instant('EXOTIC')},
-    {key: Ethnicity.Ebony, value: this.translateService.instant('EBONY')},
-    {key: Ethnicity.Caucasian, value: this.translateService.instant('CAUCASIAN')},
-    {key: Ethnicity.MiddleEast, value: this.translateService.instant('MIDDLEEAST')},
-    {key: Ethnicity.NativeAmerican, value: this.translateService.instant('NATIVEAMERICAN')},
-    {key: Ethnicity.Latin, value: this.translateService.instant('LATIN')},
-    {key: Ethnicity.Eastindian, value: this.translateService.instant('EASTINDIAN')},
+    { key: Ethnicity.Asian, value: this.translateService.instant('ASIAN') },
+    { key: Ethnicity.Exotic, value: this.translateService.instant('EXOTIC') },
+    { key: Ethnicity.Ebony, value: this.translateService.instant('EBONY') },
+    { key: Ethnicity.Caucasian, value: this.translateService.instant('CAUCASIAN') },
+    { key: Ethnicity.MiddleEast, value: this.translateService.instant('MIDDLEEAST') },
+    { key: Ethnicity.NativeAmerican, value: this.translateService.instant('NATIVEAMERICAN') },
+    { key: Ethnicity.Latin, value: this.translateService.instant('LATIN') },
+    { key: Ethnicity.Eastindian, value: this.translateService.instant('EASTINDIAN') },
   ]
   languages: { key: Languages, value: string }[] = [
-    {key: Languages.Arabic, value: this.translateService.instant('ARABIC')},
-    {key: Languages.Chinese, value: this.translateService.instant('CHINESE')},
-    {key: Languages.English, value: this.translateService.instant('ENGLISH')},
-    {key: Languages.French, value: this.translateService.instant('FRENCH')},
-    {key: Languages.Hindi, value: this.translateService.instant('HINDI')},
-    {key: Languages.German, value: this.translateService.instant('GERMAN')},
-    {key: Languages.Japanese, value: this.translateService.instant('JAPANESE')},
-    {key: Languages.Portuguese, value: this.translateService.instant('PORTUGUESE')},
-    {key: Languages.Russian, value: this.translateService.instant('RUSSIAN')},
-    {key: Languages.Spanish, value: this.translateService.instant('SPANISH')},
-    {key: Languages.Italy, value: this.translateService.instant('ITALY')}
+    { key: Languages.Arabic, value: this.translateService.instant('ARABIC') },
+    { key: Languages.Chinese, value: this.translateService.instant('CHINESE') },
+    { key: Languages.English, value: this.translateService.instant('ENGLISH') },
+    { key: Languages.French, value: this.translateService.instant('FRENCH') },
+    { key: Languages.Hindi, value: this.translateService.instant('HINDI') },
+    { key: Languages.German, value: this.translateService.instant('GERMAN') },
+    { key: Languages.Japanese, value: this.translateService.instant('JAPANESE') },
+    { key: Languages.Portuguese, value: this.translateService.instant('PORTUGUESE') },
+    { key: Languages.Russian, value: this.translateService.instant('RUSSIAN') },
+    { key: Languages.Spanish, value: this.translateService.instant('SPANISH') },
+    { key: Languages.Italy, value: this.translateService.instant('ITALY') }
   ];
   eyeColors: string[] = ['BROWN', 'BLUE', 'HAZEL', 'GREEN', 'GRAY'];
   hairColors: string[] = ['BLONDE', 'BRUNETTE', 'BLACK', 'PLATINUM', 'RED'];
@@ -67,10 +70,10 @@ export class EditComponent extends AbstractModalController implements OnInit {
   currentStep: number = 0;
 
   constructor(private actionSheetCtrl: ActionSheetController, private translateService: TranslateService,
-              private uploadService: UploadService, private cameraService: CameraService,
-              private userService: UserCollectionService, protected modalCtrl: ModalController,
-              private countriesService: CountriesService, private localStorage: LocalStorageService, private changeDetector: ChangeDetectorRef,
-              private pickerCtrl: PickerController) {
+    private uploadService: UploadService, private cameraService: CameraService,
+    private userService: UserCollectionService, protected modalCtrl: ModalController,
+    private countriesService: CountriesService, private localStorage: LocalStorageService, private changeDetector: ChangeDetectorRef,
+    private pickerCtrl: PickerController, private imageProofService: ImageProofService, private notificationService: NotificationService) {
     super(modalCtrl)
     this.countryPhoneCodes = countryPhoneCodes;
     this.languages = this.languages.sort((a, b) => {
@@ -149,6 +152,23 @@ export class EditComponent extends AbstractModalController implements OnInit {
       this.user.genderLookingFor.splice(this.user.genderLookingFor.indexOf(gender), 1);
     } else {
       this.user.genderLookingFor.push(gender);
+    }
+  }
+
+  async showCountries() {
+    const modal = await this.modalCtrl.create({
+      component: CountriesComponent
+    });
+
+    modal.present();
+
+    const data = (await modal.onDidDismiss()).data;
+
+    if (data.country) {
+      this.user.details.nationality = {
+        code: data.country.key,
+        country: data.country.country
+      }
     }
   }
 
@@ -321,10 +341,15 @@ export class EditComponent extends AbstractModalController implements OnInit {
         role: 'destructive',
         handler: () => {
           if (isPublic) {
-            this.user.publicAlbum.splice(index, 1)
+            this.user.publicAlbum.splice(index, 1);
           } else {
             this.user.privateAlbum.splice(index, 1)
           }
+
+          const path = isPublic
+          ? `${this.user.id}/Public/${index + 1}`
+          : `${this.user.id}/Private/${index + 1}`;
+          this.uploadService.deleteAll(path);
 
           this.userService.set(this.user.id, this.user);
         }
@@ -351,7 +376,7 @@ export class EditComponent extends AbstractModalController implements OnInit {
     }
 
     if (isNaN(index)) {
-      this.imageSubscriber = this.cameraService.getPictures(limit).subscribe((base64) => {
+      this.imageSubscriber = this.cameraService.getPictures(limit).subscribe(async (base64) => {
         if (base64) {
           directoryIndex++;
 
@@ -359,7 +384,7 @@ export class EditComponent extends AbstractModalController implements OnInit {
             return;
           }
 
-          this.setImageToUploader(isPublic, isPrimary, directoryIndex, base64);
+          await this.setImageToUploader(isPublic, isPrimary, directoryIndex, base64);
         }
       })
     } else {
@@ -380,12 +405,20 @@ export class EditComponent extends AbstractModalController implements OnInit {
         : `${this.user.id}/Private/${directoryIndex}/image`;
     }
 
-    this.uploadImage(base64, path).then((pictures: any) => {
+    return this.uploadImage(base64, path).then((pictures: any) => {
       if (isPrimary) {
+        pictures.approved = false;;
         this.user.profilePictures = pictures;
         this.user.profilePictures.uploadAt = Date.now();
+        this.imageProofService.set(this.user.id, {
+          uploadAt: Date.now(),
+          userId: this.user.id,
+          username: this.user.username
+        });
       } else {
         if (isPublic) {
+          pictures.approved = false;
+
           if (!this.user.publicAlbum) {
             this.user.publicAlbum = [];
           }
@@ -395,6 +428,27 @@ export class EditComponent extends AbstractModalController implements OnInit {
           } else {
             this.user.publicAlbum[directoryIndex] = pictures;
           }
+
+          this.imageProofService.set(this.user.id, {
+            uploadAt: Date.now(),
+            userId: this.user.id,
+            username: this.user.username
+          }).then(() => {
+            this.userService.getAll(null, null, [{
+              key: 'isAdmin',
+              opr: '==',
+              value: true
+            }]).then(async (admins: IUser[]) => {
+              for (let admin of admins) {
+                await this.notificationService.sendMessage(admin, {
+                  title: 'Bilderprüfung',
+                  body: 'Es steht eine neue Bilderprüfung an von: ' + this.user.username,
+                }, 'admin', {
+                  type: 'admin'
+                });
+              }
+            })
+          })
         } else {
           if (!this.user.privateAlbum) {
             this.user.privateAlbum = [];

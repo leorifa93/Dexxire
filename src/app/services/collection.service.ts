@@ -132,6 +132,7 @@ export abstract class CollectionService {
     notChange?: boolean
   ) {
     snapshot.docChanges().forEach((change, index) => {
+      console.log(change.type);
       let docData = change.doc.data();
 
       if (!docData.id) {

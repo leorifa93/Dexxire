@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button class="nav-button" (click)="closeModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <g clip-path="url(#clip0_100_2654)">
+          <path d="M15 6L9 12L15 18" stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_100_2654">
+            <rect width="24" height="24" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </ion-button>
+    <ion-title>{{'POSITION' | translate}}</ion-title>
+  </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <h3 class="ion-text-center">{{'POSITION' | translate}} {{rang}}</h3>
+      <p class="ion-text-center">{{'YOUAREONPOSITION' | translate}} {{rang}} {{'USEABOOST' | translate}}</p>
+      <h5 class="ion-text-center">{{'BOOSTINFO' | translate}}</h5>
+      <ion-item lines="none">
+        <ion-toggle slot="start" [(ngModel)]="user.boostSettings.isInterval" (ionChange)="setInterval()"></ion-toggle>
+        <p>{{'ACTIVATEINTERVALL' | translate}}</p>
+      </ion-item>
+      <ion-select *ngIf="user.boostSettings.isInterval" [(ngModel)]="user.boostSettings.interval" (ionChange)="setInterval()">
+        <ion-select-option *ngFor="let interval of intervalOptions" [value]="interval">{{interval | translate}}</ion-select-option>
+      </ion-select>
+      <ion-label *ngIf="user.boostSettings.interval && user.boostSettings.nextBoostAt">{{'NEXTBOOSTIS' | translate}}: {{formatHour(user.boostSettings.nextBoostAt)}}</ion-label>
+      <div style="display: flex; padding: 2rem 0">
+        <div class="div-line"></div>
+        <p style="padding:0 10px">{{'OR' | translate}}</p>
+        <div class="div-line"></div>
+      </div>
+      <h5 class="ion-text-center">{{'INSTANTBOOSTINFO' | translate}}</h5>
+  </ion-content>
+
+  <ion-footer>
+    <ion-button expand="block" (click)="setBoost()">{{'USEBOOST' | translate}}</ion-button>
+  </ion-footer>

@@ -24,6 +24,10 @@ const routes: Routes = [
     loadChildren: () => import('./start-tabs/start-tabs.module').then( m => m.StartTabsPageModule)
   },
   {
+    path: 'home',
+    loadChildren: () => import('./start-tabs/start-tabs.module').then( m => m.StartTabsPageModule)
+  },
+  {
     path: 'menu',
     loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)
   },
@@ -57,6 +61,11 @@ const routes: Routes = [
         path: ':lang/:country/:federaleState/:city/:category',
         loadChildren: () => import('./discover/search/search.module').then( m => m.SearchPageModule)
 
+      },
+      {
+        path: ':lang/:country/:federaleState/:city',
+        loadChildren: () => import('./discover/search/search.module').then( m => m.SearchPageModule)
+
       }
     ]
   },
@@ -73,6 +82,22 @@ const routes: Routes = [
       }
     ]
   },
+  {
+    path: 'data-protection',
+    loadChildren: () => import('./menu/settings/data-protection/data-protection.module').then( m => m.DataProtectionPageModule)
+  },
+  {
+    path: 'agb',
+    loadChildren: () => import('./menu/settings/agb/agb.module').then( m => m.AgbPageModule)
+  },
+  {
+    path: 'backend',
+    loadChildren: () => import('./backend/backend.module').then( m => m.BackendPageModule)
+  },
+  {
+    path: 'support',
+    loadChildren: () => import('./menu/support/support.module').then(m => m.SupportPageModule)
+  }
 ];
 
 @NgModule({

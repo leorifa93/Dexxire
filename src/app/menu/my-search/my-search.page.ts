@@ -3,16 +3,15 @@ import {Gender} from "../../constants/User";
 import {IUser} from "../../interfaces/i-user";
 import {LocalStorageService} from "../../_shared/services/local-storage.service";
 import {UserCollectionService} from "../../services/user/user-collection.service";
-import {UserService} from "../../services/user/user.service";
-import {NavController, ToastController} from "@ionic/angular";
-import {TranslateService} from "@ngx-translate/core";
+import {ModalController, NavController} from "@ionic/angular";
+import {AbstractModalController} from "../../_shared/controller/ModalController";
 
 @Component({
   selector: 'app-my-search',
   templateUrl: './my-search.page.html',
   styleUrls: ['./my-search.page.scss'],
 })
-export class MySearchPage implements OnInit {
+export class MySearchPage extends AbstractModalController implements OnInit {
 
   user: IUser;
   genders: { key: Gender, value: string }[] = [
@@ -22,8 +21,9 @@ export class MySearchPage implements OnInit {
   ]
 
   constructor(private localStorage: LocalStorageService, private userCollectionService: UserCollectionService,
-              private userService: UserService, private toastCtrl: ToastController, private translateService: TranslateService,
+              protected modalCtrl: ModalController,
               private navCtrl: NavController) {
+    super(modalCtrl);
     this.localStorage.getUser().then((user) => {
       this.user = user;
     });
@@ -34,10 +34,10 @@ export class MySearchPage implements OnInit {
 
   async goBack(save: boolean = false) {
     if (save) {
-      return this.userCollectionService.set(this.user.id, this.user);
+      await this.userCollectionService.set(this.user.id, this.user);
     }
 
-    return this.navCtrl.pop();
+    this.closeModal();
   }
 
   selectGenderFor(gender: Gender) {

@@ -23,7 +23,7 @@ export class UserCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.user.currentLocation) {
+    if (this.user.currentLocation && this.me) {
       const distance = parseFloat(DistanceHelper.calcDistance(
         this.me.currentLocation.lat,
         this.me.currentLocation.lng,

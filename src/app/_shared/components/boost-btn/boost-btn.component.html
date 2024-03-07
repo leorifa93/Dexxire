@@ -1,4 +1,5 @@
 <ion-chip (click)="setBoost()">
   <ion-icon name="rocket-outline"></ion-icon>
-  <ion-label>{{rang}}</ion-label>
+  <ion-label *ngIf="!loading">{{rang}}</ion-label>
+  <ion-spinner *ngIf="loading" style="width: 20px"></ion-spinner>
 </ion-chip>

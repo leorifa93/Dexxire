@@ -191,8 +191,8 @@
           </svg>
         </ion-button>
       </div>
-      <p class="ion-padding ion-text-center">Mit der Registrierung, stimmst du dem <a (click)="showPage('data-protection')">Datenschutz</a> und <a (click)="showPage('agb')">AGBs</a> zu</p>
-      <p class="signup-text ion-text-center">Ich bin bereits registriert&nbsp;<a (click)="changeState('login')">Login?</a></p>
+      <p class="ion-padding ion-text-center">{{'WITHTHEREGISTRATION' | translate}} <a (click)="showPage('data-protection')" (click)="showPrivacy()">{{'PRICAVYPOLICY' | translate}}</a> {{'AND' | translate}} <a (click)="showPage('agb')" (click)="showTerms()">{{'TERMSOFSERVICE' | translate}}</a></p>
+      <p class="signup-text ion-text-center">{{'ALREADYSIGNEDIN' | translate}}&nbsp;<a (click)="changeState('login')">Login?</a></p>
 
     </form>
   </div>

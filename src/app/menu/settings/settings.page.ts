@@ -66,4 +66,12 @@ export class SettingsPage implements OnInit {
   showLanguages() {
     this.navCtrl.navigateForward('menu/languages');
   }
+
+  showPrivacy() {
+    return this.router.navigate(['menu/settings/data-protection']);
+  }
+
+  showTerms() {
+    return this.router.navigate(['menu/settings/agb']);
+  }
 }

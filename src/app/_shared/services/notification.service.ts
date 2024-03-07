@@ -14,13 +14,14 @@ export class NotificationService {
     title?: string,
     body: string,
     badge?: string
-  }, type: 'friend' | 'messages' | 'likes' | 'privateGallery' | 'privateGalleryRequest' | 'privateGalleryAnswer', data?: any) {
+  }, type: 'friend' | 'messages' | 'likes' | 'privateGallery' | 'privateGalleryRequest' | 'privateGalleryAnswer' | 'admin', data?: any) {
     if (!sentTo._deviceIds || sentTo._deviceIds.length === 0
       || (type === 'friend' && !sentTo._settings.notifications.friendRequests)
       || (type === 'messages' && !sentTo._settings.notifications.messages)
       || (type === 'likes' && !sentTo._settings.notifications.likes)) {
         return false;
     }
+
 
     let notification = Object.assign({
       click_action: "FCM_PLUGIN_ACTIVITY"

@@ -11,6 +11,7 @@ import {LazyLoadImageModule} from "ng-lazyload-image";
 import {FilterModule} from "../_shared/components/filter/filter.module";
 import {TranslateModule} from "@ngx-translate/core";
 import {BoostBtnModule} from "../_shared/components/boost-btn/boost-btn.module";
+import { BoostModule } from '../_shared/components/boost/boost.module';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import {BoostBtnModule} from "../_shared/components/boost-btn/boost-btn.module";
         LazyLoadImageModule,
         FilterModule,
         TranslateModule,
-        BoostBtnModule
+        BoostBtnModule,
+        BoostModule
     ],
   declarations: [HomePage],
   schemas: [NO_ERRORS_SCHEMA]

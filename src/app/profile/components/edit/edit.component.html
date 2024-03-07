@@ -45,7 +45,6 @@
   <swiper-container #editSlides auto-height="true">
     <swiper-slide>
       <h3 class="ion-text-center">{{'UPLOADPICTURES' | translate}}</h3>
-      <p class="ion-text-center">{{'UPLOADPUBLICANDPRIVATE' | translate}}</p>
       <div>
         <ion-label>{{'PUBLICPICTURES' | translate}}</ion-label>
         <div class="profile-picture-box">
@@ -100,8 +99,18 @@
       </div>
     </swiper-slide>
     <swiper-slide>
-      <h3 class="ion-text-center">{{'MYINFOS' | translate}}</h3>
-      <p class="ion-text-center">{{'TELLUSABOUTYOURSELF' | translate}}</p>
+      <h3 class="ion-text-center">{{'MYDETAILS' | translate}}</h3>
+      <p class="ion-text-center ion-margin-bottom">{{'TELLUSABOUTYOURSELF' | translate}}</p>
+      <div style="display: flex; margin: 1rem;">
+        <ion-segment class="ion-margin-end" [(ngModel)]="user._settings.units.weightType">
+          <ion-segment-button value="Lbs">lbs</ion-segment-button>
+          <ion-segment-button value="Kg">kg</ion-segment-button>
+        </ion-segment>
+        <ion-segment [(ngModel)]="user._settings.units.lengthType">
+          <ion-segment-button value="Cm">cm</ion-segment-button>
+          <ion-segment-button value="Inch">inch</ion-segment-button>
+        </ion-segment>
+      </div>
       <ion-label>{{'USERNAME' | translate}}</ion-label>
       <ion-item lines="none" class="input-item select-item ion-no-padding">
         <ion-input placeholder="{{'USERNAME' | translate}}"
@@ -112,20 +121,6 @@
         <ion-select [multiple]="true" [(ngModel)]="user.categories">
           <ion-select-option *ngFor="let category of categories"
                              [value]="category.key">{{category.value}}</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-label>{{'ethnicity' | translate}}</ion-label>
-      <ion-item lines="none" class="input-item select-item ion-no-padding">
-        <ion-select [(ngModel)]="user.details.ethnicity">
-          <ion-select-option *ngFor="let ethnicity of ethnicities"
-                             [value]="ethnicity.key">{{ethnicity.value}}</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-label>{{'nationality' | translate}}</ion-label>
-      <ion-item lines="none" class="input-item select-item ion-no-padding">
-        <ion-select (ionChange)="onSelectCountry($event)" [value]="user.details.nationality?.code">
-          <ion-select-option *ngFor="let country of countries"
-                             [value]="country.key">{{country.country}}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-label>{{'languages' | translate}}</ion-label>
@@ -139,7 +134,53 @@
       <ion-item lines="none" class="input-item select-item ion-no-padding">
         <ion-input type="number" [(ngModel)]="user.fakeAge" [min]="18"></ion-input>
       </ion-item>
-      <ion-label>{{'chest' | translate}}</ion-label>
+      <ion-label>{{'ethnicity' | translate}}</ion-label>
+      <ion-item lines="none" class="input-item select-item ion-no-padding">
+        <ion-select [(ngModel)]="user.details.ethnicity">
+          <ion-select-option *ngFor="let ethnicity of ethnicities"
+                             [value]="ethnicity.key">{{ethnicity.value}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-label>{{'nationality' | translate}}</ion-label>
+      <ion-item lines="none" class="input-item select-item ion-no-padding" (click)="showCountries()">
+        <p style="cursor: pointer;">{{user.details.nationality?.country}}</p>
+      </ion-item>
+      <ion-label>{{'height' | translate}}</ion-label>
+      <ion-item lines="none" class="input-item select-item ion-no-padding" (click)="openPicker(
+        'height',
+        user._settings.units.lengthType === 'Inch' ? 'inch' : 'cm',
+        user.gender === 1
+        ? user._settings.units.lengthType === 'Inch' ? getInchFromCm(130)  : 130
+        : user._settings.units.lengthType === 'Inch' ? getInchFromCm(130)  : 130,
+        user.gender === 1
+        ? user._settings.units.lengthType === 'Inch' ? getInchFromCm(220)  : 220
+        : user._settings.units.lengthType === 'Inch' ? getInchFromCm(220)  : 220,
+        user.gender === 1
+        ? user._settings.units.lengthType === 'Inch' ? getInchFromCm(180)  : 180
+        : user._settings.units.lengthType === 'Inch' ? getInchFromCm(165)  : 165
+        )">
+        <p>{{user._settings.units.lengthType === 'Inch' ? user.details.height?.inch : user.details.height?.cm}}</p>
+        <ion-label slot="end">{{user._settings.units.lengthType === 'Inch' ? 'inch' : 'cm'}}</ion-label>
+      </ion-item>
+      <ion-label>{{'weight' | translate}}</ion-label>
+      <ion-item lines="none" class="input-item select-item ion-no-padding" (click)="openPicker(
+        'weight',
+        user._settings.units.weightType === 'Lbs' ? 'lbs' : 'kg',
+        user.gender === 1
+        ? user._settings.units.weightType === 'Lbs' ? getLbsFromKg(60)  : 60
+        : user._settings.units.weightType === 'Lbs' ? getLbsFromKg(40)  : 40,
+        user.gender === 1
+        ? user._settings.units.weightType === 'Lbs' ? getLbsFromKg(250)  : 250
+        : user._settings.units.weightType === 'Lbs' ? getLbsFromKg(200)  : 200,
+        user.gender === 1
+        ? user._settings.units.weightType === 'Lbs' ? getLbsFromKg(80) : 80
+        :user._settings.units.weightType === 'Lbs' ? getLbsFromKg(60)  : 60
+
+        )">
+        <p>{{user._settings.units.weightType === 'Lbs' ? user.details.weight?.lbs : user.details.weight?.kg}}</p>
+        <ion-label slot="end">{{user._settings.units.weightType === 'Lbs' ? 'lbs' : 'kg'}}</ion-label>
+      </ion-item>
+      <ion-label>{{(user.gender === 1 ? 'chest' : 'breast') | translate}}</ion-label>
       <ion-item lines="none" class="input-item select-item ion-no-padding" (click)="openPicker(
         'chest',
         user._settings.units.lengthType === 'Inch' ? 'inch' : 'cm',
@@ -162,54 +203,6 @@
           <p>{{user.details.chestCup}}</p>
         </ion-item>
       </div>
-      <ion-label>{{'eyeColor' | translate}}</ion-label>
-      <ion-item style="height: 45px" lines="none" class="input-item select-item ion-no-padding" (click)="openPicker(
-        'eyeColor'
-        )">
-        <p>{{user.details.eyeColor | translate}}</p>
-        <ion-label slot="end"></ion-label>
-      </ion-item>
-      <ion-label>{{'hairColor' | translate}}</ion-label>
-      <ion-item style="height: 45px" lines="none" class="input-item select-item ion-no-padding" (click)="openPicker(
-        'hairColor'
-        )">
-        <p>{{user.details.hairColor | translate}}</p>
-      </ion-item>
-      <ion-label>{{'weight' | translate}}</ion-label>
-      <ion-item lines="none" class="input-item select-item ion-no-padding" (click)="openPicker(
-        'weight',
-        user._settings.units.weightType === 'Lbs' ? 'lbs' : 'kg',
-        user.gender === 1
-        ? user._settings.units.weightType === 'Lbs' ? getLbsFromKg(60)  : 60
-        : user._settings.units.weightType === 'Lbs' ? getLbsFromKg(40)  : 40,
-        user.gender === 1
-        ? user._settings.units.weightType === 'Lbs' ? getLbsFromKg(250)  : 250
-        : user._settings.units.weightType === 'Lbs' ? getLbsFromKg(200)  : 200,
-        user.gender === 1
-        ? user._settings.units.weightType === 'Lbs' ? getLbsFromKg(80) : 80
-        :user._settings.units.weightType === 'Lbs' ? getLbsFromKg(60)  : 60
-
-        )">
-        <p>{{user._settings.units.weightType === 'Lbs' ? user.details.weight?.lbs : user.details.weight?.kg}}</p>
-        <ion-label slot="end">{{user._settings.units.weightType === 'Lbs' ? 'lbs' : 'kg'}}</ion-label>
-      </ion-item>
-      <ion-label>{{'height' | translate}}</ion-label>
-      <ion-item lines="none" class="input-item select-item ion-no-padding" (click)="openPicker(
-        'height',
-        user._settings.units.lengthType === 'Inch' ? 'inch' : 'cm',
-        user.gender === 1
-        ? user._settings.units.lengthType === 'Inch' ? getInchFromCm(130)  : 130
-        : user._settings.units.lengthType === 'Inch' ? getInchFromCm(130)  : 130,
-        user.gender === 1
-        ? user._settings.units.lengthType === 'Inch' ? getInchFromCm(220)  : 220
-        : user._settings.units.lengthType === 'Inch' ? getInchFromCm(220)  : 220,
-        user.gender === 1
-        ? user._settings.units.lengthType === 'Inch' ? getInchFromCm(180)  : 180
-        : user._settings.units.lengthType === 'Inch' ? getInchFromCm(165)  : 165
-        )">
-        <p>{{user._settings.units.lengthType === 'Inch' ? user.details.height?.inch : user.details.height?.cm}}</p>
-        <ion-label slot="end">{{user._settings.units.lengthType === 'Inch' ? 'inch' : 'cm'}}</ion-label>
-      </ion-item>
       <ion-label>{{'waist' | translate}}</ion-label>
       <ion-item lines="none" class="input-item select-item ion-no-padding" (click)="openPicker(
         'waist',
@@ -244,6 +237,19 @@
         <p>{{user._settings.units.lengthType === 'Inch' ? user.details.hips?.inch : user.details.hips?.cm}}</p>
         <ion-label slot="end">{{user._settings.units.lengthType === 'Inch' ? 'inch' : 'cm'}}</ion-label>
       </ion-item>
+      <ion-label>{{'eyeColor' | translate}}</ion-label>
+      <ion-item style="height: 45px" lines="none" class="input-item select-item ion-no-padding" (click)="openPicker(
+        'eyeColor'
+        )">
+        <p>{{user.details.eyeColor | translate}}</p>
+        <ion-label slot="end"></ion-label>
+      </ion-item>
+      <ion-label>{{'hairColor' | translate}}</ion-label>
+      <ion-item style="height: 45px" lines="none" class="input-item select-item ion-no-padding" (click)="openPicker(
+        'hairColor'
+        )">
+        <p>{{user.details.hairColor | translate}}</p>
+      </ion-item>
       <ion-label>{{'hairLength' | translate}}</ion-label>
       <ion-item style="height: 45px" lines="none" class="input-item select-item ion-no-padding" (click)="openPicker(
         'hairLength'
@@ -252,7 +258,7 @@
       </ion-item>
     </swiper-slide>
     <swiper-slide>
-      <h3 class="ion-text-center">{{'MYDETAILS' | translate}}</h3>
+      <h3 class="ion-text-center">{{'MYINFOS' | translate}}</h3>
       <p class="ion-text-center">{{'ENTERCONTACTDETAILS' | translate}}</p>
       <ion-label>{{'PHONENUMBER' | translate}}</ion-label>
       <ion-item lines="none" class="input-item select-item ion-no-padding">
@@ -310,7 +316,7 @@
 <ion-footer>
   <ion-toolbar>
     <div class="btn-container">
-      <ion-button expand="block" (click)="save()" style="width:100%">{{'SAVE' | translate}}</ion-button>
+      <ion-button [disabled]="!user.username" expand="block" (click)="save()" style="width:100%">{{'SAVE' | translate}}</ion-button>
     </div>
   </ion-toolbar>
 </ion-footer>

@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button class="nav-button" (click)="closeModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <g clip-path="url(#clip0_100_2654)">
+          <path d="M15 6L9 12L15 18" stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+        <defs>
+          <clipPath id="clip0_100_2654">
+            <rect width="24" height="24" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
+    </ion-button>
+    <ion-button color="success" slot="end" size="small" (click)="setAllProved()" [disabled]="hasAllProved">Als erledigt markieren</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid *ngIf="user"> 
+    <h3>Profilbild</h3>
+    <ion-row>
+      <ion-col sizeXs="6">
+        <img (click)="showImg(user.profilePictures.thumbnails.big)" [src]="user.profilePictures.thumbnails.medium" />
+        <div>
+          <ion-text color="success" *ngIf="user.profilePictures.approved">Geprüft</ion-text>
+          <ion-text color="danger" *ngIf="!user.profilePictures.approved">Nicht geprüft</ion-text>
+          <ion-buttons class="ion-margin-top" *ngIf="!user.profilePictures.approved">
+            <ion-button color="success" (click)="user.profilePictures.approved = true; checkAllProvements()">
+              <ion-icon name="checkmark-outline"></ion-icon>
+            </ion-button>
+            <ion-button color="danger">
+              Ersetzen
+            </ion-button>
+          </ion-buttons>
+        </div>
+      </ion-col>
+    </ion-row>
+    <h3>Öffentliche Bilder</h3>
+    <ion-row>
+      <ion-col *ngFor="let picture of user.publicAlbum; let i = index" sizeXs="3">
+        <img (click)="showImg(picture.thumbnails.big)" [src]="picture.thumbnails.medium" />
+        <div>
+          <ion-text color="success" *ngIf="picture.approved">Geprüft</ion-text>
+          <ion-text color="danger" *ngIf="!picture.approved">Nicht geprüft</ion-text>
+          <ion-buttons class="ion-margin-top" *ngIf="!picture.approved">
+            <ion-button color="success" (click)="picture.approved = true; checkAllProvements()">
+              <ion-icon name="checkmark-outline"></ion-icon>
+            </ion-button>
+            <ion-button (click)="remove(i)" color="danger">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

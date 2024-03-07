@@ -36,9 +36,11 @@ export class SwipeControlsComponent implements OnInit {
     this.localStorage.getUser().then((user) => {
       this.me = user;
 
-      this.swipeControlsService.likeListener(this.user.id, this.me.id, (snapshot) => {
-        this.likesData = snapshot.data();
-      });
+      if (this.me) {
+        this.swipeControlsService.likeListener(this.user.id, this.me.id, (snapshot) => {
+          this.likesData = snapshot.data();
+        });
+      }
     });
   }
 

@@ -66,7 +66,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div *ngIf="me?.membership !== 1">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div>
     <div class="user-container ion-padding">
       <div class="no-results-box" *ngIf="!loading && usersByDistance.length === 0">
         <h4 class="ion-text-center">{{'NOUSERSINAREA' | translate}}</h4>
@@ -86,7 +89,7 @@
       </ion-buttons>
     </div>
   </div>
-  <div *ngIf="me?.membership === 1" class="ion-padding">
+  <div *ngIf="false" class="ion-padding">
     <h6 class="light-h6 ion-text-center">{{'FUNCTIONNOTAVAILABLE' | translate}}</h6>
     <app-abonnements *ngIf="me" [me]="me" (onBuy)="subscribe($event)"></app-abonnements>
   </div>

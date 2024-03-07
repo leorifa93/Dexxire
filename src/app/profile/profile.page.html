@@ -1,3 +1,4 @@
+<ion-backdrop *ngIf="!me" [visible]="true" [tappable]="true" (ionBackdropTap)="showLogin()"></ion-backdrop>
 <ion-content [fullscreen]="true">
   <ion-header [collapse]="true">
     <ion-toolbar>
@@ -8,7 +9,7 @@
         <img class="logo" style="width: 25vw" src="assets/images/logo_inline.png"/>
       </div>
       <ion-buttons slot="end">
-        <app-boost-btn *ngIf="me" [user]="me"></app-boost-btn>
+        <app-boost-btn *ngIf="me?.id === user?.id" [user]="me"></app-boost-btn>
         <ion-button class="nav-button" (click)="showOptions()">
           <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
         </ion-button>
@@ -102,7 +103,7 @@
               <div class="control-btn" [ngClass]="{'active': contentState === 'PRIVATEGALLERY'}"
                    (click)="changeContentState('PRIVATEGALLERY')"><p
                 class="p-extended">{{'PRIVATEGALLERY' | translate}}</p>
-                <ion-badge *ngIf="user?._privateGalleryRequests?.length > 0" style="position: absolute;top: 0;right: 0;">
+                <ion-badge *ngIf="user?._privateGalleryRequests?.length > 0 && user?.id === me?.id" style="position: absolute;top: 0;right: 0;">
                   {{user?._privateGalleryRequests.length}}
                 </ion-badge>
               </div>
@@ -127,9 +128,9 @@
             </div>
 
             <h4 class="ion-text-left">{{'ABOUTME' | translate}}</h4>
-            <table class="user-details">
-              <tr *ngFor="let detail of profileDetails">
-                <td>{{detail | translate}}</td>
+            <table class="user-details" *ngFor="let arr of profileDetails">
+              <tr *ngFor="let detail of arr">
+                <td>{{(detail === 'chest' && user?.gender !== 1 ? 'chestgirl' : detail) | translate}}</td>
                 <td *ngIf="!detailExists(detail)">{{'NOTSPECIFIED' | translate}}</td>
                 <td *ngIf="detailExists(detail)">{{getDetail(detail)}}</td>
               </tr>
@@ -145,7 +146,7 @@
               </div>
             </div>
             <ion-grid
-              *ngIf="me?.id === user?.id || (me?.membership === 2 || me?.membership === 3) || user?._privateGalleryAccessUsers?.includes(me?.id)">
+              *ngIf="me?.id === user?.id || me?.membership === 3 || user?._privateGalleryAccessUsers?.includes(me?.id)">
               <ion-row>
                 <ion-col size-xs="6" size-md="3" size-lg="3" *ngFor="let picture of user?.privateAlbum; let i = index">
                   <img  (click)="showImg(false, i + 1)" class="private-img" [src]="picture.thumbnails.medium"/>
@@ -153,7 +154,7 @@
               </ion-row>
             </ion-grid>
             <div
-              *ngIf="me?.id !== user?.id && me?.membership === 1 && !user?._privateGalleryAccessUsers?.includes(me?.id)">
+              *ngIf="me?.id !== user?.id && me?.membership !== 3 && !user?._privateGalleryAccessUsers?.includes(me?.id)">
               <app-text-banner [textKey]="'PRIVATEIMAGESNOPERMISSION'"></app-text-banner>
               <ion-button expand="block" (click)="sendRequestForPrivateGallery()" [disabled]="user?._privateGalleryRequests?.includes(me?.id)">{{(user?._privateGalleryRequests?.includes(me?.id) ? 'REQUESTALREADYSENT' : 'SENDREQUEST') | translate}}</ion-button>
             </div>

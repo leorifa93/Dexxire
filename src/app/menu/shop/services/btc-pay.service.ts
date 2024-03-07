@@ -31,10 +31,11 @@ export class BtcPayService {
             if (data.status === "paid") {
               btcpay.hideFrame();
               request.unsubscribe();
+              resolve(res.data.id);
 
               const invoiceSubscriber = this.getInvoice(res.data.id).subscribe((invoice: any) => {
-                if (invoice.data.status === 'complete') {
-                  resolve(res.data.id);
+                if (invoice.data.status === 'confirmed') {
+                  //resolve(res.data.id);
                 } else {
                   resolve(false);
                 }

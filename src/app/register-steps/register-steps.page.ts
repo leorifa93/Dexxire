@@ -14,6 +14,8 @@ import {deleteUser, getAuth} from "firebase/auth";
 import {AbstractBase} from "../_shared/classes/AbstractBase";
 import {ProfileHelper} from "../_shared/helper/Profile";
 import {AvatarsComponent} from "../_shared/components/avatars/avatars.component";
+import { ImageProofService } from '../backend/services/image-proof.service';
+import { NotificationService } from '../_shared/services/notification.service';
 
 @Component({
   selector: 'app-register-steps',
@@ -36,7 +38,8 @@ export class RegisterStepsPage implements OnInit {
   constructor(protected localStorage: LocalStorageService, private userCollectionService: UserCollectionService,
               private modalCtrl: ModalController, private router: Router, private translateService: TranslateService,
               private alertCtrl: AlertController, private cameraService: CameraService, private uploadService: UploadService,
-              protected navCtrl: NavController, protected changeDetector: ChangeDetectorRef) {
+              protected navCtrl: NavController, protected changeDetector: ChangeDetectorRef, private imageProofService: ImageProofService,
+              private notificationService: NotificationService) {
     this.localStorage.getUser().then((user) => this.user = user);
   }
 
@@ -153,7 +156,8 @@ export class RegisterStepsPage implements OnInit {
         friendRequests: true,
         likes: true
       },
-      currentLang: this.translateService.currentLang
+      currentLang: this.translateService.currentLang,
+      showInDiscover: false
     };
 
     if (!this.user.age) {
@@ -181,6 +185,26 @@ export class RegisterStepsPage implements OnInit {
         this.user.profilePictures.uploadAt = Date.now();
 
         await this.userCollectionService.set(this.user.id, this.user);
+        await this.imageProofService.set(this.user.id, {
+          uploadAt: Date.now(),
+          userId: this.user.id,
+          username: this.user.username
+        }).then(() => {
+          this.userCollectionService.getAll(null, null, [{
+            key: 'isAdmin',
+            opr: '==',
+            value: true
+          }]).then((admins: IUser[]) => {
+            for (let admin of admins) {
+              this.notificationService.sendMessage(admin, {
+                title: 'Bilderprüfung',
+                body: 'Es steht eine neue Bilderprüfung an von: ' + this.user.username,
+              }, 'admin', {
+                type: 'admin'
+              });
+            }
+          })
+        })
 
         return this.router.navigate(['/start-tabs']);
       });

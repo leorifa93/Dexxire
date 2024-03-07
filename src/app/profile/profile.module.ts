@@ -15,6 +15,7 @@ import {SwipeControlsModule} from "../_shared/components/swipe-controls/swipe-co
 import {TextBannerModule} from "../_shared/components/text-banner/text-banner.module";
 import {EditComponent} from "./components/edit/edit.component";
 import {BoostBtnModule} from "../_shared/components/boost-btn/boost-btn.module";
+import { CountriesModule } from '../_shared/components/countries/countries.module';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import {BoostBtnModule} from "../_shared/components/boost-btn/boost-btn.module";
         TranslateModule,
         SwipeControlsModule,
         TextBannerModule,
-        BoostBtnModule
+        BoostBtnModule,
+        CountriesModule
     ],
   declarations: [ProfilePage, EditComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

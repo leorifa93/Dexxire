@@ -6,6 +6,9 @@ import {LocalStorageService} from "../_shared/services/local-storage.service";
 import {NavController} from "@ionic/angular";
 import {IMessages} from "./interfaces/i-messages";
 import {Router} from "@angular/router";
+import algoliasearch, {SearchClient, SearchIndex} from "algoliasearch";
+import {IUser} from "../interfaces/i-user";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-chats',
@@ -16,6 +19,12 @@ export class ChatsPage extends AbstractBase implements OnInit {
 
   chats: IMessages[] = [];
   loading: boolean = true;
+  client: SearchClient;
+  index: SearchIndex;
+  searchString: string;
+  searchedFriends: IUser[] = [];
+  maxPages: number = 0;
+  currentPage: number = 0;
   constructor(protected localStorage: LocalStorageService, protected navCtrl: NavController,
               protected changeDetector: ChangeDetectorRef, private chatsCollectionService: ChatsCollectionService,
               private router: Router) {
@@ -24,8 +33,55 @@ export class ChatsPage extends AbstractBase implements OnInit {
 
   ngOnInit() {
     this.afterUserLoaded = () => {
+      this.client = algoliasearch(environment.algolia.appId, environment.algolia.apiKey);
+      this.index = this.client.initIndex('dexxire');
+      const searchableAttributes = [
+        'id',
+        'username',
+        'location.location',
+      ];
+
+      this.index.setSettings({
+        customRanking: ['asc(username)'],
+        searchableAttributes: searchableAttributes
+      });
       this.getAllChats();
     }
+  }
+
+  onSearch() {
+    this.searchedFriends = [];
+
+    this.search(0);
+  }
+
+  private search(page: number) {
+    let filter = '';
+
+    for (let userId of this.user._friendsList) {
+      filter += '(ObjectID:' + userId + ')';
+    }
+
+
+    this.index.search(this.searchString, {
+      //page: page,
+      filters: filter
+    }).then((data: any) => {
+      var resultUsers = [];
+
+      console.log(data.hits);
+      for (let user of data.hits) {
+        if (this.user.genderLookingFor.includes(user.gender) && user.genderLookingFor.includes(this.user.gender)) {
+          resultUsers.push(user);
+        }
+      }
+
+      this.searchedFriends = this.searchedFriends.concat(resultUsers);
+      this.maxPages = data.nBPages;
+      this.currentPage = data.page;
+    });
+
+    //this.keyBoardService.closeKeyBoard();
   }
 
   getAllChats() {

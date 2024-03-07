@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-back-button defaultHref="/login" icon="chevron-back-outline" text="" class="nav-button"
+    (click)="goBack()">
+    </ion-back-button>
+    <ion-title>{{'SUPPORT' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense" class="ion-margin-bottom">
+    <ion-toolbar>
+      <ion-title size="large">{{'SUPPORT' | translate}}</ion-title>
+    </ion-toolbar>
+    <h1>{{'SUPPORTINFO' | translate}}</h1>
+  </ion-header>
+  <ion-item lines="none" class="ion-item ion-no-padding">
+    <fieldset  class="input-item">
+      <legend>{{'REFERENCE' | translate}}</legend>
+      <ion-input placeholder="{{'REFERENCE' | translate}}"></ion-input>
+    </fieldset>
+  </ion-item>
+  <ion-item lines="none" class="ion-item ion-no-padding">
+    <fieldset  class="input-item">
+      <legend>{{'MESSAGE' | translate}}</legend>
+      <ion-textarea [autoGrow]="true" [autocapitalize]="true" rows="20" cols="5"></ion-textarea>
+    </fieldset>
+  </ion-item>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block">{{'SEND' | translate}}</ion-button>
+</ion-footer>

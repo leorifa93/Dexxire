@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {LocalStorageService} from "./local-storage.service";
 import {Geolocation} from '@capacitor/geolocation';
 import {Geohash, geohashForLocation} from "geofire-common";
 import {Capacitor} from "@capacitor/core";
-
-declare var google;
+import {ProfileHelper} from "../helper/Profile";
+import { google } from 'google-maps';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +14,21 @@ declare var google;
 export class LocationService {
 
   private environment = environment;
+  GoogleAutoComplete: any;
+  geocoder: any;
+  autocomplete: { input: string; };
+  autocompleteItems: any[];
 
   constructor(
     private geoLocation: Geolocation,
     private http: HttpClient,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private zone: NgZone
   ) {
+    this.GoogleAutoComplete = new google.maps.places.AutocompleteService();
+    this.geocoder = new google.maps.Geocoder();
+    this.autocomplete = {input: ''};
+    this.autocompleteItems = [];
   }
 
   async detectCurrentLocation(): Promise<{lat: number, lng: number, hash: Geohash}> {
@@ -36,10 +45,15 @@ export class LocationService {
           });
         }).catch(async (err) => {
           const latLang = await this.getGeoLatLng(user.location.placeId);
+          const randomLocation = ProfileHelper.randomGeo({
+            latitude: latLang.lat,
+            longitude: latLang.lng
+          }, 5000);
+
           resolve({
-            lat: latLang.lat,
-            lng: latLang.lng,
-            hash: geohashForLocation([latLang.lat, latLang.lng])
+            lat: randomLocation.latitude,
+            lng: randomLocation.longitude,
+            hash: geohashForLocation([randomLocation.latitude, randomLocation.longitude])
           });
         });
       } else {
@@ -51,10 +65,15 @@ export class LocationService {
           });
         }, async (err) => {
           const latLang = await this.getGeoLatLng(user.location.placeId);
+          const randomLocation = ProfileHelper.randomGeo({
+            latitude: latLang.lat,
+            longitude: latLang.lng
+          }, 5000);
+
           resolve({
-            lat: latLang.lat,
-            lng: latLang.lng,
-            hash: geohashForLocation([latLang.lat, latLang.lng])
+            lat: randomLocation.latitude,
+            lng: randomLocation.longitude,
+            hash: geohashForLocation([randomLocation.latitude, randomLocation.longitude])
           });
         });
       }
@@ -122,6 +141,8 @@ export class LocationService {
 
           properAddress.pincode = addr.long_name;
         }
+
+        properAddress.locality = properAddress.locality || properAddress.area;
       });
     }
 
@@ -180,6 +201,41 @@ export class LocationService {
       }, (data) => {
         resolve(data);
       });
+    })
+  }
+
+  getGeoFromCity(city: string, country?: string, federaleState?: string): Promise<{lat: number, lng: number, placeId: string}> {
+    return new Promise((resolve, reject) => {
+      const params: any = {
+        input: federaleState ? city + ' ' + federaleState : city,
+        types: ['(cities)']
+      };
+  
+      if (country) {
+        params.componentRestrictions = {country: country};
+      }
+  
+      this.GoogleAutoComplete.getPlacePredictions(params,
+        (predictions: any) => {
+          this.autocompleteItems = [];
+          this.zone.run(async () => {
+  
+            if (predictions) {
+              predictions.forEach((prediction: any) => {
+                this.autocompleteItems.push(prediction);
+              });
+  
+              for (let item of this.autocompleteItems) {
+               this.getGeoLatLng(item.place_id).then((res: any) => {
+                res.placeId = item.place_id;
+                resolve(res);
+               });
+              }
+            } else {
+              reject();
+            }
+          });
+        });
     })
   }
 

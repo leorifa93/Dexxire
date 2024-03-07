@@ -17,6 +17,8 @@ import {IonicStorageModule} from "@ionic/storage-angular";
 import {CustomSplashComponent} from "./_shared/components/custom-splash/custom-splash.component";
 import {getFirestore, connectFirestoreEmulator} from "firebase/firestore";
 import {connectStorageEmulator, getStorage} from "firebase/storage";
+import {MaintenanceModule} from "./_shared/components/maintenance/maintenance.module";
+import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2/ngx';
 
 const app = initializeApp(environment.firebaseConfig);
 
@@ -46,8 +48,8 @@ if (!environment.production) {
       deps: [HttpClient]
     },
     defaultLanguage: 'en'
-  }), HttpClientModule, IonicStorageModule.forRoot()],
-  providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, Storage, TranslateService, TranslateStore],
+  }), HttpClientModule, IonicStorageModule.forRoot(), MaintenanceModule],
+  providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, Storage, TranslateService, TranslateStore, InAppPurchase2],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

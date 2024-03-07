@@ -14,6 +14,7 @@
 		504EC30F1FED79650016851F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 504EC30E1FED79650016851F /* Assets.xcassets */; };
 		504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 504EC3101FED79650016851F /* LaunchScreen.storyboard */; };
 		50B271D11FEDC1A000F3C39B /* public in Resources */ = {isa = PBXBuildFile; fileRef = 50B271D01FEDC1A000F3C39B /* public */; };
+		A30EF2D32B8FC29C008BC8C9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A30EF2D22B8FC29C008BC8C9 /* StoreKit.framework */; };
 		A35C54AB2B6C1E4500E90C90 /* client_750696506520-e4vn1idu81b2cl2fsfj47ulhlcnn6ft0.apps.googleusercontent.com.plist in Resources */ = {isa = PBXBuildFile; fileRef = A35C54AA2B6C1E4500E90C90 /* client_750696506520-e4vn1idu81b2cl2fsfj47ulhlcnn6ft0.apps.googleusercontent.com.plist */; };
 		A369ED082B3765E60076CF17 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A369ED072B3765E60076CF17 /* GoogleService-Info.plist */; };
 		E6880087EA011AB0462365EA /* Pods_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3760ED723DF0ABAEEAA7A3 /* Pods_App.framework */; };
@@ -30,6 +31,7 @@
 		504EC3111FED79650016851F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		504EC3131FED79650016851F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50B271D01FEDC1A000F3C39B /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
+		A30EF2D22B8FC29C008BC8C9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A35C54AA2B6C1E4500E90C90 /* client_750696506520-e4vn1idu81b2cl2fsfj47ulhlcnn6ft0.apps.googleusercontent.com.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "client_750696506520-e4vn1idu81b2cl2fsfj47ulhlcnn6ft0.apps.googleusercontent.com.plist"; path = "../../../../../../Downloads/client_750696506520-e4vn1idu81b2cl2fsfj47ulhlcnn6ft0.apps.googleusercontent.com.plist"; sourceTree = "<group>"; };
 		A369ED042B363BD30076CF17 /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
 		A369ED072B3765E60076CF17 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -43,6 +45,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6880087EA011AB0462365EA /* Pods_App.framework in Frameworks */,
+				A30EF2D32B8FC29C008BC8C9 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +91,7 @@
 		6CEFE810CE12E416EEFADFB1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A30EF2D22B8FC29C008BC8C9 /* StoreKit.framework */,
 				BB3760ED723DF0ABAEEAA7A3 /* Pods_App.framework */,
 			);
 			name = Frameworks;
@@ -378,7 +382,7 @@
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 1.4;
 				DEVELOPMENT_TEAM = V48PBQ9G27;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = App/Info.plist;
@@ -386,7 +390,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1;
+				MARKETING_VERSION = 1.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.digiminds.dexxire;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -405,14 +409,14 @@
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 1.4;
 				DEVELOPMENT_TEAM = V48PBQ9G27;
 				INFOPLIST_FILE = App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Dexxire;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.digiminds.dexxire;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

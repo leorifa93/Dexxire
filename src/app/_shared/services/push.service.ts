@@ -60,6 +60,8 @@ export class PushService {
         });
       } else if (data.type === DataType.PrivateGalleryAnswer) {
         return this.router.navigate(['/profile/' + data.userId])
+      } else if (data.type === DataType.Admin) {
+        return this.router.navigate(['/backend']);
       }
     }
 

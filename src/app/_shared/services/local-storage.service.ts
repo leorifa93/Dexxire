@@ -54,4 +54,12 @@ export class LocalStorageService {
   public getDeviceId() {
     return this._storage.get('deviceId');
   }
+
+  public getDiscoverInfo() {
+    return this._storage.get('discoverInfo');
+  }
+
+  public setDiscoverInfo(info: boolean = true) {
+    return this._storage.set('discoverInfo', info);
+  }
 }

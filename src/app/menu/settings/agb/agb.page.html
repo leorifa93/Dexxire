@@ -1,0 +1,12 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-back-button defaultHref="/login" icon="chevron-back-outline" text="" class="nav-button"
+    (click)="goBack()">
+    </ion-back-button>
+    <ion-title>{{'TERMSOFSERVICE' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div innerHTML="{{'AGB' | translate}}"></div>
+</ion-content>

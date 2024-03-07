@@ -109,5 +109,10 @@
       <p>{{'SETTINGS' | translate}}</p>
       <ion-note slot="end"></ion-note>
     </ion-item>
+    <ion-item lines="none" class="setting-item" [button]="true" (click)="showSupport()">
+      <ion-icon slot="start" name="chatbox-ellipses-outline"></ion-icon>
+      <p>{{'SUPPORT' | translate}}</p>
+      <ion-note slot="end"></ion-note>
+    </ion-item>
   </div>
 </ion-content>

@@ -1,24 +1,30 @@
-import {Component} from '@angular/core';
-import {UserService} from "../services/user/user.service";
-import {IUser} from "../interfaces/i-user";
-import {LocalStorageService} from "../_shared/services/local-storage.service";
-import {Router} from "@angular/router";
-import {AlertController, ModalController} from "@ionic/angular";
-import {FilterComponent} from "../_shared/components/filter/filter.component";
-import {UserCollectionService} from "../services/user/user-collection.service";
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { UserService } from "../services/user/user.service";
+import { IUser } from "../interfaces/i-user";
+import { LocalStorageService } from "../_shared/services/local-storage.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AlertController, ModalController } from "@ionic/angular";
+import { FilterComponent } from "../_shared/components/filter/filter.component";
+import { UserCollectionService } from "../services/user/user-collection.service";
 import firebase from "firebase/compat";
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
-import {ProfileHelper} from "../_shared/helper/Profile";
-import {geohashForLocation} from "geofire-common";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Capacitor} from "@capacitor/core";
-import {AppIcon} from "@capacitor-community/app-icon";
-import {Membership} from "../constants/User";
-import {BuyService} from "../menu/shop/services/buy.service";
-import {TranslateService} from "@ngx-translate/core";
-import {CollectionService} from "../services/collection.service";
-import {EditComponent} from "../profile/components/edit/edit.component";
+import { ProfileHelper } from "../_shared/helper/Profile";
+import { geohashForLocation } from "geofire-common";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Capacitor } from "@capacitor/core";
+import { AppIcon } from "@capacitor-community/app-icon";
+import { Gender, Membership } from "../constants/User";
+import { BuyService } from "../menu/shop/services/buy.service";
+import { TranslateService } from "@ngx-translate/core";
+import { CollectionService } from "../services/collection.service";
+import { EditComponent } from "../profile/components/edit/edit.component";
+import { CameraService } from "../_shared/services/camera.service";
+import { LoginPage } from '../login/login.page';
+import { LocationService } from '../_shared/services/location.service';
+import { SeoArr } from '../constants/Seo';
 
+
+declare var Veriff: any;
 
 @Component({
   selector: 'app-home',
@@ -43,14 +49,34 @@ export class HomePage {
   snapshots: any[] = [];
   lastDoc: any;
   filteredUserIds: string[] = [];
+  country: string;
+  city: string;
+  federaleState: string;
+  loginModal: any;
+  lang: string;
+  placeId: string;
+  seoTxts: any [] = SeoArr;
 
   constructor(private userService: UserService, private localStorageService: LocalStorageService, private router: Router,
-              private modalCtrl: ModalController, private localStorage: LocalStorageService, private userCollectionService: UserCollectionService,
-              private httpClient: HttpClient, private buyService: BuyService, private alertCtrl: AlertController, private translateService: TranslateService) {
+    private modalCtrl: ModalController, private localStorage: LocalStorageService, private userCollectionService: UserCollectionService,
+    private http: HttpClient, private cameraService: CameraService, private route: ActivatedRoute, private translateService: TranslateService,
+    private locationService: LocationService, private changeDetector: ChangeDetectorRef) {
+    this.country = this.route.snapshot.paramMap.get('country');
+    this.city = this.route.snapshot.paramMap.get('city');
+    this.federaleState = this.route.snapshot.paramMap.get('federaleState');
+    this.lang = this.route.snapshot.paramMap.get('lang');
+
     this.localStorageService.getUser().then(async (user) => {
       this.user = user;
-
       const filter = await this.localStorage.getFilter();
+
+      if (!this.user) {
+        document.dispatchEvent(new CustomEvent('showBackdrop', {
+          detail: {
+            showBackdrop: true
+          }
+        }));
+      }
 
       if (filter) {
         this.filter = Object.assign(this.filter, filter);
@@ -64,7 +90,7 @@ export class HomePage {
     if (Capacitor.isNativePlatform()) {
       AppIcon.isSupported().then((value) => console.log('supported: ', value));
 
-      await AppIcon.change({name: 'vip', suppressNotification: true}).then(() => {
+      await AppIcon.change({ name: 'vip', suppressNotification: true }).then(() => {
         AppIcon.getName().then((name) => console.log('appName: ', name));
 
       }).catch((err) => console.log('nameError: ', err));
@@ -75,6 +101,33 @@ export class HomePage {
     }
 
     this.registerEvents();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (this.lang) {
+        this.translateService.use(this.lang);
+      }
+    }, 1000);
+  }
+
+  getPicture() {
+    this.cameraService.getPicture().then((base64) => {
+      this.http.post('https://stationapi.veriff.com/v1/sessions/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDcyMjc4MjEsInNlc3Npb25faWQiOiI4MDYxYzgyYy00NWI2LTRmNDctOTY3ZS1iYjY2M2UzZGRiNjUiLCJpaWQiOiIyNGMwODM3ZS0yOWMyLTQ4ZmItYjg4MC03YjlhZGJmNWRmY2QifQ.I355wdTcbBqfSmGoEHdQ6YsEwH_plETO4X_XKcvQ90Y/media', {
+        'image': {
+          'context': 'selfie',
+          'content': base64
+        }
+      }, {
+        headers: {
+          'X-AUTH-CLIENT': 'cac45476-f179-4a99-aabf-bf64056f9558',
+          'X-HMAC-SIGNATURE': 'b3a854464b357d692f4649713d1d35d3f53419eb7e419f451cb9a92ce49138d9',
+          'Content-Type': 'application/json'
+        }
+      }).subscribe((res) => {
+        console.log(res);
+      })
+    })
   }
 
   async getUsers() {
@@ -93,52 +146,75 @@ export class HomePage {
     this.destroyAllSnapshots();
 
     const userIds = [];
-    const usersByDistance = await this.userCollectionService.getUsersByDistance(this.user.currentLocation,
-      this.filter.perimeterValue ? this.filter.perimeterValue : 100);
 
-    for (let user of usersByDistance) {
-      let age = ProfileHelper.getAge(user.birthday);
-      if (((this.filter.ageRange && !user.fakeAge
+    if (this.user) {
+      if (this.city) {
+        const latLng = await this.locationService.getGeoFromCity(this.city, this.country, this.federaleState);
+        this.user.currentLocation = {
+          lat: latLng.lat,
+          lng: latLng.lng,
+          hash: geohashForLocation([latLng.lat, latLng.lng])
+        }
+        this.placeId = latLng.placeId;
+        this.changeDetector.detectChanges();
+        console.log(this.placeId);
+      }
+
+      const usersByDistance = await this.userCollectionService.getUsersByDistance(this.user.currentLocation,
+        this.filter.perimeterValue ? this.filter.perimeterValue : 100);
+
+      for (let user of usersByDistance) {
+        let age = ProfileHelper.getAge(user.birthday);
+        if (((this.filter.ageRange && !user.fakeAge
           ? this.filter.ageRange.lower <= age && this.filter.ageRange.upper >= age
           : this.filter.ageRange.lower <= user.fakeAge && this.filter.ageRange.upper >= user.fakeAge) || !this.filter.ageRange)
-        && user.genderLookingFor.includes(this.user.gender) && !this.user._gotBlockedFrom?.includes(user.id) && !this.user._blockList?.includes(user.id)
-        && user.id !== this.user.id && this.user.genderLookingFor.includes(user.gender)) {
-        userIds.push(user.id);
+          && user.genderLookingFor.includes(this.user.gender) && !this.user._gotBlockedFrom?.includes(user.id) && !this.user._blockList?.includes(user.id)
+          && user.id !== this.user.id && this.user.genderLookingFor.includes(user.gender)) {
+          userIds.push(user.id);
+        }
       }
-    }
 
-    this.filteredUserIds = userIds;
+      this.filteredUserIds = userIds;
 
-    if (userIds.length > 0) {
+      if (userIds.length > 0) {
+        this.queryFilter.push({
+          key: 'id',
+          opr: 'in',
+          value: userIds
+        });
+
+
+        this.snapshots.push(this.userService.getStandardUsers(
+          20, this.queryFilter, true, (snapshot) => {
+            this.standardUsers = CollectionService.getSnapshotDataFromCollection(this.standardUsers, snapshot, 'id', {
+              added: (doc) => {
+                this.lastDoc = doc.doc;
+              }
+            });
+            this.standardUsers = this.standardUsers.sort((a,b) => a.membership > b.membership ? -1 : 1);
+
+            this.loading = false;
+          }))
+      } else {
+        this.loading = false;
+      }
+    } else {
       this.queryFilter.push({
-        key: 'id',
+        key: 'gender',
         opr: 'in',
-        value: userIds
+        value: [Gender.Female, Gender.Transsexual]
       });
 
-      this.snapshots.push(this.userService.getStandardUsers(
-        10, this.queryFilter, true, (snapshot) => {
-          this.standardUsers = CollectionService.getSnapshotDataFromCollection(this.standardUsers, snapshot, 'id', {
-            added: (doc) => {
-              this.lastDoc = doc.doc;
-            }
-          });
-          this.loading = false;
-        }))
-    } else {
-      this.loading = false;
+      document.addEventListener('place_id', (ev: any) => this.placeId = ev.detail.placeId);
+      this.userService.getUserByQueryParams(null, this.city, this.country, this.federaleState, this.queryFilter).then((users: IUser[]) => {
+        this.standardUsers = users;
+        this.loading = false;
+      });
     }
   }
 
   loadMore(event) {
     const filters = [];
-    if (this.user.genderLookingFor.length < 3) {
-      filters.push({
-        key: 'gender',
-        opr: 'in',
-        value: this.user.genderLookingFor
-      });
-    }
 
     if (this.filter.categoryFilter && this.filter.categoryFilter.length > 0) {
       filters.push({
@@ -155,8 +231,8 @@ export class HomePage {
     });
 
     this.snapshots.push(this.userCollectionService.getAll(20, this.lastDoc, filters, [
-      {key: 'membership', descending: 'desc'},
-      {key: 'lastBoostAt', descending: 'desc'}
+      { key: 'membership', descending: 'desc' },
+      { key: 'lastBoostAt', descending: 'desc' }
     ], null, true, (snapshot) => {
       this.standardUsers = CollectionService.getSnapshotDataFromCollection(this.standardUsers, snapshot, 'id', {
         added: (doc) => {
@@ -176,8 +252,21 @@ export class HomePage {
   }
 
   registerEvents() {
-    document.addEventListener('user', (e: any) => {
+    document.addEventListener('user', async (e: any) => {
+      if (!this.user && e.detail.user) {
       this.user = e.detail.user;
+
+        this.getUsers();
+        const filter = await this.localStorage.getFilter();
+
+        if (filter) {
+          this.filter = Object.assign(this.filter, filter);
+        }
+      }
+
+      if (this.loginModal) {
+        this.loginModal.dismiss();
+      }
     })
   }
 
@@ -191,7 +280,7 @@ export class HomePage {
 
     const modal = await this.modalCtrl.create({
       component: FilterComponent,
-      cssClass: 'filter-modal',
+      cssClass: 'filter-modal auto-height',
       componentProps: {
         me: this.user,
         location: this.filter.location,
@@ -222,6 +311,8 @@ export class HomePage {
           this.userCollectionService.set(this.user.id, this.user);
         });
 
+        this.placeId = null;
+        this.city = null;
         this.getUsers();
       }
     })

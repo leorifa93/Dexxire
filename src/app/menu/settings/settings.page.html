@@ -25,6 +25,11 @@
     <p slot="start">{{'LANGUAGE' | translate}}</p>
     <ion-note slot="end">{{currentLang | translate}}</ion-note>
   </ion-item>
+  <h5>{{'DISCOVER' | translate}}</h5>
+  <ion-item lines="none" class="option">
+    <p slot="start">{{'SHOWME' | translate}}</p>
+    <ion-toggle slot="end" [(ngModel)]="user?._settings.showInDiscover"></ion-toggle>
+  </ion-item>
   <h5>{{'UNITS' | translate}}</h5>
   <ion-item lines="none" class="option">
     <p slot="start">{{'DISTANCE' | translate}}</p>
@@ -61,11 +66,11 @@
     <ion-toggle slot="end" [(ngModel)]="user?._settings.notifications.likes"></ion-toggle>
   </ion-item>
   <h5>{{'PRIVACY' | translate}}</h5>
-  <ion-item lines="none" class="option" [button]="true">
+  <ion-item lines="none" class="option" [button]="true" (click)="showPrivacy()">
     <p slot="start">{{'PRICAVYPOLICY' | translate}}</p>
     <ion-note slot="end"></ion-note>
   </ion-item>
-  <ion-item lines="none" class="option" [button]="true">
+  <ion-item lines="none" class="option" [button]="true" (click)="showTerms()">
     <p slot="start">{{'TERMSOFSERVICE' | translate}}</p>
     <ion-note slot="end"></ion-note>
   </ion-item>

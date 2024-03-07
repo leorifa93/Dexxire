@@ -1,0 +1,33 @@
+
+<ion-menu side="end" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menü</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-item [button]="true">{{'IMAGEPROOF' | translate}}</ion-item>
+  </ion-content>
+</ion-menu>
+
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start" defaultHref="/login" icon="chevron-back-outline" text="" class="nav-button"
+    (click)="goBack()">
+    </ion-back-button>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="ion-page" id="main-content">
+  <ion-content [fullscreen]="true">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title></ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <app-image-proof></app-image-proof>
+  </ion-content>
+</div>

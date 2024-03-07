@@ -4,5 +4,6 @@ export enum DataType {
   Chat = 'CHAT',
   PrivateGallery = 'PRIVATEGALLERY',
   PrivateGalleryAnswer = 'PRIVATEGALLERYANSWER',
-  PrivateGalleryRequest = 'PRIVATEGALLERYREQUEST'
+  PrivateGalleryRequest = 'PRIVATEGALLERYREQUEST',
+  Admin = 'admin'
 }

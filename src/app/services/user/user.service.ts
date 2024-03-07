@@ -5,8 +5,8 @@ import {Router} from "@angular/router";
 import {IUser} from "../../interfaces/i-user";
 import firebase from "firebase/compat";
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
+import { google } from 'google-maps';
 
-declare var google: any;
 @Injectable({
   providedIn: 'root'
 })
@@ -75,6 +75,12 @@ export class UserService {
                     value: item.place_id
                   });
 
+                  document.dispatchEvent(new CustomEvent('place_id', {
+                    detail: {
+                      placeId: item.place_id
+                    }
+                  }));
+
                   if (userId) {
                     filters.push({
                       key: 'id',
@@ -83,12 +89,19 @@ export class UserService {
                     });
                   }
 
-                  const users = await this.userCollectionService.getAll(1, null, filters);
+                  if (!isSnapshot) {
+                    const users = await this.userCollectionService.getAll(20, null, filters, [
+                      {key: 'membership', descending: 'desc'},
+                      {key: 'lastBoostAt', descending: 'desc'}
+                    ]);
 
-                  if (users.length > 0 && userId) {
-                    resolve(users[0]);
+                    if (users.length > 0 && userId) {
+                      resolve(users[0]);
+                    } else {
+                      resolve(users);
+                    }
                   } else {
-                    resolve(users);
+                    resolve(this.userCollectionService.observer(userId, callback));
                   }
                 }
 

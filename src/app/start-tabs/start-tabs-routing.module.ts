@@ -9,6 +9,15 @@ const routes: Routes = [
     component: StartTabsPage,
     children: [
       {
+        path: 'profiling',
+        children: [
+          {
+            path: ':lang/:country/:federaleState/:city',
+            loadChildren: () => import('./../home/home.module').then(m => m.HomePageModule)
+          }
+        ]
+      },
+      {
         path: 'home',
         children: [
           {

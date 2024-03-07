@@ -1,26 +1,27 @@
-import {Component} from '@angular/core';
-import {Storage} from "@ionic/storage";
-import {TranslateService} from "@ngx-translate/core";
-import {getAuth} from "firebase/auth";
-import {UserCollectionService} from "./services/user/user-collection.service";
-import {IUser} from "./interfaces/i-user";
-import {LocalStorageService} from "./_shared/services/local-storage.service";
-import {Router} from "@angular/router";
-import {Device} from '@capacitor/device';
-import {STATUS_ACTIVE, STATUS_PENDING} from "./constants/User";
-import {LocationService} from "./_shared/services/location.service";
-import {ModalController, NavController} from "@ionic/angular";
-import {CustomSplashComponent} from "./_shared/components/custom-splash/custom-splash.component";
-import {register} from 'swiper/element/bundle';
-import {geohashForLocation} from "geofire-common";
-import {FCM} from "@capacitor-community/fcm";
-import {PushNotifications} from "@capacitor/push-notifications";
-import {Capacitor} from "@capacitor/core";
+import { Component } from '@angular/core';
+import { Storage } from "@ionic/storage";
+import { TranslateService } from "@ngx-translate/core";
+import { getAuth } from "firebase/auth";
+import { UserCollectionService } from "./services/user/user-collection.service";
+import { IUser } from "./interfaces/i-user";
+import { LocalStorageService } from "./_shared/services/local-storage.service";
+import { Router } from "@angular/router";
+import { Device } from '@capacitor/device';
+import { STATUS_ACTIVE, STATUS_PENDING } from "./constants/User";
+import { LocationService } from "./_shared/services/location.service";
+import { AlertController, ModalController, NavController } from "@ionic/angular";
+import { CustomSplashComponent } from "./_shared/components/custom-splash/custom-splash.component";
+import { register } from 'swiper/element/bundle';
+import { geohashForLocation } from "geofire-common";
+import { FCM } from "@capacitor-community/fcm";
+import { PushNotifications } from "@capacitor/push-notifications";
+import { Capacitor } from "@capacitor/core";
 import firebase from "firebase/compat";
 import Unsubscribe = firebase.Unsubscribe;
-import {PushService} from "./_shared/services/push.service";
+import { PushService } from "./_shared/services/push.service";
 import { Badge } from '@robingenz/capacitor-badge';
-import {ProfileHelper} from "./_shared/helper/Profile";
+import { ProfileHelper } from "./_shared/helper/Profile";
+import { MaintenanceComponent } from "./_shared/components/maintenance/maintenance.component";
 
 register();
 
@@ -36,8 +37,9 @@ export class AppComponent {
   messageSubscriber: Unsubscribe;
 
   constructor(private storage: Storage, private translateService: TranslateService, private userService: UserCollectionService,
-              private localStorage: LocalStorageService, private router: Router, private locationService: LocationService,
-              private modalCtrl: ModalController, private pushService: PushService, private navCtrl: NavController) {
+    private localStorage: LocalStorageService, private router: Router, private locationService: LocationService,
+    private modalCtrl: ModalController, private pushService: PushService, private navCtrl: NavController,
+    private alertCtrl: AlertController) {
     this.initializeApp();
 
     this.translateService.onLangChange.subscribe((translation) => {
@@ -46,6 +48,19 @@ export class AppComponent {
         this.userService.set(this.me.id, this.me);
       }
     });
+
+    const showMaintenance = async () => {
+      const modal = await this.modalCtrl.create({
+        component: MaintenanceComponent,
+        cssClass: 'maintenance-modal'
+      });
+
+      return modal.present();
+    }
+
+    if (window.location.hostname === 'www.dexxire.com' || window.location.hostname === 'dexxire.com') {
+      //showMaintenance();
+    }
   }
 
   async initializeApp() {
@@ -108,8 +123,8 @@ export class AppComponent {
           return;
         }
 
-        let now = new Date().getTime()/1000;
-        user.lastLogin =now;
+        let now = new Date().getTime() / 1000;
+        user.lastLogin = now;
 
         await this.userService.set(user.id, user);
 
@@ -127,17 +142,51 @@ export class AppComponent {
 
           await this.localStorage.setUser(user);
 
-          if (!this.router.url.includes('/profile') && !this.router.url.includes('/search') && !this.router.url.includes('/chat')) {
+          if (!this.router.url.includes('/profile') && !this.router.url.includes('/search') && !this.router.url.includes('/chat')
+            && !this.router.url.includes('/home') && !this.router.url.includes('/data-protection') && !this.router.url.includes('/agb')
+            && !this.router.url.includes('/backend') && !this.router.url.includes('/support')) {
             await this.navCtrl.navigateRoot('/start-tabs/home');
           }
 
           if (Capacitor.isNativePlatform()) {
-            this.initNotifications();
+            await this.initNotifications();
+          }
+
+          if (!this.me._settings.showInDiscover) {
+            this.localStorage.getDiscoverInfo().then(async (info) => {
+              if (!info) {
+                const alert = await this.alertCtrl.create({
+                  message: this.translateService.instant('SHOWINDISCOVERINFO'),
+                  buttons: [
+                    {
+                      text: this.translateService.instant('YES'),
+                      handler: () => {
+                        this.me._settings.showInDiscover = true;
+                        this.userService.set(this.me.id, this.me).then(() => this.localStorage.setDiscoverInfo());
+                      }
+                    },
+                    {
+                      text: this.translateService.instant('CANCEL'),
+                      role: 'cancel',
+                      handler: () => {
+                        this.localStorage.setDiscoverInfo();
+                      }
+                    }
+                  ]
+                });
+
+                alert.present();
+              }
+            })
+          } else {
+            this.localStorage.setDiscoverInfo();
           }
         }
       } else {
         await this.localStorage.setUser(null);
         await this.localStorage.setFilter(null);
+        await this.localStorage.setDiscoverInfo(null);
+        
 
         if (Capacitor.isNativePlatform()) {
           if (this.messageSubscriber) {
@@ -168,13 +217,18 @@ export class AppComponent {
           this.me = null;
         }
 
-        await this.navCtrl.navigateRoot('/login');
+
+        if (!this.router.url.includes('/profile') && !this.router.url.includes('/search') && !this.router.url.includes('/chat')
+          && !this.router.url.includes('/home/profiling') && !this.router.url.includes('/data-protection') && !this.router.url.includes('/agb')
+          && !this.router.url.includes('/support')) {
+          await this.navCtrl.navigateRoot('/login');
+        }
       }
     });
   }
 
   private initNotifications() {
-   return PushNotifications.requestPermissions().then((status) => {
+    return PushNotifications.requestPermissions().then((status) => {
       if (status.receive === 'granted') {
         FCM.getToken().then((token) => {
           if (!this.me._deviceIds) {
@@ -191,7 +245,7 @@ export class AppComponent {
         this.pushService.addListeners();
       }
     }).then(() => {
-     return PushNotifications.register();
-   })
+      return PushNotifications.register();
+    })
   }
 }

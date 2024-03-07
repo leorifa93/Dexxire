@@ -45,7 +45,10 @@ export class CameraService {
     PhotoViewer.show({
       images: imgs,
       mode: mode,
-      startFrom: startFrom
+      startFrom: startFrom,
+      options: {
+        spancount: 1
+      }
     })
   }
 

@@ -9,6 +9,7 @@ import {ModalController, NavController} from "@ionic/angular";
 import {TranslateService} from "@ngx-translate/core";
 import {LocationPage} from "../_shared/pages/location/location.page";
 import {UserCollectionService} from "../services/user/user-collection.service";
+import {MySearchPage} from "./my-search/my-search.page";
 
 @Component({
   selector: 'app-menu',
@@ -86,8 +87,13 @@ export class MenuPage implements OnInit {
     this.navCtrl.navigateForward('menu/settings');
   }
 
-  showMySearch() {
-    this.navCtrl.navigateForward('menu/my-search');
+  async showMySearch() {
+    const modal = await this.modalCtrl.create({
+      component: MySearchPage,
+      cssClass: 'my-search-modal'
+    });
+
+    return modal.present();
   }
 
   showSubscriptions() {
@@ -96,6 +102,10 @@ export class MenuPage implements OnInit {
 
   showShop() {
     this.navCtrl.navigateForward('menu/shop');
+  }
+
+  showSupport() {
+    this.navCtrl.navigateForward('menu/support');
   }
 
   async showLocations() {

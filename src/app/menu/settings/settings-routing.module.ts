@@ -11,6 +11,14 @@ const routes: Routes = [
   {
     path: 'access',
     loadChildren: () => import('./access/access.module').then( m => m.AccessPageModule)
+  },
+  {
+    path: 'data-protection',
+    loadChildren: () => import('./data-protection/data-protection.module').then( m => m.DataProtectionPageModule)
+  },
+  {
+    path: 'agb',
+    loadChildren: () => import('./agb/agb.module').then( m => m.AgbPageModule)
   }
 ];
 

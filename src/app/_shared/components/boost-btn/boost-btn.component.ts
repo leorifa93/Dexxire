@@ -1,12 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
-import {AlertController} from "@ionic/angular";
+import {AlertController, ModalController} from "@ionic/angular";
 import {IUser} from "../../../interfaces/i-user";
 import {BuyService} from "../../../menu/shop/services/buy.service";
 import firebase from "firebase/compat";
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import {UserCollectionService} from "../../../services/user/user-collection.service";
 import {LocalStorageService} from "../../services/local-storage.service";
+import { BoostComponent } from '../boost/boost.component';
 
 @Component({
   selector: 'app-boost-btn',
@@ -25,10 +26,11 @@ export class BoostBtnComponent  implements OnInit {
     }
   };
   positionInterval: any;
+  loading: boolean = true;
 
   constructor(private translateService: TranslateService, private alertCtrl: AlertController,
               private buyService: BuyService, private userCollectionService: UserCollectionService,
-              private localStorage: LocalStorageService) { }
+              private localStorage: LocalStorageService, private modalCtrl: ModalController) { }
 
   async ngOnInit() {
     const filter = await this.localStorage.getFilter();
@@ -36,6 +38,7 @@ export class BoostBtnComponent  implements OnInit {
     if (filter) {
       this.filter = Object.assign(this.filter, filter);
     }
+    this.getRangPosition();
 
     document.addEventListener('update-rang', () => this.getRangPosition());
 
@@ -45,24 +48,25 @@ export class BoostBtnComponent  implements OnInit {
   }
 
   async setBoost() {
-    const alert = await this.alertCtrl.create({
-      header: this.translateService.instant('POSITION') + this.rang,
-      message: this.translateService.instant('YOUAREONPOSITION') + this.rang + this.translateService.instant('USEABOOST'),
-      buttons: [{
-        text: this.translateService.instant('USEBOOST'),
-        handler: () => {
-          return this.buyService.setBoost(this.user);
-        }
-      }, {
-        text: this.translateService.instant('CANCEL'),
-        role: 'cancel'
-      }]
+    const modal = await this.modalCtrl.create({
+      component: BoostComponent,
+      componentProps: {
+        rang: this.rang,
+        user: this.user
+      }
     });
 
-    return alert.present();
+    return modal.present();
   }
 
   async getRangPosition() {
+    //this.loading = true;
+
+    if (!this.user) {
+      return;
+    }
+
+    
     const queryFilter: { key: string, opr: WhereFilterOp, value: any }[] = [];
     queryFilter.push({
       key: 'gender',
@@ -85,6 +89,7 @@ export class BoostBtnComponent  implements OnInit {
       return a.lastBoostAt < b.lastBoostAt ? 1 : -1;
     });
 
+    
     if (usersByDistance.length > 0) {
       let rang = 1;
 
@@ -100,6 +105,8 @@ export class BoostBtnComponent  implements OnInit {
     } else {
       this.rang = 1;
     }
+
+    this.loading = false;
   }
 
   ngOnDestroy() {

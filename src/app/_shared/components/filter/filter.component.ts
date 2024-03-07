@@ -8,8 +8,7 @@ import {Distance, Weight} from "../../../constants/Units";
 import {UserCollectionService} from "../../../services/user/user-collection.service";
 import {Gender} from "../../../constants/User";
 import {ProfileHelper} from "../../helper/Profile";
-
-declare var google: any;
+import { google } from 'google-maps';
 
 @Component({
   selector: 'app-filter',
@@ -39,6 +38,8 @@ export class FilterComponent extends AbstractModalController implements OnInit {
     {key: Gender.Female, value: 'FEMALE'},
     {key: Gender.Transsexual, value: 'TRANSSEXUAL'}
   ]
+  blocklist: string[] = ['xf3WOgBpmoMcdDC8xJb207MX3an2', 'mw2OPKQjAbOQHSBkxvJIzYiGIsi1'];
+  
   constructor(protected modalCtrl: ModalController, private locationService: LocationService,
               private userCollectionService: UserCollectionService) {
     super(modalCtrl);

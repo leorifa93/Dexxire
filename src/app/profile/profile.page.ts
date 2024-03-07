@@ -17,7 +17,8 @@ import {ProfileHelper} from "../_shared/helper/Profile";
 import {getAuth, sendEmailVerification} from "firebase/auth";
 import {environment} from "../../environments/environment";
 import {CameraService} from "../_shared/services/camera.service";
-import { SwiperContainer } from 'swiper/element';
+import {SwiperContainer} from 'swiper/element';
+import { LoginPage } from '../login/login.page';
 
 @Component({
   selector: 'app-profile',
@@ -32,7 +33,12 @@ export class ProfilePage implements OnInit {
   distance: string;
   currentCity: string;
   contentState: string = 'PROFILE';
-  profileDetails = ['ethnicity', 'nationality', 'weight', 'height', 'chest', 'waist', 'hips', 'eyeColor', 'hairColor', 'hairLength'];
+  profileDetails = [
+    ['gender', 'genderLookingFor'],
+    ['birthday', 'ethnicity', 'nationality'],
+    ['height', 'weight', 'chest', 'waist', 'hips'],
+    ['eyeColor', 'hairColor', 'hairLength']
+  ];
 
   genders: { key: Gender, value: string }[] = [
     {key: Gender.Male, value: 'MALE'},
@@ -59,12 +65,14 @@ export class ProfilePage implements OnInit {
     {key: Languages.Japanese, value: 'JAPANESE'},
     {key: Languages.Portuguese, value: 'PORTUGUESE'},
     {key: Languages.Russian, value: 'RUSSIAN'},
-    {key: Languages.Spanish, value: 'SPANISH'}
+    {key: Languages.Spanish, value: 'SPANISH'},
+    {key: Languages.Italy, value: 'ITALY'}
   ];
   countries: { country: string, key: string, region: string, flag: string }[] = [];
   settings: any = {};
   observer: any;
   userId: string;
+  loginModal: any;
 
   constructor(private router: Router, private locationService: LocationService, private modalCtrl: ModalController,
               private translateService: TranslateService, private countriesService: CountriesService, private localStorage: LocalStorageService,
@@ -78,7 +86,10 @@ export class ProfilePage implements OnInit {
   }
 
   async initUser() {
-    await this.localStorage.getUser().then((user) => this.me = user);
+    await this.localStorage.getUser().then(async (user) => {
+      this.me = user;
+    });
+
 
     this.route.paramMap.subscribe((map) => {
       const lang = map.get('lang');
@@ -91,12 +102,24 @@ export class ProfilePage implements OnInit {
       this.userService.getUserByQueryParams(userId, city, country, federaleState, null, true, (snapshot) => {
         const user = snapshot.data();
 
-        if (!this.me._gotBlockedFrom?.includes(userId)) {
+        for (let arr of this.profileDetails) {
+          arr = arr.map((detail) => {
+            if (detail === 'chest' && user?.gender !== Gender.Male) {
+              detail = 'chestCup'
+            }
+
+            return detail;
+          })
+        }
+
+        if ((this.me && !this.me._gotBlockedFrom?.includes(userId)) || !this.me) {
           this.user = user;
 
           setTimeout(() => {
-            this.swiperRef.nativeElement.swiper.update();
-            this.swiperRef.nativeElement.swiper.slideNext(0);
+            if (this.swiperRef) {
+              this.swiperRef.nativeElement.swiper.update();
+              this.swiperRef.nativeElement.swiper.slideNext(0);
+            }
           }, 300);
         }
 
@@ -114,6 +137,16 @@ export class ProfilePage implements OnInit {
 
   }
 
+  async showLogin() {
+    this.loginModal = await this.modalCtrl.create({
+      component: LoginPage,
+      backdropDismiss: false,
+      cssClass: 'login-modal'
+    });
+
+    return this.loginModal.present();
+  }
+
   swiperReady(swiperContainer: SwiperContainer): void {
     console.log(swiperContainer);
     console.log('init');
@@ -122,6 +155,10 @@ export class ProfilePage implements OnInit {
   addEvents() {
     document.addEventListener('user', (e: any) => {
       this.me = e.detail.user;
+
+      if (this.me && this.loginModal) {
+        this.loginModal.dismiss();
+      }
 
       if (this.user && this.me._gotBlockedFrom?.includes(this.user.id)) {
         this.user = null;
@@ -136,7 +173,7 @@ export class ProfilePage implements OnInit {
   init() {
     this.addEvents();
 
-    if (this.user) {
+    if (this.user && this.me) {
       const distance = parseFloat(DistanceHelper.calcDistance(
         this.me.currentLocation.lat,
         this.me.currentLocation.lng,
@@ -170,7 +207,7 @@ export class ProfilePage implements OnInit {
   }
 
   detailExists(key: string) {
-    if (this.user?.details && this.user?.details[key]) {
+    if ((this.user?.details && this.user?.details[key]) || (this.user && this.user[key])) {
       return true;
     }
 
@@ -178,7 +215,7 @@ export class ProfilePage implements OnInit {
   }
 
   getDetail(key: string) {
-    const detail = this.user.details[key];
+    const detail = this.user.details[key] || this.user[key];
 
     if (key === 'ethnicity') {
       for (let ethnicity of this.ethnicities) {
@@ -193,17 +230,46 @@ export class ProfilePage implements OnInit {
         }
       }
     } else if (['height', 'waist', 'hips', 'chest'].includes(key)) {
-      let d = this.me._settings.units.lengthType === 'Inch' ? Math.round(this.user.details[key].inch) + ' inch' : Math.round(this.user.details[key].cm) + ' cm';
+      let d;
 
       if (key === 'chest' && this.user.gender !== Gender.Male && this.user.details.chestCup) {
-        d = d + ' ' + this.user.details.chestCup;
+        d = (this.me?._settings.units.lengthType === 'Inch' ? Math.round(this.user.details[key].inch) : Math.round(this.user.details[key].cm))  + ' ' + this.user.details.chestCup;
+      } else {
+        d = this.me?._settings.units.lengthType === 'Inch' ? Math.round(this.user.details[key].inch) + ' inch' : Math.round(this.user.details[key].cm) + ' cm';
       }
 
       return d;
     } else if (key === 'weight') {
-      return this.me._settings.units.weightType === 'Lbs' ? Math.round((<number>this.user.details[key].lbs)) + ' Lbs' : Math.round(this.user.details[key].kg) + ' Kg';
+      return this.me?._settings.units.weightType === 'Lbs' ? Math.round((<number>this.user.details[key].lbs)) + ' Lbs' : Math.round(this.user.details[key].kg) + ' Kg';
     } else if (['hairLength', 'hairColor', 'eyeColor'].includes(key)) {
       return this.translateService.instant(detail);
+    } else if (key === 'genderLookingFor') {
+      let genders = '';
+
+      for (let gender of detail) {
+        if (gender === Gender.Male) {
+          genders += genders.length > 0 ? ', ' + this.translateService.instant('MALE') : this.translateService.instant('MALE');
+        } else if (gender === Gender.Female) {
+          genders += genders.length > 0 ? ', ' + this.translateService.instant('FEMALE') : this.translateService.instant('FEMALE');
+        } else if (gender === Gender.Transsexual) {
+          genders += genders.length > 0 ? ', ' + this.translateService.instant('TRANSSEXUAL') : this.translateService.instant('TRANSSEXUAL');
+        }
+      }
+
+      return genders;
+    } else if (key === 'gender') {
+      if (detail === Gender.Male) {
+        return this.translateService.instant('MALE');
+      } else if (detail === Gender.Female) {
+        return this.translateService.instant('FEMALE');
+      } else if (detail === Gender.Transsexual) {
+        return this.translateService.instant('TRANSSEXUAL');
+      }
+    } else if (key === 'birthday') {
+      const birthday = new Date(detail);
+      let ageDifMs = Date.now() - birthday.getTime();
+      let  ageDate = new Date(ageDifMs);
+      return Math.abs(ageDate.getUTCFullYear() - 1970);
     }
 
     return detail;
@@ -326,7 +392,7 @@ export class ProfilePage implements OnInit {
             text: this.translateService.instant('NOTBLOCKPROFILE'),
             role: 'destructive',
             handler: () => {
-              this.me._blockList = this.me._blockList .filter(id => id !== this.user.id);
+              this.me._blockList = this.me._blockList.filter(id => id !== this.user.id);
               this.me._friendsList = this.me._friendsList?.filter(id => id !== this.user.id);
               this.user._gotBlockedFrom = this.user._gotBlockedFrom.filter(id => id !== this.me.id);
               this.user._friendsList = this.user._friendsList?.filter(id => id !== this.me.id);

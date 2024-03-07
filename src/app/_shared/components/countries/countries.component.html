@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button class="nav-button" (click)="closeModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <g clip-path="url(#clip0_100_2654)">
+          <path d="M15 6L9 12L15 18" stroke="#22172A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_100_2654">
+            <rect width="24" height="24" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </ion-button>
+  <ion-searchbar [(ngModel)]="searchString"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item *ngFor="let country of countries | searchFilter: searchString" [button]="true" lines="none" (click)="selectCountry(country)">
+    <p>{{country.country}}</p>
+  </ion-item>
+</ion-content>

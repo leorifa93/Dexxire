@@ -1,0 +1,11 @@
+<ion-content class="container" [fullscreen]="true">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title size="large">{{'IMAGEPROOF' | translate}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-item [button]="true" *ngFor="let provement of provements" (click)="showProvement(provement)">
+  <h3 slot="start">{{provement.username | translate}}</h3>
+  </ion-item>
+</ion-content>

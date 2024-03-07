@@ -104,6 +104,7 @@
 }
 
 .user-details {
+  margin-bottom: 1rem;
   border-radius: 20px;
   background: #F6F6F6;
   width: 100%;
@@ -128,6 +129,18 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  tr:last-child {
+    td:nth-child(1) {
+      border-bottom-left-radius: 20px;
+      border-collapse: separate;
+    }
+
+    td:nth-child(2) {
+      border-bottom-right-radius: 20px;
+      border-collapse: separate;
+    }
   }
 
   tr:nth-child(even) {

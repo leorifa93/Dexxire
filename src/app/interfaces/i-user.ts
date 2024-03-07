@@ -33,7 +33,8 @@ export interface IUser {
       friendRequests: boolean,
       likes: boolean
     },
-    currentLang: string
+    currentLang: string,
+    showInDiscover: boolean
   }
 
   _badges?: {
@@ -73,7 +74,11 @@ export interface IUser {
     instagram?: string;
     tikTok?: string;
   }
-
+  boostSettings?: {
+    isInterval: boolean,
+    interval?: string,
+    nextBoostAt?: number
+  }
   lastBoostAt?: number;
   availableCoins?: number;
   _sentFriendRequests?: string[];

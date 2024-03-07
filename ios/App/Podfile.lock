@@ -294,7 +294,7 @@ SPEC CHECKSUMS:
   CapacitorPushNotifications: b31e326c6e4eb216a622041d6ca21a973f34943f
   CapacitorStatusBar: 565c0a1ebd79bb40d797606a8992b4a105885309
   CodetrixStudioCapacitorGoogleAuth: cf34eaae86e16b83c8960586841ed4da4379258b
-  CordovaPlugins: 2fd5cd7a4f23e2116ce418d64add1aea003f3dff
+  CordovaPlugins: a4a2ed64a63a195dc8a818ed2493b9ff55a6d976
   CordovaPluginsStatic: c8419cec2b298ca28e07838f741333a80786cc5f
   FBAEMKit: af2972f39bb0f3f7c45998f435b007833c32ffb2
   FBSDKCoreKit: 19e2e18b3be578d7a51fed8fdd8c152bef0b9511

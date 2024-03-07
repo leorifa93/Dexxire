@@ -40,7 +40,7 @@
 
       <ion-modal [keepContentsMounted]="true">
         <ng-template>
-          <ion-datetime [preferWheel]="true" [(ngModel)]="user.birthday" max="{{maxDate}}" value="{{maxDate}}" presentation="date" id="datetime"></ion-datetime>
+          <ion-datetime [showDefaultButtons]="true" [preferWheel]="true" [(ngModel)]="user.birthday" max="{{maxDate}}" value="{{maxDate}}" presentation="date" id="datetime"></ion-datetime>
         </ng-template>
       </ion-modal>
     </fieldset>

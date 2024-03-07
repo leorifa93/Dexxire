@@ -30,13 +30,9 @@ export class BuyService {
     }
 
     let now = new Date();
-    let current: Date;
+    let offset = 28 * 24 * 60 * 60 * 1000;
+    let current = new Date(now.getTime() + offset);
 
-    if (now.getMonth() == 11) {
-      current = new Date(now.getFullYear() + 1, 0, now.getDay());
-    } else {
-      current = new Date(now.getFullYear(), now.getMonth() + 1, now.getDay());
-    }
     user.membershipExpiredAt = ProfileHelper.getFormattedDate(current);
 
     return this.buyCollectionService.add({
@@ -53,7 +49,7 @@ export class BuyService {
     })
   }
 
-  addCoinsToUser(user: IUser, coins: number) {
+  addCoinsToUser(user: IUser, coins: number, isMobile: boolean = false) {
     if (!user.availableCoins) {
       user.availableCoins = 0;
     }
@@ -61,11 +57,13 @@ export class BuyService {
     user.availableCoins += coins;
 
     return this.userService.set(user.id, user).then(async () => {
-      const alert = await this.alertCtrl.create({
-        message: this.translateService.instant('YOUAREREADY')
-      });
-
-      return alert.present();
+      if (!isMobile) {
+        const alert = await this.alertCtrl.create({
+          message: this.translateService.instant('YOUAREREADY')
+        });
+  
+        return alert.present();
+      }
     })
   }
 
@@ -112,8 +110,6 @@ export class BuyService {
   }
 
   async subscribe(subscription: any, user: IUser) {
-    user.availableCoins = 1000;
-
     if ((user.availableCoins || 0) < subscription.price && environment.production === true) {
       const alert = await this.alertCtrl.create({
         message: this.translateService.instant('NOTENOUGHCOINS'),

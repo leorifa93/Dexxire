@@ -1,0 +1,10 @@
+<ion-content class="ion-padding">
+  <img class="logo" src="assets/images/logo.png" />
+  <div style="width: 80vw; display: block; margin: auto;margin-top:10%;">
+    <h3 class="ion-text-center">{{'MAINTENANCE' | translate}}</h3>
+    <div>
+      <ion-input [(ngModel)]="password" slot="start" type="password" placeholder="Admin Password"></ion-input>
+      <ion-button expand="block" (click)="closeModal()">Login</ion-button>
+    </div>
+  </div>
+</ion-content>

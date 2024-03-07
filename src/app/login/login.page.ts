@@ -97,7 +97,7 @@ export class LoginPage implements OnInit {
   createOrSignInViaApple() {
     SignInWithApple.authorize({
       clientId: environment.appleClientId,
-      redirectURI: 'https://dexxire-dfcba.web.app'
+      redirectURI: window.location.origin
     })
       .then((result: SignInWithAppleResponse) => {
         const credential = new OAuthProvider('apple.com').credential({
@@ -231,5 +231,13 @@ export class LoginPage implements OnInit {
 
         return toast.present();
       });
+  }
+
+  showPrivacy() {
+    return this.router.navigate(['/data-protection']);
+  }
+
+  showTerms() {
+    return this.router.navigate(['/agb']);
   }
 }

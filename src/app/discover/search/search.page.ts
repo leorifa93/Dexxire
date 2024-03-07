@@ -81,9 +81,14 @@ export class SearchPage extends AbstractBase implements OnInit {
         value: this.user.genderLookingFor
       }], undefined, 'UserCategories');
 
-      for (let category of this.categories) {
-        if (this.category && this.category.toUpperCase() === category.value) {
-          this.filter.categoryFilter.push(category.key);
+      if (this.category) {
+        let categories = this.category.split(',');
+        categories = categories.map((category) => category.toUpperCase());
+
+        for (let category of this.categories) {
+          if (categories.includes(category.value)) {
+            this.filter.categoryFilter.push(category.key);
+          }
         }
       }
 
@@ -155,9 +160,10 @@ export class SearchPage extends AbstractBase implements OnInit {
       });
     }
 
-    if (this.country && this.federaleState && this.city && this.category) {
+    if (this.country && this.federaleState && this.city) {
       this.userService.getUserByQueryParams(null, this.city, this.country, this.federaleState, this.queryFilter).then((users:IUser[]) => {
         this.users = users;
+        this.users = this.users.filter((user) => user.id !== this.user.id);
         this.loading = false;
       });
 

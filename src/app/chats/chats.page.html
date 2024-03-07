@@ -6,9 +6,12 @@
     <ion-toolbar>
       <ion-title class="ion-text-center" size="medium">{{'MESSAGES' | translate}}</ion-title>
     </ion-toolbar>
-    <ion-searchbar></ion-searchbar>
+    <ion-searchbar (ionChange)="onSearch()" [(ngModel)]="searchString"></ion-searchbar>
   </ion-header>
   <ion-list class="messages-list">
+    <div *ngIf="!loading && chats.length === 0" class="no-results-box">
+      <h4 class="ion-text-center">{{'NOMESSAGES' | translate}}</h4>
+    </div>
     <div *ngIf="loading">
       <ion-item class="chat" *ngFor="let i of [1,2,3,4,5]">
         <ion-avatar slot="start">

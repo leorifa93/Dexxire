@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { getStorage, ref, uploadString, getDownloadURL, listAll } from "firebase/storage";
+import { getStorage, ref, uploadString, getDownloadURL, listAll, deleteObject } from "firebase/storage";
 import {ToastController} from "@ionic/angular";
 import {TranslateService} from "@ngx-translate/core";
 import {BehaviorSubject} from "rxjs";
@@ -56,5 +56,23 @@ export class UploadService {
     });
 
     return subscriber;
+  }
+
+  deleteAll(refPath: string) {
+    refPath = 'Dexxire/' + refPath;
+    const listRef = ref(getStorage(), refPath);
+    const thumbnailsRef = ref(getStorage(), refPath + '/thumbnails');
+
+    listAll(listRef).then((listResults) => {
+      for (let item of listResults.items) {
+        deleteObject(ref(getStorage(), item.fullPath));
+      }
+    })
+
+    listAll(thumbnailsRef).then((listResults) => {
+      for (let item of listResults.items) {
+        deleteObject(ref(getStorage(), item.fullPath));
+      }
+    })
   }
 }

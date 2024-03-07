@@ -1,3 +1,4 @@
+<ion-backdrop *ngIf="showBackdrop && !user" [visible]="true" [tappable]="true" (ionBackdropTap)="showLogin()"></ion-backdrop>
 <ion-tabs #startTabs>
   <ion-tab-bar slot="bottom" class="tabs-container" [translucent]="true">
     <ion-tab-button tab="home">
